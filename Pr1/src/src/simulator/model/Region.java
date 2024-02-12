@@ -11,10 +11,10 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	public final static double FOOD_MULTIPLIER_PARAMETER = 60.0, FOOD_MAX_PARAMETER = 5.0,
 			FOOD_MAX_MULTIPLIER_PARAMETER = 2.0;
 
-	protected List<Animal> al;
+	protected List<Animal> animal_list;
 
 	protected Region() {
-		al = new ArrayList<Animal>();
+		animal_list = new ArrayList<Animal>();
 	}
 
 	@Override
@@ -24,16 +24,16 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	final void add_animal(Animal a) {
-		if (!al.contains(a))
-			al.add(a);
+		if (!animal_list.contains(a))
+			animal_list.add(a);
 	}
 
 	final void remove_animal(Animal a) {
-		al.remove(a);
+		animal_list.remove(a);
 	}
 
 	final List<Animal> getAnimals() {
-		return Collections.unmodifiableList(al);
+		return Collections.unmodifiableList(animal_list);
 	}
 
 }
