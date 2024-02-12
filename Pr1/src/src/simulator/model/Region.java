@@ -1,5 +1,7 @@
 package src.simulator.model;
 
+import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -9,10 +11,10 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	public final static double FOOD_MULTIPLIER_PARAMETER = 60.0, FOOD_MAX_PARAMETER = 5.0,
 			FOOD_MAX_MULTIPLIER_PARAMETER = 2.0;
 
-	protected List<AnimalInfo> al;
+	protected List<Animal> al;
 
 	protected Region() {
-		// TODO INICIALIZAR LISTA DE ANIMALES
+		al = new ArrayList<Animal>();
 	}
 
 	@Override
@@ -21,7 +23,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		return null;
 	}
 
-	final void add_animal(AnimalInfo a) { // TODO MIRAR SI TIENE QUE SER ANIMAL O ANIMALINFO
+	final void add_animal(Animal a) {
 		if (!al.contains(a))
 			al.add(a);
 	}
@@ -31,7 +33,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	final List<Animal> getAnimals() {
-		return null; // TODO
+		return Collections.unmodifiableList(al);
 	}
 
 }
