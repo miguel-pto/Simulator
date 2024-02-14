@@ -33,7 +33,7 @@ public class Wolf extends Animal {
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
 	}
 
-	private void hunt(double dt) {
+	protected void advance_boost(double dt) {
 		dest = hunt_target.get_position();
 		move(BOOST_FACTOR_WOLF * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
@@ -83,7 +83,7 @@ public class Wolf extends Animal {
 		if (hunt_target == null)
 			advance_normal(dt);
 		else {
-			hunt(dt);
+			advance_boost(dt);
 		}
 		if (energy > FOOD_THRESHOLD_WOLF) {
 			if (desire < DESIRE_THRESHOLD_WOLF)
@@ -99,8 +99,8 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_mate(double dt) {
-		if (mate_target != null && (mate_target.get_state() == State.DEAD))
-			mate_target = null; // TODO O FUERA DEL CAMPO VISUAL
+		if (mate_target != null && (mate_target.get_state() == State.DEAD || is_in_sight_range(mate_target)))
+			mate_target = null;
 		if (mate_target == null) {
 			// TODO BUSCAR PAREJA
 			if (mate_target == null)

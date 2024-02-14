@@ -32,7 +32,7 @@ public class Sheep extends Animal {
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_SHEEP * dt, 0, MAX_DESIRE);
 	}
 
-	private void flee(double dt) {
+	protected void advance_boost(double dt) {
 		pos.plus(pos.minus(danger_source.get_position()).direction());
 		move(2.0 * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
@@ -95,11 +95,10 @@ public class Sheep extends Animal {
 		if (danger_source == null) {
 			advance_normal(dt);
 		} else {
-			flee(dt);
+			advance_boost(dt);
 		}
 
-		if (danger_source == null && pos.distanceTo(danger_source.get_position()) > sight_range) { // TODO COMPROBAR
-																									// NO GITANADA
+		if (danger_source == null && is_in_sight_range(danger_source)) {
 			// TODO BUSCAR PELIGRO
 			if (danger_source == null)
 				if (desire > DESIRE_THRESHOLD_SHEEP) {
@@ -112,7 +111,8 @@ public class Sheep extends Animal {
 
 	@Override
 	protected void update_mate(double dt) {
-		if (mate_target != null && mate_target.get_state() == State.DEAD)
+		if (mate_target != null
+				&& (mate_target.get_state() == State.DEAD || is_in_sight_range(mate_target)))
 			mate_target = null;
 		if (mate_target == null) {
 			// TODO BUSCAR PAREJA

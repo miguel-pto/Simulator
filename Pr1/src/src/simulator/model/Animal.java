@@ -127,7 +127,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public boolean is_pregnant() {
 		return baby == null;
 	}
-
+	
 	protected abstract void update_normal(double dt);
 
 	protected abstract void update_hunger(double dt);
@@ -159,6 +159,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected abstract void advance_normal(double dt);
+	
+	protected abstract void advance_boost(double dt);
 
 	protected abstract void set_normal();
 
@@ -167,6 +169,10 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected abstract void set_mate();
 
 	protected abstract void set_hunger();
+	
+	protected boolean is_in_sight_range(Animal a) {
+		return pos.distanceTo(a.get_position()) > sight_range;
+	}
 
 	protected void set_state(State state) {
 		this.state = state;
