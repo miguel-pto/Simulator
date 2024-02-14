@@ -75,8 +75,6 @@ public class Simulator implements JSONable{
 		}
 	}
 
-
-
 	@Override
 	public JSONObject as_JSON() {
 		// TODO Auto-generated method stub
