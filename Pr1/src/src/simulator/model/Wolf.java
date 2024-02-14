@@ -48,72 +48,6 @@ public class Wolf extends Animal {
 	}
 
 	@Override
-	public void update(double dt) {
-		switch (state) {
-		case DEAD:
-			break;
-		case NORMAL:
-			advance_normal(dt);
-			if (energy < FOOD_THRESHOLD_WOLF)
-				set_state(State.HUNGER);
-			else if (desire > DESIRE_THRESHOLD_WOLF)
-				set_state(State.MATE);
-			break;
-		case HUNGER:
-			if (hunt_target == null || hunt_target.get_state() == State.DEAD)
-				; // TODO BUSCAR PRESA
-			if (hunt_target == null)
-				advance_normal(dt);
-			else {
-				hunt(dt);
-			}
-			if (energy > FOOD_THRESHOLD_WOLF) {
-				if (desire < DESIRE_THRESHOLD_WOLF)
-					set_state(State.NORMAL);
-				else
-					set_state(State.MATE);
-			}
-			break;
-		case MATE:
-			if (mate_target != null && (mate_target.get_state() == State.DEAD))
-				mate_target = null; // TODO O FUERA DEL CAMPO VISUAL
-			if (mate_target == null) {
-				// TODO BUSCAR PAREJA
-				if (mate_target == null)
-					advance_normal(dt);
-				else {
-					dest = mate_target.get_position();
-					move(BOOST_FACTOR_WOLF * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
-					age += dt;
-					energy = Utils.constrain_value_in_range(
-							energy - FOOD_DROP_RATE_WOLF * dt * FOOD_DROP_BOOST_FACTOR_WOLF, 0, MAX_ENERGY);
-					desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
-					if (pos.distanceTo(mate_target.get_position()) < 8) {
-						desire = 0;
-						mate_target.desire = 0;
-						if (baby == null && Utils._rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
-							baby = new Wolf(this, mate_target);
-						energy = Utils.constrain_value_in_range(energy - 10, 0, MAX_ENERGY);
-						mate_target = null;
-					}
-					if (energy < FOOD_THRESHOLD_WOLF)
-						set_state(State.HUNGER);
-					else if (desire < DESIRE_THRESHOLD_WOLF)
-						set_state(State.MATE);
-				}
-			}
-			break;
-		case DANGER:
-			break;
-		}
-		// TODO CORREGIR POSICION FUERA DEL MAPA
-		if (energy == 0.0 || age > MAX_AGE_WOLF)
-			set_state(State.DEAD);
-		if (state != State.DEAD)
-			Utils.constrain_value_in_range(energy + region_mngr.get_food(this, dt), 0, MAX_ENERGY);
-	}
-
-	@Override
 	protected void set_normal() {
 		hunt_target = null;
 		mate_target = null;
@@ -131,6 +65,76 @@ public class Wolf extends Animal {
 	@Override
 	protected void set_hunger() {
 		mate_target = null;
+	}
+
+	@Override
+	protected void update_normal(double dt) {
+		advance_normal(dt);
+		if (energy < FOOD_THRESHOLD_WOLF)
+			set_state(State.HUNGER);
+		else if (desire > DESIRE_THRESHOLD_WOLF)
+			set_state(State.MATE);
+	}
+
+	@Override
+	protected void update_hunger(double dt) {
+		if (hunt_target == null || hunt_target.get_state() == State.DEAD)
+			; // TODO BUSCAR PRESA
+		if (hunt_target == null)
+			advance_normal(dt);
+		else {
+			hunt(dt);
+		}
+		if (energy > FOOD_THRESHOLD_WOLF) {
+			if (desire < DESIRE_THRESHOLD_WOLF)
+				set_state(State.NORMAL);
+			else
+				set_state(State.MATE);
+		}
+	}
+
+	@Override
+	protected void update_danger(double dt) {
+	}
+
+	@Override
+	protected void update_mate(double dt) {
+		if (mate_target != null && (mate_target.get_state() == State.DEAD))
+			mate_target = null; // TODO O FUERA DEL CAMPO VISUAL
+		if (mate_target == null) {
+			// TODO BUSCAR PAREJA
+			if (mate_target == null)
+				advance_normal(dt);
+			else {
+				dest = mate_target.get_position();
+				move(BOOST_FACTOR_WOLF * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
+				age += dt;
+				energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_WOLF * dt * FOOD_DROP_BOOST_FACTOR_WOLF,
+						0, MAX_ENERGY);
+				desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
+				if (pos.distanceTo(mate_target.get_position()) < 8) {
+					desire = 0;
+					mate_target.desire = 0;
+					if (baby == null && Utils._rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
+						baby = new Wolf(this, mate_target);
+					energy = Utils.constrain_value_in_range(energy - 10, 0, MAX_ENERGY);
+					mate_target = null;
+				}
+				if (energy < FOOD_THRESHOLD_WOLF)
+					set_state(State.HUNGER);
+				else if (desire < DESIRE_THRESHOLD_WOLF)
+					set_state(State.MATE);
+			}
+		}
+	}
+
+	@Override
+	protected void update_state(double dt) {
+		// TODO CORREGIR POSICION FUERA DEL MAPA
+		if (energy == 0.0 || age > MAX_AGE_WOLF)
+			set_state(State.DEAD);
+		if (state != State.DEAD)
+			Utils.constrain_value_in_range(energy + region_mngr.get_food(this, dt), 0, MAX_ENERGY);
 	}
 
 }

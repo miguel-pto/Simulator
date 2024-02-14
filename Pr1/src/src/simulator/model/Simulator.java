@@ -52,8 +52,7 @@ public class Simulator implements JSONable{
 		return t;
 	}
 	
-	public void advance(double dt) { // TODO ORGANIZAR MEJOR, AHORA ESTA TAL Y COMO PONE EN EL ENUNCIADO
-		t += dt;
+	private void remove_dead() {
 		for (int i = animal_list.size() - 1; i >= 0; i--) {
 			Animal a;
 			a = animal_list.get(i);
@@ -62,17 +61,30 @@ public class Simulator implements JSONable{
 				region_manager.unregister_animal(a);
 			}
 		}
+	}
+	
+	private void update_animal_regions(double dt) {
 		for (Animal a : animal_list) {
 			a.update(dt);
 			region_manager.update_animal_region(a);
 		}
-		region_manager.update_all_regions(dt);
+	}
+	
+	private void deliver_babies() {
 		for (Animal a : animal_list) {
 			if (a.is_pregnant()) {
 				Animal baby = a.deliver_baby();
 				add_animal(baby);
 			}
 		}
+	}
+	
+	public void advance(double dt) {
+		t += dt;
+		remove_dead();
+		update_animal_regions(dt);
+		region_manager.update_all_regions(dt);
+		deliver_babies();
 	}
 
 	@Override

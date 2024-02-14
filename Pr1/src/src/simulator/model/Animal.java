@@ -128,6 +128,36 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return baby == null;
 	}
 
+	protected abstract void update_normal(double dt);
+
+	protected abstract void update_hunger(double dt);
+
+	protected abstract void update_danger(double dt);
+
+	protected abstract void update_mate(double dt);
+
+	protected abstract void update_state(double dt); // TODO REVISAR
+
+	public void update(double dt) {
+		switch (state) {
+		case NORMAL:
+			update_normal(dt);
+			break;
+		case HUNGER:
+			update_normal(dt);
+			break;
+		case DANGER:
+			update_normal(dt);
+			break;
+		case MATE:
+			update_normal(dt);
+			break;
+		default:
+			break;
+		}
+		update_state(dt);
+	}
+
 	protected abstract void advance_normal(double dt);
 
 	protected abstract void set_normal();

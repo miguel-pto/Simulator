@@ -51,74 +51,6 @@ public class Sheep extends Animal {
 	}
 
 	@Override
-	public void update(double dt) {
-		switch (state) {
-		case DEAD:
-			break;
-		case NORMAL:
-			advance_normal(dt);
-			if (danger_source == null)
-				;// TODO BUSCAR PELIGRO
-			if (danger_source == null) {
-				if (desire > DESIRE_THRESHOLD_SHEEP) {
-					set_state(State.MATE);
-				}
-			} else {
-				set_state(State.DANGER);
-			}
-			break;
-		case DANGER:
-			if (danger_source != null && danger_source.get_state() == State.DEAD)
-				danger_source = null;
-			if (danger_source == null) {
-				advance_normal(dt);
-			} else {
-				flee(dt);
-			}
-
-			if (danger_source == null && pos.distanceTo(danger_source.get_position()) > sight_range) { // TODO COMPROBAR
-																										// NO GITANADA
-				// TODO BUSCAR PELIGRO
-				if (danger_source == null)
-					if (desire > DESIRE_THRESHOLD_SHEEP) {
-						set_state(State.MATE);
-					} else {
-						set_state(State.NORMAL);
-					}
-			}
-			break;
-		case MATE:
-			if (mate_target != null && mate_target.get_state() == State.DEAD)
-				mate_target = null;
-			if (mate_target == null) {
-				// TODO BUSCAR PAREJA
-				if (mate_target == null) {
-					advance_normal(dt);
-					if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
-						mate();
-					}
-					if (danger_source == null)
-						; // TODO BUSCAR PELIGRO
-					if (danger_source != null) {
-						set_state(State.DANGER);
-					} else if (desire < DESIRE_THRESHOLD_SHEEP) {
-						set_state(State.NORMAL);
-					}
-				}
-			}
-
-			break;
-		case HUNGER:
-			break;
-		}
-		// TODO CORREGIR SI SE SALE DEL MAPA
-		if (energy == 0.0 || age > 8.0)
-			set_state(State.DEAD);
-		if (state != State.DEAD) // TODO MIRAR
-			energy = Utils.constrain_value_in_range(energy + region_mngr.get_food(this, dt), 0, MAX_ENERGY);
-	}
-
-	@Override
 	protected void set_normal() {
 		mate_target = null;
 		danger_source = null;
@@ -136,6 +68,77 @@ public class Sheep extends Animal {
 
 	@Override
 	protected void set_hunger() {
+	}
+
+	@Override
+	protected void update_normal(double dt) {
+		advance_normal(dt);
+		if (danger_source == null)
+			;// TODO BUSCAR PELIGRO
+		if (danger_source == null) {
+			if (desire > DESIRE_THRESHOLD_SHEEP) {
+				set_state(State.MATE);
+			}
+		} else {
+			set_state(State.DANGER);
+		}
+	}
+
+	@Override
+	protected void update_hunger(double dt) {
+	}
+
+	@Override
+	protected void update_danger(double dt) {
+		if (danger_source != null && danger_source.get_state() == State.DEAD)
+			danger_source = null;
+		if (danger_source == null) {
+			advance_normal(dt);
+		} else {
+			flee(dt);
+		}
+
+		if (danger_source == null && pos.distanceTo(danger_source.get_position()) > sight_range) { // TODO COMPROBAR
+																									// NO GITANADA
+			// TODO BUSCAR PELIGRO
+			if (danger_source == null)
+				if (desire > DESIRE_THRESHOLD_SHEEP) {
+					set_state(State.MATE);
+				} else {
+					set_state(State.NORMAL);
+				}
+		}
+	}
+
+	@Override
+	protected void update_mate(double dt) {
+		if (mate_target != null && mate_target.get_state() == State.DEAD)
+			mate_target = null;
+		if (mate_target == null) {
+			// TODO BUSCAR PAREJA
+			if (mate_target == null) {
+				advance_normal(dt);
+				if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
+					mate();
+				}
+				if (danger_source == null)
+					; // TODO BUSCAR PELIGRO
+				if (danger_source != null) {
+					set_state(State.DANGER);
+				} else if (desire < DESIRE_THRESHOLD_SHEEP) {
+					set_state(State.NORMAL);
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void update_state(double dt) {
+		// TODO CORREGIR SI SE SALE DEL MAPA
+		if (energy == 0.0 || age > MAX_AGE_SHEEP)
+			set_state(State.DEAD);
+		if (state != State.DEAD) // TODO MIRAR
+			energy = Utils.constrain_value_in_range(energy + region_mngr.get_food(this, dt), 0, MAX_ENERGY);
 	}
 
 }
