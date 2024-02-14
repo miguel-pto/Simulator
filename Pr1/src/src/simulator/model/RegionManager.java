@@ -120,7 +120,7 @@ public class RegionManager implements AnimalMapView {
 		List<Animal> selection = new ArrayList<Animal>();
 
 		for (Animal animal : animal_region.get(e).getAnimals()) {
-			if (animal != e && e.is_in_sight_range(animal))
+			if (animal != e && e.is_in_sight_range(animal) && filter.test(animal))
 				selection.add(animal);
 		}
 

@@ -193,4 +193,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 			break;
 		}
 	}
+	
+	public boolean is_alive() {
+		return state != State.DEAD;
+	}
 }
