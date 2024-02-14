@@ -74,7 +74,7 @@ public class Sheep extends Animal {
 	protected void update_normal(double dt) {
 		advance_normal(dt);
 		if (danger_source == null)
-			;// TODO BUSCAR PELIGRO
+			danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
 		if (danger_source == null) {
 			if (desire > DESIRE_THRESHOLD_SHEEP) {
 				set_state(State.MATE);
@@ -99,7 +99,7 @@ public class Sheep extends Animal {
 		}
 
 		if (danger_source == null && is_in_sight_range(danger_source)) {
-			// TODO BUSCAR PELIGRO
+			danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
 			if (danger_source == null)
 				if (desire > DESIRE_THRESHOLD_SHEEP) {
 					set_state(State.MATE);
@@ -115,14 +115,14 @@ public class Sheep extends Animal {
 				&& (mate_target.get_state() == State.DEAD || is_in_sight_range(mate_target)))
 			mate_target = null;
 		if (mate_target == null) {
-			// TODO BUSCAR PAREJA
+			mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == "Sheep"));
 			if (mate_target == null) {
 				advance_normal(dt);
 				if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
 					mate();
 				}
 				if (danger_source == null)
-					; // TODO BUSCAR PELIGRO
+					danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));;
 				if (danger_source != null) {
 					set_state(State.DANGER);
 				} else if (desire < DESIRE_THRESHOLD_SHEEP) {

@@ -79,7 +79,7 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_hunger(double dt) {
 		if (hunt_target == null || hunt_target.get_state() == State.DEAD)
-			; // TODO BUSCAR PRESA
+			hunting_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));;
 		if (hunt_target == null)
 			advance_normal(dt);
 		else {
@@ -102,7 +102,7 @@ public class Wolf extends Animal {
 		if (mate_target != null && (mate_target.get_state() == State.DEAD || is_in_sight_range(mate_target)))
 			mate_target = null;
 		if (mate_target == null) {
-			// TODO BUSCAR PAREJA
+			mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == "Sheep"));
 			if (mate_target == null)
 				advance_normal(dt);
 			else {
