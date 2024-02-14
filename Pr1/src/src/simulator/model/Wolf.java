@@ -99,10 +99,10 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_mate(double dt) {
-		if (mate_target != null && (mate_target.get_state() == State.DEAD || is_in_sight_range(mate_target)))
+		if (mate_target != null && (!mate_target.is_alive() || !is_in_sight_range(mate_target)))
 			mate_target = null;
 		if (mate_target == null) {
-			mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == "Sheep"));
+			mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == "Wolf"));
 			if (mate_target == null)
 				advance_normal(dt);
 			else {

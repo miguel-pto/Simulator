@@ -171,7 +171,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected abstract void set_hunger();
 	
 	protected boolean is_in_sight_range(Animal a) {
-		return pos.distanceTo(a.get_position()) > sight_range;
+		return pos.distanceTo(a.get_position()) <= sight_range;
 	}
 
 	protected void set_state(State state) {
