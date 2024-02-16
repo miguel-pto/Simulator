@@ -41,12 +41,11 @@ public class Sheep extends Animal {
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_SHEEP * dt, 0, MAX_DESIRE);
 	}
 
-	private void mate() {
+	protected void mate() {
 		desire = 0.0;
 		mate_target.desire = 0.0;
 		if (baby == null && Utils._rand.nextDouble() < PREGNANT_PROBABILITY_SHEEP)
-			;
-		baby = new Sheep(this, mate_target);
+			baby = new Sheep(this, mate_target);
 		mate_target = null;
 	}
 
@@ -115,7 +114,7 @@ public class Sheep extends Animal {
 				&& (!mate_target.is_alive() || !is_in_sight_range(mate_target)))
 			mate_target = null;
 		if (mate_target == null) {
-			mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == "Sheep"));
+			mate_target = find_mate();
 			if (mate_target == null) {
 				advance_normal(dt);
 				if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {

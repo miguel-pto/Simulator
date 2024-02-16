@@ -32,19 +32,23 @@ public class Wolf extends Animal {
 		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_WOLF * dt, 0, MAX_ENERGY);
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
 	}
-
-	protected void advance_boost(double dt) {
+	
+	protected void hunt(double dt) {
 		dest = hunt_target.get_position();
-		move(BOOST_FACTOR_WOLF * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
-		age += dt;
-		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_WOLF * dt * FOOD_DROP_BOOST_FACTOR_WOLF, 0,
-				MAX_ENERGY);
-		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
+		advance_boost(dt);
 		if (pos.distanceTo(hunt_target.get_position()) < COLLISION_RANGE) {
 			hunt_target.set_state(State.DEAD);
 			hunt_target = null;
 			energy += Utils.constrain_value_in_range(energy + FOOD_EAT_VALUE_WOLF, 0, MAX_ENERGY);
 		}
+	}
+
+	protected void advance_boost(double dt) {
+		move(BOOST_FACTOR_WOLF * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
+		age += dt;
+		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_WOLF * dt * FOOD_DROP_BOOST_FACTOR_WOLF, 0,
+				MAX_ENERGY);
+		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
 	}
 
 	@Override
@@ -83,7 +87,7 @@ public class Wolf extends Animal {
 		if (hunt_target == null)
 			advance_normal(dt);
 		else {
-			advance_boost(dt);
+			hunt(dt);
 		}
 		if (energy > FOOD_THRESHOLD_WOLF) {
 			if (desire < DESIRE_THRESHOLD_WOLF)
@@ -96,29 +100,29 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_danger(double dt) {
 	}
+	
+	protected void mate() {
+		desire = 0;
+		mate_target.desire = 0;
+		if (baby == null && Utils._rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
+			baby = new Wolf(this, mate_target);
+		energy = Utils.constrain_value_in_range(energy - 10, 0, MAX_ENERGY);
+		mate_target = null;
+	}
 
 	@Override
 	protected void update_mate(double dt) {
 		if (mate_target != null && (!mate_target.is_alive() || !is_in_sight_range(mate_target)))
 			mate_target = null;
 		if (mate_target == null) {
-			mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == "Wolf"));
+			mate_target = find_mate();
 			if (mate_target == null)
 				advance_normal(dt);
 			else {
 				dest = mate_target.get_position();
-				move(BOOST_FACTOR_WOLF * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
-				age += dt;
-				energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_WOLF * dt * FOOD_DROP_BOOST_FACTOR_WOLF,
-						0, MAX_ENERGY);
-				desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
+				advance_boost(dt);
 				if (pos.distanceTo(mate_target.get_position()) < 8) {
-					desire = 0;
-					mate_target.desire = 0;
-					if (baby == null && Utils._rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
-						baby = new Wolf(this, mate_target);
-					energy = Utils.constrain_value_in_range(energy - 10, 0, MAX_ENERGY);
-					mate_target = null;
+					mate();
 				}
 				if (energy < FOOD_THRESHOLD_WOLF)
 					set_state(State.HUNGER);
@@ -130,11 +134,11 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_state(double dt) {
-		// TODO CORREGIR POSICION FUERA DEL MAPA
+		pos.adjust(region_mngr.get_width(), region_mngr.get_height());
 		if (energy == 0.0 || age > MAX_AGE_WOLF)
 			set_state(State.DEAD);
 		if (state != State.DEAD)
-			Utils.constrain_value_in_range(energy + region_mngr.get_food(this, dt), 0, MAX_ENERGY);
+			energy = Utils.constrain_value_in_range(energy + region_mngr.get_food(this, dt), 0, MAX_ENERGY);
 	}
 
 }

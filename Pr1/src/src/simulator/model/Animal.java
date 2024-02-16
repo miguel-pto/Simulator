@@ -137,6 +137,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected abstract void update_mate(double dt);
 
 	protected abstract void update_state(double dt); // TODO REVISAR
+	
+	protected abstract void mate();
 
 	public void update(double dt) {
 		switch (state) {
@@ -172,6 +174,10 @@ public abstract class Animal implements Entity, AnimalInfo {
 	
 	protected boolean is_in_sight_range(Animal a) {
 		return pos.distanceTo(a.get_position()) <= sight_range;
+	}
+	
+	protected Animal find_mate() {
+		return mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == this.genetic_code));
 	}
 
 	protected void set_state(State state) {
