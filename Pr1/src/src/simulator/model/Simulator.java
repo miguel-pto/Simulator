@@ -2,17 +2,18 @@ package src.simulator.model;
 
 import java.util.Collections;
 import java.util.List;
-
+import java.util.ArrayList;
 import org.json.JSONObject;
 
-public class Simulator {
+public class Simulator implements JSONable{
+	
 	RegionManager region_manager;
-	List<Animal> animals_list;
+	List<Animal> animal_list;
 	double t;
+	
 	public Simulator(int cols, int rows, int widht, int height, Factory<Animal> animals_factory, Factory<Region> regions_factory) {
 		region_manager = new RegionManager(cols, rows, widht, height);
-		//Crear lista de animales 
-		//animals_list = 
+		animal_list = new ArrayList<Animal>();
 		t = 0.0;
 	}
 	
@@ -25,20 +26,18 @@ public class Simulator {
 	void set_region(int row, int col, JSONObject r_json) {
 		//TODO Que lea el json y cree la region/animal
 		
-		Region R = new Region();
+		Region R = new DefaultRegion(); //POR AHORA
 		set_region(row, col, R);
 	}
 	
 	private void add_animal(Animal a) {
+		animal_list.add(a);
 		region_manager.register_animal(a);
 	}
 	
 	void add_animal(JSONObject a_json) {
-		String type = a_json.getString(type);
+		String type = a_json.getString("type");
 		//TODO
-		
-		Animal A = new Animal(type, );
-		add_animal(A);
 	}
 	
 	public MapInfo get_map_info() {
@@ -46,43 +45,51 @@ public class Simulator {
 	}
 	
 	public List<? extends AnimalInfo> get_animals() {
-		return Collections.unmodifiableList(animals_list);
+		return Collections.unmodifiableList(animal_list);
 	}
 	
 	public double get_time() {
 		return t;
 	}
 	
-	public void advance(double dt) {
-		t += dt;
-		Animal a;
-		for (int i= animals_list.size()-1; i>=0; i--) {
-			a = animals_list.get(i);
+	private void remove_dead() {
+		for (int i = animal_list.size() - 1; i >= 0; i--) {
+			Animal a;
+			a = animal_list.get(i);
 			if (a.get_state() == State.DEAD) {
-				//TODO Hay que quitar de la lista el animal, creo que ya esta hecho en la lista, pero por si acaso dejo el TO DO
+				animal_list.remove(a);
 				region_manager.unregister_animal(a);
-				animals_list.remove(i);
-			}
-			else {
-				a.update(dt);
-				region_manager.update_animal_region(a);
-				if (a.is_pregnant()) {
-					Animal baby = a.deliver_baby();
-					add_animal(baby);
-				}
 			}
 		}
-		region_manager.update_all_regions(dt);
 	}
 	
-	public JSONObject as_JSON() {
-		//TODO
-		/* devuelve una estructura JSON con t  tiempo actual y s es lo que devuelve as_JSON() del gestor de regiones:
-			{
-				"time": t,
-				"state": s,
+	private void update_animal_regions(double dt) {
+		for (Animal a : animal_list) {
+			a.update(dt);
+			region_manager.update_animal_region(a);
+		}
+	}
+	
+	private void deliver_babies() {
+		for (Animal a : animal_list) {
+			if (a.is_pregnant()) {
+				Animal baby = a.deliver_baby();
+				add_animal(baby);
 			}
-	*/
-		
+		}
+	}
+	
+	public void advance(double dt) {
+		t += dt;
+		remove_dead();
+		update_animal_regions(dt);
+		region_manager.update_all_regions(dt);
+		deliver_babies();
+	}
+
+	@Override
+	public JSONObject as_JSON() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
