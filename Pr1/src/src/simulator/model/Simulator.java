@@ -25,7 +25,7 @@ public class Simulator {
 	void set_region(int row, int col, JSONObject r_json) {
 		//TODO Que lea el json y cree la region/animal
 		
-		//Region R = new Region();
+		Region R = new Region();
 		set_region(row, col, R);
 	}
 	
@@ -56,12 +56,33 @@ public class Simulator {
 	public void advance(double dt) {
 		t += dt;
 		Animal a;
-		for (int i= animals_list.size(); i>=0; i--) {
+		for (int i= animals_list.size()-1; i>=0; i--) {
 			a = animals_list.get(i);
 			if (a.get_state() == State.DEAD) {
-				//TODO Hay que quitar de la lista el animal
+				//TODO Hay que quitar de la lista el animal, creo que ya esta hecho en la lista, pero por si acaso dejo el TO DO
 				region_manager.unregister_animal(a);
+				animals_list.remove(i);
+			}
+			else {
+				a.update(dt);
+				region_manager.update_animal_region(a);
+				if (a.is_pregnant()) {
+					Animal baby = a.deliver_baby();
+					add_animal(baby);
+				}
 			}
 		}
+		region_manager.update_all_regions(dt);
+	}
+	
+	public JSONObject as_JSON() {
+		//TODO
+		/* devuelve una estructura JSON con t  tiempo actual y s es lo que devuelve as_JSON() del gestor de regiones:
+			{
+				"time": t,
+				"state": s,
+			}
+	*/
+		
 	}
 }
