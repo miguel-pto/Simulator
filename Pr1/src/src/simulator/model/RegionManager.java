@@ -115,24 +115,24 @@ public class RegionManager implements AnimalMapView {
 	@Override
 	public List<Animal> get_animals_in_range(Animal e, Predicate<Animal> filter) {
 		double r = e.get_sight_range();
-		
+
 		double rightBound = e.get_position().getX() + r;
 		rightBound = rightBound >= width ? width - 1 : rightBound;
-		
+
 		double leftBound = e.get_position().getX() - r;
 		leftBound = leftBound >= width ? width - 1 : leftBound;
-		
+
 		double upperBound = e.get_position().getY() - r;
 		upperBound = upperBound >= width ? width - 1 : upperBound;
-		
+
 		double lowerBound = e.get_position().getY() + r;
 		lowerBound = lowerBound >= width ? width - 1 : lowerBound;
-		
-		int x0 = (int)(leftBound / region_width);
-		int x1 = (int)(rightBound / region_width);
-		int y0 = (int)(upperBound / region_height);
-		int y1 = (int)(lowerBound / region_height);
-		
+
+		int x0 = (int) (leftBound / region_width);
+		int x1 = (int) (rightBound / region_width);
+		int y0 = (int) (upperBound / region_height);
+		int y1 = (int) (lowerBound / region_height);
+
 		List<Animal> selection = new ArrayList<Animal>();
 
 		for (int i = x0; i <= x1; i++) {

@@ -1,6 +1,8 @@
 package simulator.factories;
 
-public abstract class SelectFirstBuilder extends Builder<T>{
+import src.simulator.model.SelectionStrategy;
+
+public abstract class SelectFirstBuilder extends Builder<SelectionStrategy> {
 
 	public SelectFirstBuilder(String type_tag, String desc) {
 		super(type_tag, desc);

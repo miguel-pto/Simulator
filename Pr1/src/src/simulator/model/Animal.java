@@ -127,7 +127,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public boolean is_pregnant() {
 		return baby == null;
 	}
-	
+
 	protected abstract void update_normal(double dt);
 
 	protected abstract void update_hunger(double dt);
@@ -137,7 +137,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected abstract void update_mate(double dt);
 
 	protected abstract void update_state(double dt); // TODO REVISAR
-	
+
 	protected abstract void mate();
 
 	public void update(double dt) {
@@ -161,7 +161,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected abstract void advance_normal(double dt);
-	
+
 	protected abstract void advance_boost(double dt);
 
 	protected abstract void set_normal();
@@ -171,13 +171,14 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected abstract void set_mate();
 
 	protected abstract void set_hunger();
-	
+
 	protected boolean is_in_sight_range(Animal a) {
 		return pos.distanceTo(a.get_position()) <= sight_range;
 	}
-	
+
 	protected Animal find_mate() {
-		return mate_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == this.genetic_code));
+		return mate_strategy.select(this,
+				region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == this.genetic_code));
 	}
 
 	protected void set_state(State state) {
@@ -199,7 +200,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			break;
 		}
 	}
-	
+
 	public boolean is_alive() {
 		return state != State.DEAD;
 	}

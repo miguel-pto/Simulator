@@ -32,7 +32,7 @@ public class Wolf extends Animal {
 		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_WOLF * dt, 0, MAX_ENERGY);
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
 	}
-	
+
 	protected void hunt(double dt) {
 		dest = hunt_target.get_position();
 		advance_boost(dt);
@@ -83,7 +83,8 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_hunger(double dt) {
 		if (hunt_target == null || hunt_target.get_state() == State.DEAD)
-			hunting_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));;
+			hunting_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));
+		;
 		if (hunt_target == null)
 			advance_normal(dt);
 		else {
@@ -100,7 +101,7 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_danger(double dt) {
 	}
-	
+
 	protected void mate() {
 		desire = 0;
 		mate_target.desire = 0;

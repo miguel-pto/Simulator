@@ -110,8 +110,7 @@ public class Sheep extends Animal {
 
 	@Override
 	protected void update_mate(double dt) {
-		if (mate_target != null
-				&& (!mate_target.is_alive() || !is_in_sight_range(mate_target)))
+		if (mate_target != null && (!mate_target.is_alive() || !is_in_sight_range(mate_target)))
 			mate_target = null;
 		if (mate_target == null) {
 			mate_target = find_mate();
@@ -121,7 +120,9 @@ public class Sheep extends Animal {
 					mate();
 				}
 				if (danger_source == null)
-					danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));;
+					danger_strategy.select(this,
+							region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
+				;
 				if (danger_source != null) {
 					set_state(State.DANGER);
 				} else if (desire < DESIRE_THRESHOLD_SHEEP) {
