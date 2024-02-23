@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import org.json.JSONObject;
+import simulator.model.*;
 
 import simulator.factories.Factory;
 
@@ -25,6 +26,7 @@ public class Simulator implements JSONable {
 	}
 
 	public void set_region(int row, int col, JSONObject r_json) {
+		Region r = new Region();
 		// TODO Que lea el json y cree la region/animal
 		
 
@@ -39,6 +41,19 @@ public class Simulator implements JSONable {
 
 	public void add_animal(JSONObject a_json) {
 		String type = a_json.getString("type");
+		JSONObject data = a_json.getJSONObject("data");
+		
+		JSONObject mate_strategy = data.getJSONObject("mate_strategy");
+		if (mate_strategy.isEmpty()) mate_strategy = SelectFirst; //Ponerlo bien
+		/*El valor de la clave "mate_strategy" es un JSON de una estrategia que hay
+que construir usando la factoría de estrategias. Es opcional, y si no existe
+usamos la estrategia SelectFirst.*/
+		JSONObject danger_strategy = data.getJSONObject("danger_strategy");
+		if (danger_strategy.isEmpty()) danger_strategy = SelectFirst; //Ponerlo bien
+		/*El valor de la clave "danger_strategy" es un JSON de una estrategia que
+		hay que construir usando la factoría de estrategias. Es opcional, y si no existe
+		usamos la estrategia SelectFirst.*/
+
 		// TODO
 	}
 
