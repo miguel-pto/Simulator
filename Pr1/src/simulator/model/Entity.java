@@ -1,4 +1,4 @@
-package src.simulator.model;
+package simulator.model;
 
 public interface Entity {
 

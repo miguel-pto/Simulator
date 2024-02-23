@@ -1,4 +1,4 @@
-package src.simulator.model;
+package simulator.model;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,8 +24,9 @@ public class Simulator implements JSONable {
 		region_manager.set_region(row, col, r);
 	}
 
-	void set_region(int row, int col, JSONObject r_json) {
+	public void set_region(int row, int col, JSONObject r_json) {
 		// TODO Que lea el json y cree la region/animal
+		
 
 		Region R = new DefaultRegion(); // POR AHORA
 		set_region(row, col, R);
@@ -36,7 +37,7 @@ public class Simulator implements JSONable {
 		region_manager.register_animal(a);
 	}
 
-	void add_animal(JSONObject a_json) {
+	public void add_animal(JSONObject a_json) {
 		String type = a_json.getString("type");
 		// TODO
 	}
