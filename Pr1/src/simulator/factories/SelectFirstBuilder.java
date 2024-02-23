@@ -1,6 +1,6 @@
 package simulator.factories;
 
-import src.simulator.model.SelectionStrategy;
+import simulator.model.SelectionStrategy;
 
 public abstract class SelectFirstBuilder extends Builder<SelectionStrategy> {
 

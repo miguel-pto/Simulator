@@ -1,4 +1,4 @@
-package src.simulator.model;
+package simulator.model;
 
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;

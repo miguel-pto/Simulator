@@ -1,4 +1,4 @@
-package src.simulator.model;
+package simulator.model;
 
 import java.util.Collections;
 import java.util.ArrayList;

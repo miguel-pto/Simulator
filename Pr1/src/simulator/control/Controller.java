@@ -3,7 +3,8 @@ package simulator.control;
 import java.io.OutputStream;
 
 import org.json.JSONObject;
-import src.simulator.model.Simulator;
+
+import simulator.model.Simulator;
 
 public class Controller {
 
