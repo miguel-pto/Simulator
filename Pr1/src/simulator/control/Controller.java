@@ -1,7 +1,6 @@
 package simulator.control;
 
 import java.io.OutputStream;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,31 +24,13 @@ public class Controller {
 	}
 
 	public void load_data(JSONObject data) {
-		JSONArray regiones = data.getJSONArray(REGIONES);
-		if (!regiones.isEmpty()) {
-			for (int i=0; i<regiones.length(); i++) {
-				JSONObject region = (JSONObject) regiones.get(i);
-				int row[] = (int[]) region.get(ROW);
-				int col[] = (int[]) region.get(COL); 
-				JSONObject spec = region.getJSONObject(SPEC); 
-				for (int j=row[0]; j<=row[1]; j++) {
-					for (int k = col[0]; k<=col[1]; k++) {
-						sim.set_region(k, k, spec);
-					}
-				}
+		if (data.has("regions")) {
+			JSONArray regions = data.getJSONArray("regions");
+			for (int i = 0; i < regions.length(); i++) {
+				JSONObject region = regions.getJSONObject(i);
 				
 			}
 		}
-		
-		JSONArray animales = data.getJSONArray(ANIMALS);
-		for (int i=0; i<animales.length(); i++) {
-			JSONObject animal = (JSONObject) animales.get(i);
-			int cant = animal.getInt(AMOUNT);
-			JSONObject spec = animal.getJSONObject(SPEC);
-			for (int j=0; j<cant; j++)
-				sim.add_animal(spec);
-		}
-		// TODO REVISAR Y QUE ESTE BIEN
 	}
 
 	public void run(double t, double dt, boolean sv, OutputStream out) {
