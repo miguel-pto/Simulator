@@ -74,10 +74,14 @@ public class Main {
 		//
 		CommandLineParser parser = new DefaultParser();
 		try {
+			//TODO Comprobar que estos cambios estan bien hechos
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parse_help_option(line, cmdLineOptions);
 			parse_in_file_option(line);
 			parse_time_option(line);
+			parse_delta_time_option(line);
+			parse_out_file_option(line);
+			parse_simple_viewer_option(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -150,6 +154,34 @@ public class Main {
 			assert (time >= 0);
 		} catch (Exception e) {
 			throw new ParseException("Invalid value for time: " + t);
+		}
+	}
+	
+	private static void parse_delta_time_option(CommandLine line) throws ParseException {
+		String dt = line.getOptionValue("dt", default_delta_time.toString());
+		try {
+			delta_time = Double.parseDouble(dt);
+			assert (delta_time >= 0);
+		} catch (Exception e) {
+			throw new ParseException("Invalid value for delta time: " + dt);
+		}
+	}
+	
+	private static void parse_out_file_option(CommandLine line) throws ParseException {
+		out_file = line.getOptionValue("o");
+		if (mode == ExecMode.BATCH && out_file == null) {
+			throw new ParseException("In batch mode an output configuration file is required");
+		}
+	}
+	
+	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
+		String sv_string = line.getOptionValue("sv");
+		try {
+			sv = Boolean.parseBoolean(sv_string);
+			//TODO Comprobar que esto esta bien
+			assert (sv || !sv);
+		} catch (Exception e) {
+			throw new ParseException("Invalid value for simple viewer: " + sv_string);
 		}
 	}
 
