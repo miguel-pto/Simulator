@@ -10,14 +10,18 @@ import simulator.factories.Factory;
 
 public class Simulator implements JSONable {
 
-	RegionManager region_manager;
-	List<Animal> animal_list;
-	double t;
+	private RegionManager region_manager;
+	private List<Animal> animal_list;
+	private double t;
+	private Factory<Animal> animals_factory;
+	private Factory<Region> regions_factory;
 
 	public Simulator(int cols, int rows, int widht, int height, Factory<Animal> animals_factory,
 			Factory<Region> regions_factory) {
 		region_manager = new RegionManager(cols, rows, widht, height);
 		animal_list = new ArrayList<Animal>();
+		this.animals_factory = animals_factory;
+		this.regions_factory = regions_factory;
 		t = 0.0;
 	}
 
@@ -26,11 +30,7 @@ public class Simulator implements JSONable {
 	}
 
 	public void set_region(int row, int col, JSONObject r_json) {
-		Region r = new Region();
-		// TODO Que lea el json y cree la region/animal
-		
-
-		Region R = new DefaultRegion(); // POR AHORA
+		Region R = regions_factory.create_instance(r_json);
 		set_region(row, col, R);
 	}
 
@@ -40,21 +40,8 @@ public class Simulator implements JSONable {
 	}
 
 	public void add_animal(JSONObject a_json) {
-		String type = a_json.getString("type");
-		JSONObject data = a_json.getJSONObject("data");
-		
-		JSONObject mate_strategy = data.getJSONObject("mate_strategy");
-		if (mate_strategy.isEmpty()) mate_strategy = SelectFirst; //Ponerlo bien
-		/*El valor de la clave "mate_strategy" es un JSON de una estrategia que hay
-que construir usando la factoría de estrategias. Es opcional, y si no existe
-usamos la estrategia SelectFirst.*/
-		JSONObject danger_strategy = data.getJSONObject("danger_strategy");
-		if (danger_strategy.isEmpty()) danger_strategy = SelectFirst; //Ponerlo bien
-		/*El valor de la clave "danger_strategy" es un JSON de una estrategia que
-		hay que construir usando la factoría de estrategias. Es opcional, y si no existe
-		usamos la estrategia SelectFirst.*/
-
-		// TODO
+		Animal A = animals_factory.create_instance(a_json);
+		add_animal(A);
 	}
 
 	public MapInfo get_map_info() {
@@ -106,7 +93,9 @@ usamos la estrategia SelectFirst.*/
 
 	@Override
 	public JSONObject as_JSON() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject o = new JSONObject();
+		o.put("time", t);
+		o.put("state", region_manager.as_JSON());
+		return o;
 	}
 }

@@ -1,12 +1,21 @@
 package simulator.factories;
 
+import org.json.JSONObject;
+
+import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
 
-public abstract class SelectFirstBuilder extends Builder<SelectionStrategy> {
+public class SelectFirstBuilder extends Builder<SelectionStrategy> {
+	
+	private static final String TYPE = "first", DESC = "SelectionStrategy: first";
 
-	public SelectFirstBuilder(String type_tag, String desc) {
-		super(type_tag, desc);
-		// TODO Auto-generated constructor stub
+	public SelectFirstBuilder(String type_tag) {
+		super(TYPE, DESC);
+	}
+
+	@Override
+	protected SelectionStrategy create_instance(JSONObject data) {
+		return new SelectFirst();
 	}
 
 }
