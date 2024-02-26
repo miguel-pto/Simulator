@@ -9,7 +9,7 @@ public class SelectClosestBuilder extends Builder<SelectionStrategy> {
 	
 	private static final String TYPE = "closest", DESC = "SelectionStrategy: closest";
 
-	public SelectClosestBuilder(String type_tag, String desc) {
+	public SelectClosestBuilder() {
 		super(TYPE, DESC);
 	}
 

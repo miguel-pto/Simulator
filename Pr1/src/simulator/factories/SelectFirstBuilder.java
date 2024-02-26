@@ -9,7 +9,7 @@ public class SelectFirstBuilder extends Builder<SelectionStrategy> {
 	
 	private static final String TYPE = "first", DESC = "SelectionStrategy: first";
 
-	public SelectFirstBuilder(String type_tag) {
+	public SelectFirstBuilder() {
 		super(TYPE, DESC);
 	}
 

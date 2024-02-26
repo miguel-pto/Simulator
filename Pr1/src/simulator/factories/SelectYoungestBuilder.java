@@ -9,7 +9,7 @@ public class SelectYoungestBuilder extends Builder<SelectionStrategy> {
 	
 	private static final String TYPE = "youngest", DESC = "SelectionStrategy: youngest";
 
-	public SelectYoungestBuilder(String type_tag, String desc) {
+	public SelectYoungestBuilder() {
 		super(TYPE, DESC);
 	}
 

@@ -1,6 +1,10 @@
 package simulator.launcher;
 
 import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
+import simulator.factories.*;
+import simulator.model.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import org.apache.commons.cli.CommandLine;
@@ -14,38 +18,41 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import simulator.misc.Utils;
+import simulator.model.SelectionStrategy;
 
 public class Main {
 
 	private enum ExecMode {
 		BATCH("batch", "Batch mode"), GUI("gui", "Graphical User Interface mode");
 
-		private String _tag;
-		private String _desc;
+		private String tag;
+		private String desc;
 
 		private ExecMode(String modeTag, String modeDesc) {
-			_tag = modeTag;
-			_desc = modeDesc;
+			tag = modeTag;
+			desc = modeDesc;
 		}
 
 		public String get_tag() {
-			return _tag;
+			return tag;
 		}
 
 		public String get_desc() {
-			return _desc;
+			return desc;
 		}
 	}
 
 	// default values for some parameters
 	//
-	private final static Double _default_time = 10.0; // in seconds
+	private final static Double default_time = 10.0; // in seconds
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
-	private static Double _time = null;
-	private static String _in_file = null;
-	private static ExecMode _mode = ExecMode.BATCH;
+	private static Double time = null;
+	private static String in_file = null;
+	private static ExecMode mode = ExecMode.BATCH;
+	private static Factory<SelectionStrategy> selection_strategy_factory;
+	private static Factory<Animal> animal_factory;
 
 	private static void parse_args(String[] args) {
 
@@ -92,7 +99,7 @@ public class Main {
 		// steps
 		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
 				.desc("An real number representing the total simulation time in seconds. Default value: "
-						+ _default_time + ".")
+						+ default_time + ".")
 				.build());
 
 		return cmdLineOptions;
@@ -107,23 +114,33 @@ public class Main {
 	}
 
 	private static void parse_in_file_option(CommandLine line) throws ParseException {
-		_in_file = line.getOptionValue("i");
-		if (_mode == ExecMode.BATCH && _in_file == null) {
+		in_file = line.getOptionValue("i");
+		if (mode == ExecMode.BATCH && in_file == null) {
 			throw new ParseException("In batch mode an input configuration file is required");
 		}
 	}
 
 	private static void parse_time_option(CommandLine line) throws ParseException {
-		String t = line.getOptionValue("t", _default_time.toString());
+		String t = line.getOptionValue("t", default_time.toString());
 		try {
-			_time = Double.parseDouble(t);
-			assert (_time >= 0);
+			time = Double.parseDouble(t);
+			assert (time >= 0);
 		} catch (Exception e) {
 			throw new ParseException("Invalid value for time: " + t);
 		}
 	}
 
 	private static void init_factories() {
+		List<Builder<SelectionStrategy>> selection_strategy_builders = new ArrayList<>();
+		selection_strategy_builders.add(new SelectFirstBuilder());
+		selection_strategy_builders.add(new SelectClosestBuilder());
+		selection_strategy_builders.add(new SelectYoungestBuilder());
+		selection_strategy_factory = new	BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
+		List<Builder<Animal>> animal_builders = new ArrayList<>();
+		animal_builders.add(new SheepBuilder(selection_strategy_factory));
+		animal_builders.add(new WolfBuilder(selection_strategy_factory));
+		animal_factory = new BuilderBasedFactory<Animal>(animal_builders);
+
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
@@ -131,7 +148,8 @@ public class Main {
 	}
 
 	private static void start_batch_mode() throws Exception {
-		InputStream is = new FileInputStream(new File(_in_file));
+		InputStream is = new FileInputStream(new File(in_file));
+		
 	}
 
 	private static void start_GUI_mode() throws Exception {
@@ -141,7 +159,7 @@ public class Main {
 	private static void start(String[] args) throws Exception {
 		init_factories();
 		parse_args(args);
-		switch (_mode) {
+		switch (mode) {
 		case BATCH:
 			start_batch_mode();
 			break;
