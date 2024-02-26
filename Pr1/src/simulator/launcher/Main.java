@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import simulator.factories.*;
 import simulator.model.*;
+import simulator.control.Controller;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -51,15 +52,17 @@ public class Main {
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
-	private static Double time = null;
-	private static Double delta_time = null; //Para almacenar los valores de los atributos para usarlos desde otros metodos
+	private static double time;
+	private static double delta_time; // Para almacenar los valores de los atributos para usarlos desde otros
+										// metodos
 	private static String in_file = null;
-	private static String out_file = null; // Tanto delta_time como out_file son añadidos porque hipotetizo que se extrapola al resto de valores, no solo a time y in_time
-	private static Boolean sv = null;
+	private static String out_file = null; // Tanto delta_time como out_file son añadidos porque hipotetizo que se
+											// extrapola al resto de valores, no solo a time y in_time
+	private static boolean sv = false;
 	private static ExecMode mode = ExecMode.BATCH;
 	private static Factory<SelectionStrategy> selection_strategy_factory;
 	private static Factory<Animal> animal_factory;
-	private static Factory<Region> regions_factory;
+	private static Factory<Region> region_factory;
 
 	private static void parse_args(String[] args) {
 
@@ -102,22 +105,24 @@ public class Main {
 
 		// delta time
 		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
-				.desc("A double representing actual time, in seconds, per simulation step. Default value: " + default_delta_time + ".")
+				.desc("A double representing actual time, in seconds, per simulation step. Default value: "
+						+ default_delta_time + ".")
 				.build());
-		
+
 		// input file
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("A configuration file.").build());
-		
+
 		// output file
-		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written.").build());
-		
+		cmdLineOptions.addOption(
+				Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written.").build());
+
 		// simple-viewer
-		cmdLineOptions.addOption(Option.builder("sv").longOpt("simple-viewer").desc("Show the viewer window in console mode.").build());
-		
+		cmdLineOptions.addOption(
+				Option.builder("sv").longOpt("simple-viewer").desc("Show the viewer window in console mode.").build());
+
 		// steps
-		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
-				.desc("A real number representing the total simulation time in seconds. Default value: "
-						+ default_time + ".")
+		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg().desc(
+				"A real number representing the total simulation time in seconds. Default value: " + default_time + ".")
 				.build());
 
 		return cmdLineOptions;
@@ -149,22 +154,22 @@ public class Main {
 	}
 
 	private static void init_factories() {
-		//TODO 
-		// Completar el método init_factories para inicializar las factorías y almacenarlas en los atributos correspondientes.
-		// Añadir regions factory
-		
+		// SELECTION STRATEGIES
 		List<Builder<SelectionStrategy>> selection_strategy_builders = new ArrayList<>();
 		selection_strategy_builders.add(new SelectFirstBuilder());
 		selection_strategy_builders.add(new SelectClosestBuilder());
 		selection_strategy_builders.add(new SelectYoungestBuilder());
-		selection_strategy_factory = new	BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
+		selection_strategy_factory = new BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
+		// ANIMALS
 		List<Builder<Animal>> animal_builders = new ArrayList<>();
 		animal_builders.add(new SheepBuilder(selection_strategy_factory));
 		animal_builders.add(new WolfBuilder(selection_strategy_factory));
 		animal_factory = new BuilderBasedFactory<Animal>(animal_builders);
-		
-		
-
+		// REGIONS
+		List<Builder<Region>> region_builders = new ArrayList<>();
+		region_builders.add(new DefaultRegionBuilder());
+		region_builders.add(new DynamicSupplyRegionBuilder());
+		region_factory = new BuilderBasedFactory<Region>(region_builders);
 	}
 
 	private static JSONObject load_JSON_file(InputStream in) {
@@ -172,33 +177,26 @@ public class Main {
 	}
 
 	private static void start_batch_mode() throws Exception {
-		//TODO
-		//Completar segun campus
-		
-		//Carga el archivo de entrada en un JSONObject
+		// 1
 		InputStream is = new FileInputStream(new File(in_file));
-		JSONObject entrada = new JSONObject();
-		int width, height, rows, cols;
-		JSONArray animals, regions;
-		//TODO 
-		//lee los valores
-		
-		//SON PLACEHOLDERS, HAY QUE QUITARLOS
-		width = height = rows = cols = 1; 
-		
-		entrada.put("width", width);
-		entrada.put("height", height);
-		entrada.put("rows", rows);
-		entrada.put("cols", cols);
-		entrada.put("animals", animals);
-		entrada.put("regions", regions);
-		
-		
-		//Crea el archivo de salida
+		JSONObject data = load_JSON_file(is);
+		is.close();
+		// 2
 		FileOutputStream os = new FileOutputStream(new File(out_file));
-		
-		//Crea una instancia del simulador
-		Simulator sim = new Simulator(rows, cols, width, height, animal_factory, regions_factory);
+		// 3
+		int rows = data.getInt("rows");
+		int cols = data.getInt("cols");
+		int width = data.getInt("width");
+		int height = data.getInt("height");
+		Simulator sim = new Simulator(rows, cols, width, height, animal_factory, region_factory);
+		// 4
+		Controller controller = new Controller(sim);
+		// 5
+		controller.load_data(data);
+		// 6
+		controller.run(time, delta_time, sv, os);
+		// 7
+		os.close();
 	}
 
 	private static void start_GUI_mode() throws Exception {

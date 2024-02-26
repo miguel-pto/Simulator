@@ -10,7 +10,7 @@ import simulator.model.SelectionStrategy;
 import simulator.model.Sheep;
 
 public class SheepBuilder extends Builder<Animal> {
-	
+
 	private static final String TYPE = "sheep", DESC = "Animal: sheep";
 	private Factory<SelectionStrategy> strategy_factory;
 
@@ -18,7 +18,7 @@ public class SheepBuilder extends Builder<Animal> {
 		super(TYPE, DESC);
 		this.strategy_factory = strategy_factory;
 	}
-	
+
 	protected void fill_in_data(JSONObject o) {
 		// TODO Y LO MISMO EN WOLF
 	}

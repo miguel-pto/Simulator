@@ -6,7 +6,7 @@ import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
 
 public class SelectFirstBuilder extends Builder<SelectionStrategy> {
-	
+
 	private static final String TYPE = "first", DESC = "SelectionStrategy: first";
 
 	public SelectFirstBuilder() {

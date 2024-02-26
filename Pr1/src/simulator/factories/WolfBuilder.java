@@ -10,7 +10,7 @@ import simulator.model.SelectionStrategy;
 import simulator.model.Sheep;
 
 public class WolfBuilder extends Builder<Animal> {
-	
+
 	private static final String TYPE = "wolf", DESC = "Animal: wolf";
 	private Factory<SelectionStrategy> strategy_factory;
 
