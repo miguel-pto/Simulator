@@ -21,6 +21,7 @@ public class SheepBuilder extends Builder<Animal> {
 	
 	protected void fill_in_data(JSONObject o) {
 		// TODO Y LO MISMO EN WOLF
+		//Permiteme preguntarte sobre esto Miguel
 	}
 
 	@Override

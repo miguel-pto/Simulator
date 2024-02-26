@@ -3,6 +3,8 @@ package simulator.launcher;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
+
+import simulator.control.Controller;
 import simulator.factories.*;
 import simulator.model.*;
 import java.io.FileInputStream;
@@ -59,7 +61,7 @@ public class Main {
 	private static ExecMode mode = ExecMode.BATCH;
 	private static Factory<SelectionStrategy> selection_strategy_factory;
 	private static Factory<Animal> animal_factory;
-	private static Factory<Region> regions_factory;
+	private static Factory<Region> region_factory;
 
 	private static void parse_args(String[] args) {
 
@@ -72,9 +74,13 @@ public class Main {
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
+			//TODO Comprobar que estos cambios estan bien hechos
 			parse_help_option(line, cmdLineOptions);
 			parse_in_file_option(line);
 			parse_time_option(line);
+			parse_delta_time_option(line);
+			parse_out_file_option(line);
+			parse_simple_viewer_option(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -147,22 +153,56 @@ public class Main {
 			throw new ParseException("Invalid value for time: " + t);
 		}
 	}
+	
+	private static void parse_delta_time_option(CommandLine line) throws ParseException {
+		String dt = line.getOptionValue("dt", default_delta_time.toString());
+		try {
+			delta_time = Double.parseDouble(dt);
+			assert (delta_time >= 0);
+		} catch (Exception e) {
+			throw new ParseException("Invalid value for delta time: " + dt);
+		}
+	}
+	
+	private static void parse_out_file_option(CommandLine line) throws ParseException {
+		out_file = line.getOptionValue("o");
+		if (mode == ExecMode.BATCH && out_file == null) {
+			throw new ParseException("In batch mode an output configuration file is required");
+		}
+	}
+	
+	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
+		String sv_string = line.getOptionValue("sv");
+		try {
+			sv = Boolean.parseBoolean(sv_string);
+			//TODO Comprobar que esto esta bien
+			assert (sv || !sv);
+		} catch (Exception e) {
+			throw new ParseException("Invalid value for simple viewer: " + sv_string);
+		}
+	}
 
 	private static void init_factories() {
 		//TODO 
 		// Completar el método init_factories para inicializar las factorías y almacenarlas en los atributos correspondientes.
-		// Añadir regions factory
+		//No creo que falte nada mas
 		
 		List<Builder<SelectionStrategy>> selection_strategy_builders = new ArrayList<>();
 		selection_strategy_builders.add(new SelectFirstBuilder());
 		selection_strategy_builders.add(new SelectClosestBuilder());
 		selection_strategy_builders.add(new SelectYoungestBuilder());
 		selection_strategy_factory = new	BuilderBasedFactory<SelectionStrategy>(selection_strategy_builders);
+		
 		List<Builder<Animal>> animal_builders = new ArrayList<>();
 		animal_builders.add(new SheepBuilder(selection_strategy_factory));
 		animal_builders.add(new WolfBuilder(selection_strategy_factory));
 		animal_factory = new BuilderBasedFactory<Animal>(animal_builders);
 		
+		List<Builder<Region>> regions_builders = new ArrayList<>();
+		regions_builders.add(new DefaultRegionBuilder());
+		region_factory = new BuilderBasedFactory<Region>(regions_builders);
+		//TODO ¿Estan bien añadidos? Es que hacen falta mas adelante / Se añade tmb el DynamicSupplyRegionBuilder
+		// regions_builders.add(new DefaultSupplyRegionBuilder()); Creo q no porque no tiene sentido y da error :p
 		
 
 	}
@@ -172,9 +212,6 @@ public class Main {
 	}
 
 	private static void start_batch_mode() throws Exception {
-		//TODO
-		//Completar segun campus
-		
 		//Carga el archivo de entrada en un JSONObject
 		InputStream is = new FileInputStream(new File(in_file));
 		JSONObject entrada = new JSONObject();
@@ -183,6 +220,7 @@ public class Main {
 		//TODO 
 		//lee los valores
 		
+		//TODO
 		//SON PLACEHOLDERS, HAY QUE QUITARLOS
 		width = height = rows = cols = 1; 
 		
@@ -197,11 +235,16 @@ public class Main {
 		//Crea el archivo de salida
 		FileOutputStream os = new FileOutputStream(new File(out_file));
 		
-		//Crea una instancia del simulador
-		Simulator sim = new Simulator(rows, cols, width, height, animal_factory, regions_factory);
+		Simulator sim = new Simulator(rows, cols, width, height, animal_factory, regions_factory); //Crea una instancia del simulador
+		Controller controller = new Controller(sim); //Crea una instancia de controller 
+		controller.load_data(entrada); //Llama a load_data pasando el JSONObject entrada
+		controller.run(time, delta_time, sv, os); //Llama a run con los parametros correspondientes
+		os.close(); //Cierra el archivo de salida
+
 	}
 
 	private static void start_GUI_mode() throws Exception {
+		//TODO Descifrar que se supone que hará esto
 		throw new UnsupportedOperationException("GUI mode is not ready yet ...");
 	}
 
