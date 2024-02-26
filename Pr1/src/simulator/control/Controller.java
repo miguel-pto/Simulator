@@ -1,4 +1,4 @@
-package simulator.control;
+	package simulator.control;
 
 import java.io.OutputStream;
 
@@ -51,7 +51,9 @@ public class Controller {
 		JSONObject output = new JSONObject();
 		output.put("in", init_state);
 		output.put("out", final_state);
+		if (sv) {
 		// TODO VISOR
+		}
 	}
 	
 	

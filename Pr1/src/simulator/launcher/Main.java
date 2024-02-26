@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import simulator.factories.*;
 import simulator.model.*;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -14,6 +15,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -45,14 +47,19 @@ public class Main {
 	// default values for some parameters
 	//
 	private final static Double default_time = 10.0; // in seconds
+	private final static Double default_delta_time = 0.03; // in seconds
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
 	private static Double time = null;
+	private static Double delta_time = null; //Para almacenar los valores de los atributos para usarlos desde otros metodos
 	private static String in_file = null;
+	private static String out_file = null; // Tanto delta_time como out_file son añadidos porque hipotetizo que se extrapola al resto de valores, no solo a time y in_time
+	private static Boolean sv = null;
 	private static ExecMode mode = ExecMode.BATCH;
 	private static Factory<SelectionStrategy> selection_strategy_factory;
 	private static Factory<Animal> animal_factory;
+	private static Factory<Region> regions_factory;
 
 	private static void parse_args(String[] args) {
 
@@ -93,12 +100,23 @@ public class Main {
 		// help
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message.").build());
 
+		// delta time
+		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
+				.desc("A double representing actual time, in seconds, per simulation step. Default value: " + default_delta_time + ".")
+				.build());
+		
 		// input file
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("A configuration file.").build());
-
+		
+		// output file
+		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written.").build());
+		
+		// simple-viewer
+		cmdLineOptions.addOption(Option.builder("sv").longOpt("simple-viewer").desc("Show the viewer window in console mode.").build());
+		
 		// steps
 		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
-				.desc("An real number representing the total simulation time in seconds. Default value: "
+				.desc("A real number representing the total simulation time in seconds. Default value: "
 						+ default_time + ".")
 				.build());
 
@@ -131,6 +149,10 @@ public class Main {
 	}
 
 	private static void init_factories() {
+		//TODO 
+		// Completar el método init_factories para inicializar las factorías y almacenarlas en los atributos correspondientes.
+		// Añadir regions factory
+		
 		List<Builder<SelectionStrategy>> selection_strategy_builders = new ArrayList<>();
 		selection_strategy_builders.add(new SelectFirstBuilder());
 		selection_strategy_builders.add(new SelectClosestBuilder());
@@ -140,6 +162,8 @@ public class Main {
 		animal_builders.add(new SheepBuilder(selection_strategy_factory));
 		animal_builders.add(new WolfBuilder(selection_strategy_factory));
 		animal_factory = new BuilderBasedFactory<Animal>(animal_builders);
+		
+		
 
 	}
 
@@ -148,8 +172,33 @@ public class Main {
 	}
 
 	private static void start_batch_mode() throws Exception {
-		InputStream is = new FileInputStream(new File(in_file));
+		//TODO
+		//Completar segun campus
 		
+		//Carga el archivo de entrada en un JSONObject
+		InputStream is = new FileInputStream(new File(in_file));
+		JSONObject entrada = new JSONObject();
+		int width, height, rows, cols;
+		JSONArray animals, regions;
+		//TODO 
+		//lee los valores
+		
+		//SON PLACEHOLDERS, HAY QUE QUITARLOS
+		width = height = rows = cols = 1; 
+		
+		entrada.put("width", width);
+		entrada.put("height", height);
+		entrada.put("rows", rows);
+		entrada.put("cols", cols);
+		entrada.put("animals", animals);
+		entrada.put("regions", regions);
+		
+		
+		//Crea el archivo de salida
+		FileOutputStream os = new FileOutputStream(new File(out_file));
+		
+		//Crea una instancia del simulador
+		Simulator sim = new Simulator(rows, cols, width, height, animal_factory, regions_factory);
 	}
 
 	private static void start_GUI_mode() throws Exception {
