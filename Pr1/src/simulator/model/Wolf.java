@@ -74,8 +74,9 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_normal(double dt) {
 		advance_normal(dt);
-		if (energy < FOOD_THRESHOLD_WOLF)
+		if (energy < FOOD_THRESHOLD_WOLF) {
 			set_state(State.HUNGER);
+		}
 		else if (desire > DESIRE_THRESHOLD_WOLF)
 			set_state(State.MATE);
 	}
