@@ -10,7 +10,7 @@ public class SelectYoungest implements SelectionStrategy {
 
 		if (!as.isEmpty()) {
 			selection = as.get(0);
-			
+
 			for (Animal animal : as) {
 				if (animal != a && animal.age < selection.age)
 					selection = animal;

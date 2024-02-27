@@ -7,10 +7,10 @@ public class SelectClosest implements SelectionStrategy {
 	@Override
 	public Animal select(Animal a, List<Animal> as) {
 		Animal selection = null;
-		
+
 		if (!as.isEmpty()) {
 			selection = as.get(0);
-			
+
 			double min = a.get_position().distanceTo(selection.get_position());
 
 			for (Animal animal : as) {

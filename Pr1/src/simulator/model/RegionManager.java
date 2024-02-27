@@ -21,8 +21,8 @@ public class RegionManager implements AnimalMapView {
 		this.rows = rows;
 		this.width = width;
 		this.height = height;
-		region_width = width / cols + (width % cols != 0 ? 1 : 0 );
-		region_height = height / rows + (height % rows != 0 ? 1 : 0 );
+		region_width = width / cols + (width % cols != 0 ? 1 : 0);
+		region_height = height / rows + (height % rows != 0 ? 1 : 0);
 		regions = new Region[cols][rows];
 		for (int i = 0; i < cols; i++) {
 			for (int j = 0; j < rows; j++)

@@ -72,7 +72,8 @@ public class Sheep extends Animal {
 	protected void update_normal(double dt) {
 		advance_normal(dt);
 		if (danger_source == null)
-			danger_source = danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
+			danger_source = danger_strategy.select(this,
+					region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
 		if (danger_source == null) {
 			if (desire > DESIRE_THRESHOLD_SHEEP) {
 				set_state(State.MATE);
@@ -98,7 +99,8 @@ public class Sheep extends Animal {
 		}
 
 		if (danger_source == null || !is_in_sight_range(danger_source)) {
-			danger_source = danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
+			danger_source = danger_strategy.select(this,
+					region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
 			if (danger_source == null)
 				if (desire > DESIRE_THRESHOLD_SHEEP) {
 					set_state(State.MATE);
@@ -123,7 +125,8 @@ public class Sheep extends Animal {
 				mate();
 			}
 			if (danger_source == null)
-				danger_source = danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
+				danger_source = danger_strategy.select(this,
+						region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
 			if (danger_source != null)
 				set_state(State.DANGER);
 			else if (desire < DESIRE_THRESHOLD_SHEEP)
@@ -133,7 +136,10 @@ public class Sheep extends Animal {
 
 	@Override
 	protected void update_state(double dt) {
-		pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1); // TODO
+		if (is_out_of_bounds()) {
+			pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1); // TODO
+			set_state(State.NORMAL);
+		}
 		if (energy == 0.0 || age > MAX_AGE_SHEEP)
 			set_state(State.DEAD);
 		if (is_alive())

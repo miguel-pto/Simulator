@@ -213,4 +213,9 @@ public abstract class Animal implements Entity, AnimalInfo {
 	public boolean is_alive() {
 		return state != State.DEAD;
 	}
+
+	protected boolean is_out_of_bounds() {
+		return 0 > pos.getX() || pos.getX() >= region_mngr.get_width() || 0 > pos.getY()
+				|| pos.getY() >= region_mngr.get_height();
+	}
 }

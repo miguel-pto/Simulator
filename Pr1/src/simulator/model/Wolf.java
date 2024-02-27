@@ -79,7 +79,8 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_hunger(double dt) {
 		if (hunt_target == null || !hunt_target.is_alive() || !is_in_sight_range(hunt_target))
-			hunt_target = hunting_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));
+			hunt_target = hunting_strategy.select(this,
+					region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));
 		if (hunt_target == null)
 			advance_normal(dt);
 		else {
@@ -133,7 +134,10 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_state(double dt) {
-		pos.adjust(region_mngr.get_width(), region_mngr.get_height());
+		if (is_out_of_bounds()) {
+			pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1); // TODO
+			set_state(State.NORMAL);
+		}
 		if (energy == 0.0 || age > MAX_AGE_WOLF)
 			set_state(State.DEAD);
 		if (state != State.DEAD)
