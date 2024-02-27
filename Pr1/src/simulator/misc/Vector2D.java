@@ -4,29 +4,29 @@ import org.json.JSONArray;
 
 public class Vector2D {
 
-	double _x;
-	double _y;
+	double x;
+	double y;
 
 	// create the zero vector
 	public Vector2D() {
-		_x = _y = 0.0;
+		x = y = 0.0;
 	}
 
 	// copy constructor
 	public Vector2D(Vector2D v) {
-		_x = v._x;
-		_y = v._y;
+		x = v.x;
+		y = v.y;
 	}
 
 	// create a vector from an array
 	public Vector2D(double x, double y) {
-		_x = x;
-		_y = y;
+		this.x = x;
+		this.y = y;
 	}
 
 	// return the inner product of this Vector a and b
 	public double dot(Vector2D that) {
-		return _x * that._x + _y * that._y;
+		return x * that.x + y * that.y;
 	}
 
 	// return the length of the vector
@@ -41,26 +41,26 @@ public class Vector2D {
 
 	// create and return a new object whose value is (this + that)
 	public Vector2D plus(Vector2D that) {
-		return new Vector2D(_x + that._x, _y + that._y);
+		return new Vector2D(x + that.x, y + that.y);
 	}
 
 	// create and return a new object whose value is (this - that)
 	public Vector2D minus(Vector2D that) {
-		return new Vector2D(_x - that._x, _y - that._y);
+		return new Vector2D(x - that.x, y - that.y);
 	}
 
 	// return the corresponding coordinate
 	public double getX() {
-		return _x;
+		return x;
 	}
 
 	public double getY() {
-		return _y;
+		return y;
 	}
 
 	// create and return a new object whose value is (this * factor)
 	public Vector2D scale(double factor) {
-		return new Vector2D(_x * factor, _y * factor);
+		return new Vector2D(x * factor, y * factor);
 	}
 
 	// return the corresponding unit vector
@@ -83,20 +83,20 @@ public class Vector2D {
 
 		// rotation matrix
 //		double matrix[2][2] = { { cosine, -sine }, { sine, cosine } };
-//		r._x = matrix[0][0] * x + matrix[0][1] * y;
-//		r._y = matrix[1][0] * x + matrix[1][1] * y;
+//		r.x = matrix[0][0] * x + matrix[0][1] * y;
+//		r.y = matrix[1][0] * x + matrix[1][1] * y;
 
 		Vector2D r = new Vector2D();
 
-		r._x = cosine * _x + (-sine) * _y;
-		r._y = sine * _x + cosine * _y;
+		r.x = cosine * x + (-sine) * y;
+		r.y = sine * x + cosine * y;
 
 		return r;
 	}
 
 	public double angle(Vector2D v) {
 		double a2 = Math.atan2(v.getX(), v.getY());
-		double a1 = Math.atan2(_x, _y);
+		double a1 = Math.atan2(x, y);
 		double angle = a1 - a2;
 		double K = a1 > a2 ? -2.0 * Math.PI : 2.0 * Math.PI;
 		angle = (Math.abs(K + angle) < Math.abs(angle)) ? K + angle : angle;
@@ -114,8 +114,8 @@ public class Vector2D {
 
 	public JSONArray asJSONArray() {
 		JSONArray a = new JSONArray();
-		a.put(_x);
-		a.put(_y);
+		a.put(x);
+		a.put(y);
 		return a;
 	}
 
@@ -124,9 +124,9 @@ public class Vector2D {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(_x);
+		temp = Double.doubleToLongBits(x);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(_y);
+		temp = Double.doubleToLongBits(y);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -140,26 +140,26 @@ public class Vector2D {
 		if (getClass() != obj.getClass())
 			return false;
 		Vector2D other = (Vector2D) obj;
-		if (Double.doubleToLongBits(_x) != Double.doubleToLongBits(other._x))
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
 			return false;
-		if (Double.doubleToLongBits(_y) != Double.doubleToLongBits(other._y))
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
 			return false;
 		return true;
 	}
 
 	// return a string representation of the vector
 	public String toString() {
-		return "[" + _x + "," + _y + "]";
+		return "[" + x + "," + y + "]";
 	}
 
 	public void adjust(float width, float height) {
-		while (_x >= width)
-			_x = (_x - width);
-		while (_x < 0)
-			_x = (_x + width);
-		while (_y >= height)
-			_y = (_y - height);
-		while (_y < 0)
-			_y = (_y + height);
+		while (x >= width)
+			x = (x - width);
+		while (x < 0)
+			x = (x + width);
+		while (y >= height)
+			y = (y - height);
+		while (y < 0)
+			y = (y + height);
 	}
 }
