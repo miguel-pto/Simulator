@@ -15,7 +15,7 @@ public class Wolf extends Animal {
 	SelectionStrategy hunting_strategy;
 
 	public Wolf(SelectionStrategy mate_strategy, SelectionStrategy hunting_strategy, Vector2D pos) {
-		super("Wolf", Diet.CARNIVORE, 50.0, 60.0, mate_strategy, pos);
+		super("Wolf", Diet.CARNIVORE, INIT_SIGHT_WOLF, INIT_SPEED_WOLF, mate_strategy, pos);
 		this.hunting_strategy = hunting_strategy;
 	}
 
@@ -107,7 +107,7 @@ public class Wolf extends Animal {
 		mate_target.desire = 0;
 		if (baby == null && Utils.rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
 			baby = new Wolf(this, mate_target);
-		energy = Utils.constrain_value_in_range(energy - 10, 0, MAX_ENERGY);
+		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_DESIRE_WOLF, 0, MAX_ENERGY);
 		mate_target = null;
 	}
 

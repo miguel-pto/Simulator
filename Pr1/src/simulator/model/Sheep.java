@@ -98,16 +98,15 @@ public class Sheep extends Animal {
 			advance_boost(dt);
 		}
 
-		if (danger_source == null || !is_in_sight_range(danger_source)) {
+		if (danger_source == null || !is_in_sight_range(danger_source))
 			danger_source = danger_strategy.select(this,
 					region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
-			if (danger_source == null)
-				if (desire > DESIRE_THRESHOLD_SHEEP) {
-					set_state(State.MATE);
-				} else {
-					set_state(State.NORMAL);
-				}
-		}
+		if (danger_source == null)
+			if (desire > DESIRE_THRESHOLD_SHEEP) {
+				set_state(State.MATE);
+			} else {
+				set_state(State.NORMAL);
+			}
 	}
 
 	@Override
