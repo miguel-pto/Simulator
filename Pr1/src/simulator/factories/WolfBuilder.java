@@ -7,7 +7,7 @@ import simulator.misc.Vector2D;
 import simulator.model.Animal;
 import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
-import simulator.model.Sheep;
+import simulator.model.Wolf;
 
 public class WolfBuilder extends Builder<Animal> {
 
@@ -40,7 +40,7 @@ public class WolfBuilder extends Builder<Animal> {
 			pos = new Vector2D(Utils.rand.nextDouble(x.getDouble("0"), x.getDouble("1")),
 					Utils.rand.nextDouble(y.getDouble("0"), y.getDouble("1")));
 		}
-		return new Sheep(mate_strategy, hunt_strategy, pos);
+		return new Wolf(mate_strategy, hunt_strategy, pos);
 	}
 
 }

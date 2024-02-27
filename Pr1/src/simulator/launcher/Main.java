@@ -213,7 +213,7 @@ public class Main {
 		int cols = data.getInt("cols");
 		int width = data.getInt("width");
 		int height = data.getInt("height");
-		Simulator sim = new Simulator(rows, cols, width, height, animal_factory, region_factory);
+		Simulator sim = new Simulator(cols, rows, width, height, animal_factory, region_factory);
 		// 4
 		Controller controller = new Controller(sim);
 		// 5

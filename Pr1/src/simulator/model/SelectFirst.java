@@ -6,7 +6,10 @@ public class SelectFirst implements SelectionStrategy {
 
 	@Override
 	public Animal select(Animal a, List<Animal> as) {
-		return as.get(0);
+		Animal selection = null;
+		
+		if (as.size() > 1) selection = as.get(0) == a ? as.get(1) : as.get(0);
+		
+		return selection;
 	}
-
 }

@@ -134,7 +134,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	@Override
 	public boolean is_pregnant() {
-		return baby == null;
+		return baby != null;
 	}
 
 	protected abstract void update_normal(double dt);

@@ -57,7 +57,7 @@ public class Controller {
 		}
 
 		JSONObject init_state = sim.as_JSON();
-		while (t <= sim.get_time()) {
+		while (t >= sim.get_time()) {
 			sim.advance(dt);
 			if (sv)
 				view.update(to_animals_info(sim.get_animals()), sim.get_time(), dt);

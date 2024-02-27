@@ -21,27 +21,27 @@ public class RegionManager implements AnimalMapView {
 		this.rows = rows;
 		this.width = width;
 		this.height = height;
-		region_width = width / rows;
-		region_height = height / cols;
-		regions = new Region[rows][cols];
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++)
+		region_width = width / cols + (width % cols != 0 ? 1 : 0 );
+		region_height = height / rows + (height % rows != 0 ? 1 : 0 );
+		regions = new Region[cols][rows];
+		for (int i = 0; i < cols; i++) {
+			for (int j = 0; j < rows; j++)
 				regions[i][j] = new DefaultRegion();
 		}
 		animal_region = new HashMap<Animal, Region>();
 	}
 
-	public void set_region(int row, int col, Region r) {
-		for (Animal a : regions[row][col].getAnimals()) {
+	public void set_region(int col, int row, Region r) {
+		for (Animal a : regions[col][row].getAnimals()) {
 			r.add_animal(a);
 		}
-		regions[row][col] = r;
+		regions[col][row] = r;
 	}
 
 	Region find_region(Animal a) {
-		int row = (int) a.get_position().getX() / region_width;
-		int col = (int) a.get_position().getY() / region_height;
-		return regions[row][col];
+		int col = (int) a.get_position().getX() / region_width;
+		int row = (int) a.get_position().getY() / region_height;
+		return regions[col][row];
 	}
 
 	void register_animal(Animal a) {
@@ -70,8 +70,8 @@ public class RegionManager implements AnimalMapView {
 	}
 
 	void update_all_regions(double dt) {
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; i < cols; j++)
+		for (int i = 0; i < cols; i++) {
+			for (int j = 0; j < rows; j++)
 				regions[i][j].update(dt);
 		}
 	}
@@ -111,11 +111,11 @@ public class RegionManager implements AnimalMapView {
 		JSONObject o = new JSONObject();
 		JSONArray regions = new JSONArray();
 
-		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < cols; j++) {
+		for (int i = 0; i < cols; i++)
+			for (int j = 0; j < rows; j++) {
 				JSONObject aux = new JSONObject();
-				aux.put("row", i);
-				aux.put("col", j);
+				aux.put("row", j);
+				aux.put("col", i);
 				aux.put("data", this.regions[i][j].as_JSON());
 				regions.put(aux);
 			}
@@ -132,13 +132,13 @@ public class RegionManager implements AnimalMapView {
 		rightBound = rightBound >= width ? width - 1 : rightBound;
 
 		double leftBound = e.get_position().getX() - r;
-		leftBound = leftBound >= width ? width - 1 : leftBound;
+		leftBound = leftBound < 0 ? 0 : leftBound;
 
 		double upperBound = e.get_position().getY() - r;
-		upperBound = upperBound >= width ? width - 1 : upperBound;
+		upperBound = upperBound < 0 ? 0 : upperBound;
 
 		double lowerBound = e.get_position().getY() + r;
-		lowerBound = lowerBound >= width ? width - 1 : lowerBound;
+		lowerBound = lowerBound >= height ? height - 1 : lowerBound;
 
 		int x0 = (int) (leftBound / region_width);
 		int x1 = (int) (rightBound / region_width);
