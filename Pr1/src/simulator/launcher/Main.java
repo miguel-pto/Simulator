@@ -175,14 +175,7 @@ public class Main {
 	}
 	
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
-		String sv_string = line.getOptionValue("sv");
-		try {
-			sv = Boolean.parseBoolean(sv_string);
-			//TODO Comprobar que esto esta bien
-			assert (sv || !sv);
-		} catch (Exception e) {
-			throw new ParseException("Invalid value for simple viewer: " + sv_string);
-		}
+		if (line.hasOption("sv")) sv = true; // CREO QUE ES ASI
 	}
 
 	private static void init_factories() {

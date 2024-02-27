@@ -3,7 +3,7 @@ package simulator.model;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public abstract class Region implements Entity, FoodSupplier, RegionInfo {
@@ -19,8 +19,15 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 
 	@Override
 	public JSONObject as_JSON() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject o = new JSONObject();
+		JSONArray animals = new JSONArray();
+		
+		for (Animal a : animal_list) {
+			animals.put(a.as_JSON());
+		}
+		
+		o.put("animals", animals);
+		return o;
 	}
 
 	final void add_animal(Animal a) {

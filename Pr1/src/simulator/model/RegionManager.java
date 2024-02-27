@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.HashMap;
-
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class RegionManager implements AnimalMapView {
@@ -108,8 +108,20 @@ public class RegionManager implements AnimalMapView {
 
 	@Override
 	public JSONObject as_JSON() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject o = new JSONObject();
+		JSONArray regiones = new JSONArray();
+		
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++) {
+				JSONObject aux = new JSONObject();
+				aux.put("row", i);
+				aux.put("col", j);
+				aux.put("data", regions[i][j].as_JSON());
+				regiones.put(aux);
+			}
+		
+		o.put("regiones", regiones);
+		return o;
 	}
 
 	@Override

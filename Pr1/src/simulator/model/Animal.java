@@ -1,7 +1,7 @@
 package simulator.model;
 
 import org.json.JSONObject;
-
+import org.json.JSONArray;
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
@@ -74,8 +74,20 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	@Override
 	public JSONObject as_JSON() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject o = new JSONObject();
+		
+		JSONArray pos = new JSONArray();
+		pos.put(this.pos.getX());
+		pos.put(this.pos.getY());
+		o.put("pos", pos);
+		
+		o.put("gcode", genetic_code);
+		
+		o.put("diet", diet.toString()); // TODO COMPROBAR QUE SACA HERVIBORE O CARNIVORE
+		
+		o.put("state", state.toString());
+		
+		return o;
 	}
 
 	@Override
