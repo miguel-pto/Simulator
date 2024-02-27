@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import java.io.PrintStream;
 import simulator.model.AnimalInfo;
 import simulator.model.MapInfo;
 import simulator.model.Simulator;
@@ -66,6 +66,8 @@ public class Controller {
 		JSONObject output = new JSONObject();
 		output.put("in", init_state);
 		output.put("out", final_state);
+		PrintStream p = new PrintStream(out);
+		p.println(output);
 		
 		if (sv) view.close();
 	}

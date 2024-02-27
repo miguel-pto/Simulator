@@ -26,7 +26,7 @@ public class Wolf extends Animal {
 
 	protected void advance_normal(double dt) {
 		if (pos.distanceTo(dest) < COLLISION_RANGE)
-			dest = new Vector2D(Utils._rand.nextDouble(800), Utils._rand.nextDouble(600));
+			dest = new Vector2D(Utils.rand.nextDouble(800), Utils.rand.nextDouble(600));
 		move(speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
 		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_WOLF * dt, 0, MAX_ENERGY);
@@ -105,7 +105,7 @@ public class Wolf extends Animal {
 	protected void mate() {
 		desire = 0;
 		mate_target.desire = 0;
-		if (baby == null && Utils._rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
+		if (baby == null && Utils.rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
 			baby = new Wolf(this, mate_target);
 		energy = Utils.constrain_value_in_range(energy - 10, 0, MAX_ENERGY);
 		mate_target = null;

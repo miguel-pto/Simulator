@@ -30,8 +30,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		state = State.NORMAL;
 		energy = 100.0;
 		desire = 0.0;
-		double x = Utils._rand.nextDouble(800);
-		double y = Utils._rand.nextDouble(600);
+		double x = Utils.rand.nextDouble(800);
+		double y = Utils.rand.nextDouble(600);
 		dest = new Vector2D(x, y);
 	}
 
@@ -41,7 +41,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		genetic_code = p1.get_genetic_code();
 		diet = p1.get_diet();
 		energy = (p1.get_energy() + p2.get_energy()) / 2;
-		pos = p1.get_position().plus(Vector2D.get_random_vector(-1, 1).scale(60.0 * (Utils._rand.nextGaussian() + 1)));
+		pos = p1.get_position().plus(Vector2D.get_random_vector(-1, 1).scale(60.0 * (Utils.rand.nextGaussian() + 1)));
 		sight_range = Utils.get_randomized_parameter((p1.get_sight_range() + p2.get_sight_range()) / 2, 0.2);
 		speed = Utils.get_randomized_parameter((p1.get_speed() + p2.get_speed()) / 2, 0.2);
 		this.mate_strategy = p2.mate_strategy;
@@ -50,13 +50,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 	void init(AnimalMapView reg_mngr) {
 		region_mngr = reg_mngr;
 		if (pos == null) {
-			double x = Utils._rand.nextDouble(reg_mngr.get_width() - 1);
-			double y = Utils._rand.nextDouble(reg_mngr.get_height() - 1);
+			double x = Utils.rand.nextDouble(reg_mngr.get_width() - 1);
+			double y = Utils.rand.nextDouble(reg_mngr.get_height() - 1);
 			pos = new Vector2D(x, y);
 		} else
 			pos.adjust(reg_mngr.get_width() - 1, reg_mngr.get_height() - 1);
-		double x = Utils._rand.nextDouble(reg_mngr.get_width() - 1);
-		double y = Utils._rand.nextDouble(reg_mngr.get_height() - 1);
+		double x = Utils.rand.nextDouble(reg_mngr.get_width() - 1);
+		double y = Utils.rand.nextDouble(reg_mngr.get_height() - 1);
 		dest = new Vector2D(x, y);
 	}
 

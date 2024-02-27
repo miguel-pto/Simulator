@@ -37,8 +37,8 @@ public class WolfBuilder extends Builder<Animal> {
 			JSONObject o = data.getJSONObject("pos");
 			JSONObject x = o.getJSONObject("x_range");
 			JSONObject y = o.getJSONObject("y_range");
-			pos = new Vector2D(Utils._rand.nextDouble(x.getDouble("0"), x.getDouble("1")),
-					Utils._rand.nextDouble(y.getDouble("0"), y.getDouble("1")));
+			pos = new Vector2D(Utils.rand.nextDouble(x.getDouble("0"), x.getDouble("1")),
+					Utils.rand.nextDouble(y.getDouble("0"), y.getDouble("1")));
 		}
 		return new Sheep(mate_strategy, hunt_strategy, pos);
 	}

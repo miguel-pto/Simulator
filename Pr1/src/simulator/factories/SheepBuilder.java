@@ -42,8 +42,8 @@ public class SheepBuilder extends Builder<Animal> {
 			JSONObject o = data.getJSONObject("pos");
 			JSONArray x = o.getJSONArray("x_range");
 			JSONArray y = o.getJSONArray("y_range");
-			pos = new Vector2D(Utils._rand.nextDouble(x.getDouble(0), x.getDouble(1)),
-					Utils._rand.nextDouble(y.getDouble(0), y.getDouble(1)));
+			pos = new Vector2D(Utils.rand.nextDouble(x.getDouble(0), x.getDouble(1)),
+					Utils.rand.nextDouble(y.getDouble(0), y.getDouble(1)));
 		}
 		return new Sheep(mate_strategy, danger_strategy, pos);
 	}

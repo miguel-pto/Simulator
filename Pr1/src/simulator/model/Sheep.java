@@ -25,7 +25,7 @@ public class Sheep extends Animal {
 
 	protected void advance_normal(double dt) {
 		if (pos.distanceTo(dest) < COLLISION_RANGE)
-			dest = new Vector2D(Utils._rand.nextDouble(800), Utils._rand.nextDouble(600));
+			dest = new Vector2D(Utils.rand.nextDouble(800), Utils.rand.nextDouble(600));
 		move(speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
 		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_SHEEP * dt, 0, MAX_ENERGY);
@@ -44,7 +44,7 @@ public class Sheep extends Animal {
 	protected void mate() {
 		desire = 0.0;
 		mate_target.desire = 0.0;
-		if (baby == null && Utils._rand.nextDouble() < PREGNANT_PROBABILITY_SHEEP)
+		if (baby == null && Utils.rand.nextDouble() < PREGNANT_PROBABILITY_SHEEP)
 			baby = new Sheep(this, mate_target);
 		mate_target = null;
 	}

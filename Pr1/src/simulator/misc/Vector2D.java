@@ -105,8 +105,8 @@ public class Vector2D {
 
 	public static Vector2D get_random_vector(double min, double max) {
 		assert (max >= min);
-		double x = min + Utils._rand.nextDouble(max - min);
-		double y = min + Utils._rand.nextDouble(max - min);
+		double x = min + Utils.rand.nextDouble(max - min);
+		double y = min + Utils.rand.nextDouble(max - min);
 		assert (x >= min && x <= max);
 		assert (y >= min && y <= max);
 		return new Vector2D(x, y);

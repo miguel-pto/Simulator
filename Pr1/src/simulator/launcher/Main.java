@@ -242,7 +242,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Utils._rand.setSeed(2147483647l);
+		Utils.rand.setSeed(2147483647l);
 		try {
 			start(args);
 		} catch (Exception e) {

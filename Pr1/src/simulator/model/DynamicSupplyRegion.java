@@ -13,7 +13,7 @@ public class DynamicSupplyRegion extends Region {
 
 	@Override
 	public void update(double dt) {
-		if (Utils._rand.nextDouble() < 0.5)
+		if (Utils.rand.nextDouble() < 0.5)
 			food += dt * factor;
 	}
 
