@@ -33,14 +33,10 @@ public class Wolf extends Animal {
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
 	}
 
-	protected void hunt(double dt) {
-		dest = hunt_target.get_position();
-		advance_boost(dt);
-		if (pos.distanceTo(hunt_target.get_position()) < COLLISION_RANGE) {
-			hunt_target.set_state(State.DEAD);
-			hunt_target = null;
-			energy += Utils.constrain_value_in_range(energy + FOOD_EAT_VALUE_WOLF, 0, MAX_ENERGY);
-		}
+	protected void hunt() {
+		hunt_target.set_state(State.DEAD);
+		hunt_target = null;
+		energy += Utils.constrain_value_in_range(energy + FOOD_EAT_VALUE_WOLF, 0, MAX_ENERGY);
 	}
 
 	protected void advance_boost(double dt) {
@@ -76,8 +72,7 @@ public class Wolf extends Animal {
 		advance_normal(dt);
 		if (energy < FOOD_THRESHOLD_WOLF) {
 			set_state(State.HUNGER);
-		}
-		else if (desire > DESIRE_THRESHOLD_WOLF)
+		} else if (desire > DESIRE_THRESHOLD_WOLF)
 			set_state(State.MATE);
 	}
 
@@ -85,11 +80,14 @@ public class Wolf extends Animal {
 	protected void update_hunger(double dt) {
 		if (hunt_target == null || hunt_target.get_state() == State.DEAD)
 			hunting_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));
-		;
 		if (hunt_target == null)
 			advance_normal(dt);
 		else {
-			hunt(dt);
+			dest = hunt_target.get_position();
+			advance_boost(dt);
+			if (pos.distanceTo(hunt_target.get_position()) < COLLISION_RANGE) {
+				hunt();
+			}
 		}
 		if (energy > FOOD_THRESHOLD_WOLF) {
 			if (desire < DESIRE_THRESHOLD_WOLF)
@@ -116,22 +114,21 @@ public class Wolf extends Animal {
 	protected void update_mate(double dt) {
 		if (mate_target != null && (!mate_target.is_alive() || !is_in_sight_range(mate_target)))
 			mate_target = null;
-		if (mate_target == null) {
+		if (mate_target == null)
 			mate_target = find_mate();
-			if (mate_target == null)
-				advance_normal(dt);
-			else {
-				dest = mate_target.get_position();
-				advance_boost(dt);
-				if (pos.distanceTo(mate_target.get_position()) < 8) {
-					mate();
-				}
-				if (energy < FOOD_THRESHOLD_WOLF)
-					set_state(State.HUNGER);
-				else if (desire < DESIRE_THRESHOLD_WOLF)
-					set_state(State.MATE);
+		if (mate_target == null)
+			advance_normal(dt);
+		else {
+			dest = mate_target.get_position();
+			advance_boost(dt);
+			if (pos.distanceTo(mate_target.get_position()) < 8) {
+				mate();
 			}
 		}
+		if (energy < FOOD_THRESHOLD_WOLF)
+			set_state(State.HUNGER);
+		else if (desire < DESIRE_THRESHOLD_WOLF)
+			set_state(State.MATE);
 	}
 
 	@Override

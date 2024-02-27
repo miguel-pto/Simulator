@@ -155,13 +155,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 			update_normal(dt);
 			break;
 		case HUNGER:
-			update_normal(dt);
+			update_hunger(dt);
 			break;
 		case DANGER:
-			update_normal(dt);
+			update_danger(dt);
 			break;
 		case MATE:
-			update_normal(dt);
+			update_mate(dt);
 			break;
 		default:
 			break;

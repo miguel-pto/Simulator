@@ -73,7 +73,8 @@ public class Simulator implements JSONable {
 	}
 
 	private void deliver_babies() {
-		for (Animal a : animal_list) {
+		for (int i = 0; i < animal_list.size(); i++) {
+			Animal a = animal_list.get(i);
 			if (a.is_pregnant()) {
 				Animal baby = a.deliver_baby();
 				add_animal(baby);

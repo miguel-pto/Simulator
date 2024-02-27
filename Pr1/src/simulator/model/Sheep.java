@@ -33,8 +33,7 @@ public class Sheep extends Animal {
 	}
 
 	protected void advance_boost(double dt) {
-		pos.plus(pos.minus(danger_source.get_position()).direction());
-		move(2.0 * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
+		move(BOOST_FACTOR_SHEEP * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
 		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_RATE_SHEEP * dt * FOOD_DROP_BOOST_FACTOR_SHEEP, 0,
 				MAX_ENERGY);
@@ -89,11 +88,12 @@ public class Sheep extends Animal {
 
 	@Override
 	protected void update_danger(double dt) {
-		if (danger_source != null && danger_source.is_alive())
+		if (danger_source != null && !danger_source.is_alive())
 			danger_source = null;
 		if (danger_source == null) {
 			advance_normal(dt);
 		} else {
+			dest = pos.plus(pos.minus(danger_source.get_position()).direction());
 			advance_boost(dt);
 		}
 
@@ -112,23 +112,22 @@ public class Sheep extends Animal {
 	protected void update_mate(double dt) {
 		if (mate_target != null && (!mate_target.is_alive() || !is_in_sight_range(mate_target)))
 			mate_target = null;
-		if (mate_target == null) {
+		if (mate_target == null)
 			mate_target = find_mate();
-			if (mate_target == null) {
-				advance_normal(dt);
-				if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
-					mate();
-				}
-				if (danger_source == null)
-					danger_strategy.select(this,
-							region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
-				;
-				if (danger_source != null) {
-					set_state(State.DANGER);
-				} else if (desire < DESIRE_THRESHOLD_SHEEP) {
-					set_state(State.NORMAL);
-				}
+		if (mate_target == null)
+			advance_normal(dt);
+		else {
+			dest = mate_target.get_position();
+			advance_boost(dt);
+			if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
+				mate();
 			}
+			if (danger_source == null)
+				danger_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.CARNIVORE));
+			if (danger_source != null)
+				set_state(State.DANGER);
+			else if (desire < DESIRE_THRESHOLD_SHEEP)
+				set_state(State.NORMAL);
 		}
 	}
 
