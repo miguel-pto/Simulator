@@ -1,11 +1,16 @@
 package simulator.control;
 
 import java.io.OutputStream;
-
+import java.util.List;
+import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.model.AnimalInfo;
+import simulator.model.MapInfo;
 import simulator.model.Simulator;
+import simulator.view.SimpleObjectViewer;
+import simulator.view.SimpleObjectViewer.ObjInfo;
 
 public class Controller {
 
@@ -44,17 +49,35 @@ public class Controller {
 	}
 
 	public void run(double t, double dt, boolean sv, OutputStream out) {
+		SimpleObjectViewer view = null;
+		if (sv) {
+			MapInfo m = sim.get_map_info();
+			view = new SimpleObjectViewer("[ECOSYSTEM]", m.get_width(), m.get_height(), m.get_cols(), m.get_rows());
+			view.update(to_animals_info(sim.get_animals()), sim.get_time(), dt);
+		}
+
 		JSONObject init_state = sim.as_JSON();
 		while (t <= sim.get_time()) {
 			sim.advance(dt);
+			if (sv) view.update(to_animals_info(sim.get_animals()), sim.get_time(), dt);
 		}
+		
 		JSONObject final_state = sim.as_JSON();
 		JSONObject output = new JSONObject();
 		output.put("in", init_state);
 		output.put("out", final_state);
-		if (sv) {
-			// TODO VISOR
-		}
+		
+		if (sv) view.close();
+	}
+	
+	private int size_age(AnimalInfo a) {
+		return (int)Math.round(a.get_age()) + 2;
 	}
 
+	private List<ObjInfo> to_animals_info(List<? extends AnimalInfo> animals) {
+		List<ObjInfo> ol = new ArrayList<>(animals.size());
+		for (AnimalInfo a : animals)
+			ol.add(new ObjInfo(a.get_genetic_code(), (int) a.get_position().getX(), (int) a.get_position().getY(), size_age(a)));
+		return ol;
+	}
 }
