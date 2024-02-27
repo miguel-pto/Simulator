@@ -134,10 +134,10 @@ public class Sheep extends Animal {
 
 	@Override
 	protected void update_state(double dt) {
-		// TODO CORREGIR SI SE SALE DEL MAPA
+		pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1); // TODO
 		if (energy == 0.0 || age > MAX_AGE_SHEEP)
 			set_state(State.DEAD);
-		if (state != State.DEAD) // TODO MIRAR
+		if (is_alive())
 			energy = Utils.constrain_value_in_range(energy + region_mngr.get_food(this, dt), 0, MAX_ENERGY);
 	}
 

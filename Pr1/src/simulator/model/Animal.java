@@ -8,7 +8,7 @@ import simulator.misc.Vector2D;
 public abstract class Animal implements Entity, AnimalInfo {
 
 	public final static double INIT_ENERGY = 100.0, MUTATION_TOLERANCE = 0.2, NEARBY_FACTOR = 60.0, COLLISION_RANGE = 8,
-			HUNGER_DECAY_EXP_FACTOR = 0.007, MAX_ENERGY = 100, MAX_DESIRE = 100;
+			HUNGER_DECAY_EXP_FACTOR = 0.007, MAX_ENERGY = 100, MAX_DESIRE = 100, INIT_SPEED_PARAMETER = 0.1;
 
 	protected String genetic_code;
 	protected Diet diet;
@@ -24,15 +24,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this.genetic_code = genetic_code;
 		this.diet = diet;
 		this.sight_range = sight_range;
-		speed = Utils.get_randomized_parameter(init_speed, 0.1);
+		speed = Utils.get_randomized_parameter(init_speed, INIT_SPEED_PARAMETER);
 		this.mate_strategy = mate_strategy;
 		this.pos = pos;
 		state = State.NORMAL;
 		energy = 100.0;
 		desire = 0.0;
-		double x = Utils.rand.nextDouble(800);
-		double y = Utils.rand.nextDouble(600);
-		dest = new Vector2D(x, y);
 	}
 
 	protected Animal(Animal p1, Animal p2) {
@@ -60,12 +57,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 		dest = new Vector2D(x, y);
 	}
 
-	Animal deliver_baby() { // TODO GITANADA
-		try {
-			return baby;
-		} finally {
-			baby = null;
-		}
+	Animal deliver_baby() {
+		Animal aux = baby;
+
+		baby = null;
+
+		return aux;
 	}
 
 	protected void move(double speed) {
@@ -75,18 +72,18 @@ public abstract class Animal implements Entity, AnimalInfo {
 	@Override
 	public JSONObject as_JSON() {
 		JSONObject o = new JSONObject();
-		
+
 		JSONArray pos = new JSONArray();
 		pos.put(this.pos.getX());
 		pos.put(this.pos.getY());
 		o.put("pos", pos);
-		
+
 		o.put("gcode", genetic_code);
-		
+
 		o.put("diet", diet.toString()); // TODO COMPROBAR QUE SACA HERVIBORE O CARNIVORE
-		
+
 		o.put("state", state.toString());
-		
+
 		return o;
 	}
 

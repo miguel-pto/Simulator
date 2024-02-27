@@ -59,27 +59,30 @@ public class Controller {
 		JSONObject init_state = sim.as_JSON();
 		while (t <= sim.get_time()) {
 			sim.advance(dt);
-			if (sv) view.update(to_animals_info(sim.get_animals()), sim.get_time(), dt);
+			if (sv)
+				view.update(to_animals_info(sim.get_animals()), sim.get_time(), dt);
 		}
-		
+
 		JSONObject final_state = sim.as_JSON();
 		JSONObject output = new JSONObject();
 		output.put("in", init_state);
 		output.put("out", final_state);
 		PrintStream p = new PrintStream(out);
 		p.println(output);
-		
-		if (sv) view.close();
+
+		if (sv)
+			view.close();
 	}
-	
+
 	private int size_age(AnimalInfo a) {
-		return (int)Math.round(a.get_age()) + 2;
+		return (int) Math.round(a.get_age()) + 2;
 	}
 
 	private List<ObjInfo> to_animals_info(List<? extends AnimalInfo> animals) {
 		List<ObjInfo> ol = new ArrayList<>(animals.size());
 		for (AnimalInfo a : animals)
-			ol.add(new ObjInfo(a.get_genetic_code(), (int) a.get_position().getX(), (int) a.get_position().getY(), size_age(a)));
+			ol.add(new ObjInfo(a.get_genetic_code(), (int) a.get_position().getX(), (int) a.get_position().getY(),
+					size_age(a)));
 		return ol;
 	}
 }

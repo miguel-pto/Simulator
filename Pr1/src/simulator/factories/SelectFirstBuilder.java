@@ -7,7 +7,7 @@ import simulator.model.SelectionStrategy;
 
 public class SelectFirstBuilder extends Builder<SelectionStrategy> {
 
-	private static final String TYPE = "first", DESC = "SelectionStrategy: first";
+	private static final String TYPE = "first", DESC = "SelectFirst builder";
 
 	public SelectFirstBuilder() {
 		super(TYPE, DESC);

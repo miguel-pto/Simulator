@@ -21,11 +21,11 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	public JSONObject as_JSON() {
 		JSONObject o = new JSONObject();
 		JSONArray animals = new JSONArray();
-		
+
 		for (Animal a : animal_list) {
 			animals.put(a.as_JSON());
 		}
-		
+
 		o.put("animals", animals);
 		return o;
 	}

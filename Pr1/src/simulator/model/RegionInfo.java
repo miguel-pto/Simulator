@@ -1,5 +1,5 @@
 package simulator.model;
 
 public interface RegionInfo extends JSONable {
-	// Juan
+	// Juan masón
 }

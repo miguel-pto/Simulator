@@ -7,7 +7,7 @@ import simulator.model.SelectionStrategy;
 
 public class SelectClosestBuilder extends Builder<SelectionStrategy> {
 
-	private static final String TYPE = "closest", DESC = "SelectionStrategy: closest";
+	private static final String TYPE = "closest", DESC = "SelectClosest builder";
 
 	public SelectClosestBuilder() {
 		super(TYPE, DESC);

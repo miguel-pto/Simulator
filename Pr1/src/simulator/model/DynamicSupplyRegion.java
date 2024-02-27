@@ -5,6 +5,7 @@ import simulator.misc.Utils;
 public class DynamicSupplyRegion extends Region {
 
 	private double food, factor;
+	public static final double INIT_FOOD = 1000.0, INIT_FACTOR = 2.0;
 
 	public DynamicSupplyRegion(double init_food, double growth_factor) {
 		food = init_food;
@@ -20,7 +21,7 @@ public class DynamicSupplyRegion extends Region {
 	@Override
 	public double get_food(Animal a, double dt) {
 		if (a.diet == Diet.HERVIBORE) {
-			int n = 0; // TODO NUMERO DE ANIMALES HERVIBOROS EN LA REGION
+			long n = this.getAnimals().stream().filter((e) -> e.get_diet() == Diet.HERVIBORE).count();
 			double eaten = Math.min(food, FOOD_MULTIPLIER_PARAMETER
 					* Math.exp(-Math.max(0, n - FOOD_MAX_PARAMETER) * FOOD_MAX_MULTIPLIER_PARAMETER) * dt);
 			food -= eaten;

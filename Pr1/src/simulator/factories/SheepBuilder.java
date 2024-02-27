@@ -11,7 +11,7 @@ import simulator.model.Sheep;
 
 public class SheepBuilder extends Builder<Animal> {
 
-	private static final String TYPE = "sheep", DESC = "Animal: sheep";
+	private static final String TYPE = "sheep", DESC = "Sheep builder";
 	private Factory<SelectionStrategy> strategy_factory;
 
 	public SheepBuilder(Factory<SelectionStrategy> strategy_factory) {
@@ -21,7 +21,9 @@ public class SheepBuilder extends Builder<Animal> {
 
 	protected void fill_in_data(JSONObject o) {
 		// TODO Y LO MISMO EN WOLF
-		//Permiteme preguntarte sobre esto Miguel
+		// Permiteme preguntarte sobre esto Miguel
+		// Esto es para mostrar al usuario. Todavía no tengo muy claro que habrá que
+		// hacer pero por ahora me parece opcional. Ya lo pondremos bonito luego
 	}
 
 	@Override

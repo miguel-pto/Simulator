@@ -11,7 +11,7 @@ import simulator.model.Sheep;
 
 public class WolfBuilder extends Builder<Animal> {
 
-	private static final String TYPE = "wolf", DESC = "Animal: wolf";
+	private static final String TYPE = "wolf", DESC = "Wolf builder";
 	private Factory<SelectionStrategy> strategy_factory;
 
 	public WolfBuilder(Factory<SelectionStrategy> strategy_factory) {

@@ -3,8 +3,8 @@ package simulator.factories;
 import org.json.JSONObject;
 
 public abstract class Builder<T> {
-	private String type_tag; // Coincide con el campo type de la estructura JSON
-	private String desc; // Dice los tipos de objetos que puede crear este builder
+	private String type_tag; // COINCIDE CON EL CAMPO TYPE DE LA ESTRUCTURA JSON
+	private String desc; // DICE LOS TIPOS DE OBJETOS QUE PUEDE CREAR EL BUILDER
 
 	public Builder(String type_tag, String desc) {
 		if (type_tag == null || desc == null || type_tag.isBlank() || desc.isBlank())
@@ -30,7 +30,7 @@ public abstract class Builder<T> {
 	}
 
 	protected void fill_in_data(JSONObject o) {
-	} // Se sobreescribe en las subclases para rellenar los datos necesarios
+	} // SE SOBREESCRIBE EN LAS SUBCLASES PARA RELLENAR LOS DATOS NECESARIOS
 
 	public String toString() {
 		return desc;

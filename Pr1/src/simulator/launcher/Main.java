@@ -16,7 +16,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -74,7 +73,7 @@ public class Main {
 		//
 		CommandLineParser parser = new DefaultParser();
 		try {
-			//TODO Comprobar que estos cambios estan bien hechos
+			// TODO Comprobar que estos cambios estan bien hechos
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parse_help_option(line, cmdLineOptions);
 			parse_in_file_option(line);
@@ -156,7 +155,7 @@ public class Main {
 			throw new ParseException("Invalid value for time: " + t);
 		}
 	}
-	
+
 	private static void parse_delta_time_option(CommandLine line) throws ParseException {
 		String dt = line.getOptionValue("dt", default_delta_time.toString());
 		try {
@@ -166,16 +165,17 @@ public class Main {
 			throw new ParseException("Invalid value for delta time: " + dt);
 		}
 	}
-	
+
 	private static void parse_out_file_option(CommandLine line) throws ParseException {
 		out_file = line.getOptionValue("o");
 		if (mode == ExecMode.BATCH && out_file == null) {
 			throw new ParseException("In batch mode an output configuration file is required");
 		}
 	}
-	
+
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
-		if (line.hasOption("sv")) sv = true; // CREO QUE ES ASI
+		if (line.hasOption("sv"))
+			sv = true; // CREO QUE ES ASI
 	}
 
 	private static void init_factories() {

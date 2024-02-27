@@ -6,7 +6,7 @@ import simulator.model.DynamicSupplyRegion;
 
 public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
-	private static final String TYPE = "dynamic", DESC = "Region: dynamic";
+	private static final String TYPE = "dynamic", DESC = "DynamicSupplyRegion builder";
 
 	public DynamicSupplyRegionBuilder() {
 		super(TYPE, DESC);
@@ -14,7 +14,7 @@ public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
 	@Override
 	protected Region create_instance(JSONObject data) {
-		double factor = 2.0, food = 1000.0;
+		double factor = DynamicSupplyRegion.INIT_FACTOR, food = DynamicSupplyRegion.INIT_FOOD;
 
 		if (data.has("factor"))
 			factor = data.getDouble("factor");

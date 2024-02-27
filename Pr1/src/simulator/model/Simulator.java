@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import org.json.JSONObject;
-import simulator.model.*;
-
 import simulator.factories.Factory;
 
 public class Simulator implements JSONable {

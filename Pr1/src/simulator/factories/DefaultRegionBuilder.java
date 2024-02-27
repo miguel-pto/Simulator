@@ -7,7 +7,7 @@ import simulator.model.Region;
 
 public class DefaultRegionBuilder extends Builder<Region> {
 
-	private static final String TYPE = "default", DESC = "Region: default";
+	private static final String TYPE = "default", DESC = "DefaultRegion builder";
 
 	public DefaultRegionBuilder() {
 		super(TYPE, DESC);

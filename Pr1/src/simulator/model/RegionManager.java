@@ -110,7 +110,7 @@ public class RegionManager implements AnimalMapView {
 	public JSONObject as_JSON() {
 		JSONObject o = new JSONObject();
 		JSONArray regions = new JSONArray();
-		
+
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < cols; j++) {
 				JSONObject aux = new JSONObject();
@@ -119,7 +119,7 @@ public class RegionManager implements AnimalMapView {
 				aux.put("data", this.regions[i][j].as_JSON());
 				regions.put(aux);
 			}
-		
+
 		o.put("regiones", regions);
 		return o;
 	}
