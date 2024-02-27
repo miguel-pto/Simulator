@@ -78,8 +78,8 @@ public class Wolf extends Animal {
 
 	@Override
 	protected void update_hunger(double dt) {
-		if (hunt_target == null || hunt_target.get_state() == State.DEAD)
-			hunting_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));
+		if (hunt_target == null || !hunt_target.is_alive() || !is_in_sight_range(hunt_target))
+			hunt_target = hunting_strategy.select(this, region_mngr.get_animals_in_range(this, (e) -> e.diet == Diet.HERVIBORE));
 		if (hunt_target == null)
 			advance_normal(dt);
 		else {

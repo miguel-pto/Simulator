@@ -8,8 +8,8 @@ public class SelectYoungest implements SelectionStrategy {
 	public Animal select(Animal a, List<Animal> as) {
 		Animal selection = null;
 
-		if (as.size() > 1) {
-			selection = as.get(0) == a ? as.get(1) : as.get(0);
+		if (!as.isEmpty()) {
+			selection = as.get(0);
 			
 			for (Animal animal : as) {
 				if (animal != a && animal.age < selection.age)
