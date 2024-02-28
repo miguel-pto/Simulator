@@ -34,7 +34,8 @@ public class Controller {
 				JSONObject o = region.getJSONObject("spec");
 				for (int r = rf; r <= rt; r++)
 					for (int c = cf; c <= ct; c++)
-						sim.set_region(r, c, o);
+						//sim.set_region(r, c, o);
+						sim.set_region(c, r, o);
 			}
 		}
 
@@ -68,7 +69,7 @@ public class Controller {
 		output.put("in", init_state);
 		output.put("out", final_state);
 		PrintStream p = new PrintStream(out);
-		p.println(output);
+		p.println(output.toString(2));
 
 		if (sv)
 			view.close();

@@ -80,7 +80,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 		o.put("gcode", genetic_code);
 
-		o.put("diet", diet.toString()); // TODO COMPROBAR QUE SACA HERVIBORE O CARNIVORE
+		o.put("diet", diet.toString());
 
 		o.put("state", state.toString());
 
@@ -184,6 +184,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected boolean is_in_sight_range(Animal a) {
 		return pos.distanceTo(a.get_position()) <= sight_range;
 	}
+
 
 	protected Animal find_mate() {
 		return mate_strategy.select(this,

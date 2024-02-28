@@ -73,7 +73,7 @@ public class Main {
 		//
 		CommandLineParser parser = new DefaultParser();
 		try {
-			// TODO Comprobar que estos cambios estan bien hechos
+			
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parse_help_option(line, cmdLineOptions);
 			parse_in_file_option(line);
