@@ -1,7 +1,7 @@
 package simulator.factories;
 
 import org.json.JSONObject;
-
+import org.json.JSONArray;
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 import simulator.model.Animal;
@@ -35,10 +35,10 @@ public class WolfBuilder extends Builder<Animal> {
 		}
 		if (data.has("pos")) {
 			JSONObject o = data.getJSONObject("pos");
-			JSONObject x = o.getJSONObject("x_range");
-			JSONObject y = o.getJSONObject("y_range");
-			pos = new Vector2D(Utils.rand.nextDouble(x.getDouble("0"), x.getDouble("1")),
-					Utils.rand.nextDouble(y.getDouble("0"), y.getDouble("1")));
+			JSONArray x = o.getJSONArray("x_range");
+			JSONArray y = o.getJSONArray("y_range");
+			pos = new Vector2D(Utils.rand.nextDouble(x.getDouble(0), x.getDouble(1)),
+					Utils.rand.nextDouble(y.getDouble(0), y.getDouble(1)));
 		}
 		return new Wolf(mate_strategy, hunt_strategy, pos);
 	}
