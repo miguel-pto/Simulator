@@ -105,7 +105,7 @@ public class Wolf extends Animal {
 	protected void mate() {
 		desire = 0;
 		mate_target.desire = 0;
-		if (baby == null && Utils.rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
+		if (baby == null && Utils.rand.nextDouble() < PREGNANT_PROBABILITY_WOLF) //Esta constante creo que deberia ser 0.9, pero te pregunto
 			baby = new Wolf(this, mate_target);
 		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_DESIRE_WOLF, 0, MAX_ENERGY);
 		mate_target = null;
@@ -122,14 +122,14 @@ public class Wolf extends Animal {
 		else {
 			dest = mate_target.get_position();
 			advance_boost(dt);
-			if (pos.distanceTo(mate_target.get_position()) < 8) {
+			if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
 				mate();
 			}
 		}
 		if (energy < FOOD_THRESHOLD_WOLF)
 			set_state(State.HUNGER);
 		else if (desire < DESIRE_THRESHOLD_WOLF)
-			set_state(State.MATE);
+			set_state(State.NORMAL);
 	}
 
 	@Override
