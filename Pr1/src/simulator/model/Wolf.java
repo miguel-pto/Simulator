@@ -72,7 +72,7 @@ public class Wolf extends Animal {
 		advance_normal(dt);
 		if (energy < FOOD_THRESHOLD_WOLF) {
 			set_state(State.HUNGER);
-		} else if (desire > DESIRE_THRESHOLD_WOLF)
+		} else if (desire >= DESIRE_THRESHOLD_WOLF)
 			set_state(State.MATE);
 	}
 
