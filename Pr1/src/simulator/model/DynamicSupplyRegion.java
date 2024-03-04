@@ -7,18 +7,21 @@ public class DynamicSupplyRegion extends Region {
 	private double food, factor;
 	public static final double INIT_FOOD = 1000.0, INIT_FACTOR = 2.0;
 
+	//INICIALIZA FOOD Y FACTOR A LOS VALORES PROPORCIONADOS
 	public DynamicSupplyRegion(double init_food, double growth_factor) {
 		food = init_food;
 		factor = growth_factor;
 	}
 
 	@Override
+	//ACTUALIZA ALEATORIAMENTE FOOD EN BASE A SU FACTOR DE CRECIMIENTO
 	public void update(double dt) {
 		if (Utils.rand.nextDouble() < 0.5)
 			food += dt * factor;
 	}
 
 	@Override
+	//SI LA DIETA DEL ANIMAL ES HERVÍBORA LE DEVUELVE UNA CANTIDAD DE COMIDA EN BASE A LA SUMA DE HERVÍBOROS QUE HAYA EN LA ZONA
 	public double get_food(Animal a, double dt) {
 		if (a.diet == Diet.HERVIBORE) {
 			long n = this.getAnimals().stream().filter((e) -> e.get_diet() == Diet.HERVIBORE).count();

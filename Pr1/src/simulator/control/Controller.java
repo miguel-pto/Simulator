@@ -19,7 +19,8 @@ public class Controller {
 	public Controller(Simulator sim) {
 		this.sim = sim;
 	}
-
+	
+	//FUNCIÓN ENCARGADA DE CARGAR TODA LA INFORMACIÓN DESDE EL JSON
 	public void load_data(JSONObject data) {
 		if (data.has("regions")) {
 			JSONArray regions = data.getJSONArray("regions");
@@ -48,7 +49,8 @@ public class Controller {
 				sim.add_animal(o);
 		}
 	}
-
+	
+	//FUNCIÓN QUE INICIA Y COMPLETA TODO EL BUCLE DEL PROGRAMA
 	public void run(double t, double dt, boolean sv, OutputStream out) {
 		SimpleObjectViewer view = null;
 		if (sv) {
@@ -74,11 +76,13 @@ public class Controller {
 		if (sv)
 			view.close();
 	}
-
+	
+	//FUNCIÓN QUE DEVUELVE EL TAMAÑO LIGADO A LA EDAD DEL ANIMAL
 	private int size_age(AnimalInfo a) {
 		return (int) Math.round(a.get_age()) + 2;
 	}
 
+	//COMPLETA Y DEVUELVE UNA LISTA DE INFORMACIÓN CON LOS ATRIBUTOS DE LOS DIFERENTES ANIMALES
 	private List<ObjInfo> to_animals_info(List<? extends AnimalInfo> animals) {
 		List<ObjInfo> ol = new ArrayList<>(animals.size());
 		for (AnimalInfo a : animals)

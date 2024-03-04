@@ -7,6 +7,7 @@ public class DefaultRegion extends Region {
 	}
 
 	@Override
+	//SI LA DIETA DEL ANIMAL ES HERVÍBORA LE DEVUELVE UNA CANTIDAD DE COMIDA EN BASE A LA SUMA DE HERVÍBOROS QUE HAYA EN LA ZONA
 	public double get_food(Animal a, double dt) {
 		if (a.diet == Diet.HERVIBORE) {
 			long n = this.getAnimals().stream().filter((e) -> e.get_diet() == Diet.HERVIBORE).count();

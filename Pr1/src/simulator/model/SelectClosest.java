@@ -5,6 +5,7 @@ import java.util.List;
 public class SelectClosest implements SelectionStrategy {
 
 	@Override
+	//SELECTION STRATEGY QUE SELECCIONA AL ANIMAL MÁS CERCA DEL DADO
 	public Animal select(Animal a, List<Animal> as) {
 		Animal selection = null;
 

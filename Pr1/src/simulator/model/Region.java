@@ -18,6 +18,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	@Override
+	//CONVIERTE LA LISTA DE ANIAMLES EN UN JSON
 	public JSONObject as_JSON() {
 		JSONObject o = new JSONObject();
 		JSONArray animals = new JSONArray();
@@ -29,16 +30,19 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 		o.put("animals", animals);
 		return o;
 	}
-
+	
+	//SI EL ANIMAL NO SE ENCUENTRA EN LA LISTA LO AÑADE EN ESTA
 	final void add_animal(Animal a) {
 		if (!animal_list.contains(a))
 			animal_list.add(a);
 	}
-
+	
+	//ELIMINA ANIMAL DE LA LISTA
 	final void remove_animal(Animal a) {
 		animal_list.remove(a);
 	}
 
+	//DEVUELVE LA LISTA DE ANIMALES INMODIFICABLE
 	final List<Animal> getAnimals() {
 		return Collections.unmodifiableList(animal_list);
 	}
