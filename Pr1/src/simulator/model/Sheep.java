@@ -23,6 +23,7 @@ public class Sheep extends Animal {
 		danger_strategy = p1.danger_strategy;
 	}
 
+	// AVANZAR CON VELOCIDAD NORMAL
 	protected void advance_normal(double dt) {
 		if (is_in_range(dest))
 			dest = new Vector2D(Utils.rand.nextDouble(800), Utils.rand.nextDouble(600));
@@ -32,6 +33,7 @@ public class Sheep extends Animal {
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_SHEEP * dt, 0, MAX_DESIRE);
 	}
 
+	// AVANZAR CON VELOCIDAD BOOSTEADA
 	protected void advance_boost(double dt) {
 		move(BOOST_FACTOR_SHEEP * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
@@ -40,6 +42,7 @@ public class Sheep extends Animal {
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_SHEEP * dt, 0, MAX_DESIRE);
 	}
 
+	// FUNCIÓN AUXILIAR QUE SE USA EN UPDATE_MATE
 	protected void mate() {
 		desire = 0.0;
 		mate_target.desire = 0.0;
@@ -86,6 +89,12 @@ public class Sheep extends Animal {
 	@Override
 	protected void update_hunger(double dt) {
 	}
+	
+	// FUNCIÓN AUXILIAR USADA EN UPDATE_DANGER PARA LEGIBILIDAD
+	private void flee(double dt) {
+		dest = pos.plus(pos.minus(danger_source.get_position()).direction());
+		advance_boost(dt);
+	}
 
 	@Override
 	protected void update_danger(double dt) {
@@ -94,8 +103,7 @@ public class Sheep extends Animal {
 		if (danger_source == null) {
 			advance_normal(dt);
 		} else {
-			dest = pos.plus(pos.minus(danger_source.get_position()).direction());
-			advance_boost(dt);
+			flee(dt);
 		}
 
 		if (danger_source == null || !is_in_sight_range(danger_source))

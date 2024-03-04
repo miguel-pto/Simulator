@@ -19,6 +19,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected AnimalMapView region_mngr;
 	protected SelectionStrategy mate_strategy;
 
+	// CONSTRUCTOR PARA ANIMALES INICIALIZADOS DESDE LA ENTRADA
 	protected Animal(String genetic_code, Diet diet, double sight_range, double init_speed,
 			SelectionStrategy mate_strategy, Vector2D pos) {
 		this.genetic_code = genetic_code;
@@ -32,6 +33,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		desire = 0.0;
 	}
 
+	// CONSTRUCTOR PARA ANIMALES NACIDOS DURANTE LA SIMULACIÓN
 	protected Animal(Animal p1, Animal p2) {
 		state = State.NORMAL;
 		desire = 0.0;
@@ -45,27 +47,35 @@ public abstract class Animal implements Entity, AnimalInfo {
 		this.mate_strategy = p2.mate_strategy;
 	}
 
+	// INICIALIZAR LA REGIÓN Y LA POSICIÓN
 	void init(AnimalMapView reg_mngr) {
 		region_mngr = reg_mngr;
-		if (pos == null) {
+		if (pos == null) { // NO HABÍA POSICIÓN EN LA ENTRADA
 			double x = Utils.rand.nextDouble(reg_mngr.get_width() - 1);
 			double y = Utils.rand.nextDouble(reg_mngr.get_height() - 1);
 			pos = new Vector2D(x, y);
-		} else
+		} else // HABÍA POSICIÓN EN LA ENTRADA
 			pos.adjust(reg_mngr.get_width() - 1, reg_mngr.get_height() - 1);
+		// INICIALIZA EL DESTINO A UNA POSICIÓN ALEATORIA
 		double x = Utils.rand.nextDouble(reg_mngr.get_width() - 1);
 		double y = Utils.rand.nextDouble(reg_mngr.get_height() - 1);
 		dest = new Vector2D(x, y);
 	}
 
+	// DAR A LUZ, SE DEVUELVE BABY Y SE PONE A NULL
 	Animal deliver_baby() {
 		Animal aux = baby;
 
 		baby = null;
 
 		return aux;
+
+		/*
+		 * try { return baby; } finally { baby = null; }
+		 */
 	}
 
+	// ACTUALIZAR POS SEGÚN LA VELOCIDAD
 	protected void move(double speed) {
 		pos = pos.plus(dest.minus(pos).direction().scale(speed));
 	}
@@ -75,14 +85,15 @@ public abstract class Animal implements Entity, AnimalInfo {
 		JSONObject o = new JSONObject();
 
 		JSONArray pos = new JSONArray();
+		// POSICIÓN
 		pos.put(this.pos.getX());
 		pos.put(this.pos.getY());
 		o.put("pos", pos);
-
+		// CÓDIGO GENÉTICO
 		o.put("gcode", genetic_code);
-
+		// DIETA
 		o.put("diet", diet.toString());
-
+		// ESTADO
 		o.put("state", state.toString());
 
 		return o;
@@ -146,10 +157,13 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	protected abstract void update_mate(double dt);
 
+	// FUNCIÓN QUE SE EJECUTA SIEMPRE AL FINAL DE UPDATE
 	protected abstract void update_state(double dt);
-
+	
 	protected abstract void mate();
 
+	// UPDATE QUE COMPARTEN TODOS LOS ANIMALES. CADA UNO LUEGO IMPLEMENTA LA FUNCIÓN
+	// ABSTRACTA QUE ACTUALIZA DEPENDIENDO DEL ESTADO
 	public void update(double dt) {
 		switch (state) {
 		case NORMAL:
@@ -195,6 +209,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 				region_mngr.get_animals_in_range(this, (e) -> e.genetic_code == this.genetic_code));
 	}
 
+	// LO COMPARTEN TODOS LOS ANIMALES Y LUEGO IMPLEMENTAN CADA SET
 	protected void set_state(State state) {
 		this.state = state;
 		switch (state) {
@@ -219,6 +234,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 		return state != State.DEAD;
 	}
 
+	// DEVUELVE TRUE SI ESTÁ FUERA DEL MAPA
 	protected boolean is_out_of_bounds() {
 		return 0 > pos.getX() || pos.getX() >= region_mngr.get_width() || 0 > pos.getY()
 				|| pos.getY() >= region_mngr.get_height();

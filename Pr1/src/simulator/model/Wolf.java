@@ -24,6 +24,7 @@ public class Wolf extends Animal {
 		hunting_strategy = p1.hunting_strategy;
 	}
 
+	// AVANZAR CON VELOCIDAD NORMAL
 	protected void advance_normal(double dt) {
 		if (pos.distanceTo(dest) < COLLISION_RANGE)
 			dest = new Vector2D(Utils.rand.nextDouble(800), Utils.rand.nextDouble(600));
@@ -33,12 +34,14 @@ public class Wolf extends Animal {
 		desire = Utils.constrain_value_in_range(desire + DESIRE_INCREASE_RATE_WOLF * dt, 0, MAX_DESIRE);
 	}
 
+	// FUNCIÓN AUXILIAR USADA EN UPDATE_HUNGER PARA LEGIBILIDAD
 	protected void hunt() {
 		hunt_target.set_state(State.DEAD);
 		hunt_target = null;
 		energy += Utils.constrain_value_in_range(energy + FOOD_EAT_VALUE_WOLF, 0, MAX_ENERGY);
 	}
 
+	// AVANZAR CON VELOCIDAD BOOSTEADA
 	protected void advance_boost(double dt) {
 		move(BOOST_FACTOR_WOLF * speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
@@ -102,6 +105,7 @@ public class Wolf extends Animal {
 	protected void update_danger(double dt) {
 	}
 
+	// FUNCIÓN AUXILIAR USADA EN UPDATE_MATE PARA LEGIBILIDAD
 	protected void mate() {
 		desire = 0;
 		mate_target.desire = 0;
