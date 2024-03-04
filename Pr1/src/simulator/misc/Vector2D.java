@@ -147,23 +147,24 @@ public class Vector2D {
 		return true;
 	}
 
-	// return a string representation of the vector
+	// RETURN A STRING REPRESENTATION OF THE VECTOR
 	public String toString() {
 		return "[" + x + "," + y + "]";
 	}
 
 	// AJUSTAR LA POSICIÓN ENTRE 0 Y EL ALTO O ANCHO ESPECIFICADO
-	public void adjust(float width, float height) {
-		//double x = this.x, y = this.y;
-		while (x >= width)
-			x = (x - width);
-		while (x < 0)
-			x = (x + width);
-		while (y >= height)
-			y = (y - height);
-		while (y < 0)
-			y = (y + height);
+	public Vector2D adjust(float width, float height) {
+		double nx = this.x, ny = this.y;
+		
+		while (nx > width)
+			nx = (nx - width);
+		while (nx < 0)
+			nx = (nx + width);
+		while (ny > height)
+			ny = (ny - height);
+		while (ny < 0)
+			ny = (ny + height);
 
-		//return new Vector2D(x, y);
+		return new Vector2D(nx, ny);
 	}
 }

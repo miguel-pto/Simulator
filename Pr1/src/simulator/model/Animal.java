@@ -55,7 +55,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 			double y = Utils.rand.nextDouble(reg_mngr.get_height() - 1);
 			pos = new Vector2D(x, y);
 		} else // HABÍA POSICIÓN EN LA ENTRADA
-			pos.adjust(reg_mngr.get_width() - 1, reg_mngr.get_height() - 1);
+			pos = pos.adjust(reg_mngr.get_width() - 1, reg_mngr.get_height() - 1);
 		// INICIALIZA EL DESTINO A UNA POSICIÓN ALEATORIA
 		double x = Utils.rand.nextDouble(reg_mngr.get_width() - 1);
 		double y = Utils.rand.nextDouble(reg_mngr.get_height() - 1);
