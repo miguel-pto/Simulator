@@ -18,6 +18,12 @@ public class WolfBuilder extends Builder<Animal> {
 		super(TYPE, DESC);
 		this.strategy_factory = strategy_factory;
 	}
+	
+	protected void fill_in_data(JSONObject o) {
+		o.put("pos", "Se trata de un factor Vector2D con una variable x & una variable y, de manera que si sale más allá del marco establecido se ajustan en su contrario.");
+		o.put("mate strategy", "Se trata de una Selection Strategy que dictamina el método que utiliza para seleccionar a su mate una vez tenga suficiente desire.");
+		o.put("hunting strategy", "Se trata de una Selection Strategy que dictamina el método por el que selecciona a la presa que cazar.");
+	}
 
 	@Override
 	protected Animal create_instance(JSONObject data) {
