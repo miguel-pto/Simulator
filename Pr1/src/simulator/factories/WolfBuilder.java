@@ -27,18 +27,21 @@ public class WolfBuilder extends Builder<Animal> {
 
 	@Override
 	protected Animal create_instance(JSONObject data) {
+		// LA ESTRATEGIA POR DEFECTO ES FIRST
 		SelectionStrategy mate_strategy = new SelectFirst();
 		SelectionStrategy hunt_strategy = new SelectFirst();
 		Vector2D pos = null;
-
+		// MATE STRATEGY
 		if (data.has("mate_strategy")) {
 			JSONObject info = data.getJSONObject("mate_strategy");
 			mate_strategy = strategy_factory.create_instance(info);
 		}
+		// DANGER STRATEGY
 		if (data.has("danger_strategy")) {
 			JSONObject info = data.getJSONObject("hunt_strategy");
 			hunt_strategy = strategy_factory.create_instance(info);
 		}
+		// POSICIÓN
 		if (data.has("pos")) {
 			JSONObject o = data.getJSONObject("pos");
 			JSONArray x = o.getJSONArray("x_range");
@@ -46,6 +49,7 @@ public class WolfBuilder extends Builder<Animal> {
 			pos = new Vector2D(Utils.rand.nextDouble(x.getDouble(0), x.getDouble(1)),
 					Utils.rand.nextDouble(y.getDouble(0), y.getDouble(1)));
 		}
+		
 		return new Wolf(mate_strategy, hunt_strategy, pos);
 	}
 

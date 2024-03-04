@@ -7,6 +7,7 @@ public abstract class Builder<T> {
 	private String desc; // DICE LOS TIPOS DE OBJETOS QUE PUEDE CREAR EL BUILDER
 
 	public Builder(String type_tag, String desc) {
+		// COMPROBAR QUE LOS PARÁMETROS SON VÁLIDOS
 		if (type_tag == null || desc == null || type_tag.isBlank() || desc.isBlank())
 			throw new IllegalArgumentException("Invalid type/desc");
 
@@ -18,6 +19,7 @@ public abstract class Builder<T> {
 		return type_tag;
 	}
 
+	// CREA UN JSON CON LA INFORMACIÓN DEL BUILDER
 	public JSONObject get_info() {
 		JSONObject info = new JSONObject();
 		info.put("type", type_tag);
@@ -36,6 +38,7 @@ public abstract class Builder<T> {
 		return desc;
 	}
 
+	// FUNCIÓN PRINCIPAL DE LOS BUILDERS
 	protected abstract T create_instance(JSONObject data);
 
 }
