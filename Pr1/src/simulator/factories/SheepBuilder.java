@@ -20,10 +20,9 @@ public class SheepBuilder extends Builder<Animal> {
 	}
 
 	protected void fill_in_data(JSONObject o) {
-		// TODO Y LO MISMO EN WOLF
-		// Permiteme preguntarte sobre esto Miguel
-		// Esto es para mostrar al usuario. Todavía no tengo muy claro que habrá que
-		// hacer pero por ahora me parece opcional. Ya lo pondremos bonito luego
+		o.put("pos", "Se trata de un factor Vector2D con una variable x & una variable y, de manera que si sale más allá del marco establecido se ajustan en su contrario.");
+		o.put("mate strategy", "Se trata de una Selection Strategy que dictamina el método que utiliza para seleccionar a su mate una vez tenga suficiente desire.");
+		o.put("danger strategy", "Se trata de una Selection Strategy que dictamina el método por el que selecciona al depredador del que huir.");
 	}
 
 	@Override
