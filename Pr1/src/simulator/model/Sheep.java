@@ -144,7 +144,7 @@ public class Sheep extends Animal {
 	@Override
 	protected void update_state(double dt) {
 		if (is_out_of_bounds()) {
-			pos = pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1);
+			pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1);
 			set_state(State.NORMAL);
 		}
 		if (energy == 0.0 || age > MAX_AGE_SHEEP)
