@@ -146,7 +146,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	protected abstract void update_mate(double dt);
 
-	protected abstract void update_state(double dt); // TODO REVISAR
+	protected abstract void update_state(double dt);
 
 	protected abstract void mate();
 
@@ -187,7 +187,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 	}
 
 	protected boolean is_in_range(Vector2D pos) {
-		return pos.distanceTo(pos) <= COLLISION_RANGE;
+		return this.pos.distanceTo(pos) < COLLISION_RANGE;
 	}
 
 	protected Animal find_mate() {
