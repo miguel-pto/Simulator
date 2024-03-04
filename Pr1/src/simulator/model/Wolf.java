@@ -86,7 +86,7 @@ public class Wolf extends Animal {
 		else {
 			dest = hunt_target.get_position();
 			advance_boost(dt);
-			if (pos.distanceTo(hunt_target.get_position()) < COLLISION_RANGE) {
+			if (is_in_range(hunt_target.pos)) {
 				hunt();
 			}
 		}
@@ -105,7 +105,7 @@ public class Wolf extends Animal {
 	protected void mate() {
 		desire = 0;
 		mate_target.desire = 0;
-		if (baby == null && Utils.rand.nextDouble() < PREGNANT_PROBABILITY_WOLF) //Esta constante creo que deberia ser 0.9, pero te pregunto
+		if (baby == null && Utils.rand.nextDouble() < PREGNANT_PROBABILITY_WOLF)
 			baby = new Wolf(this, mate_target);
 		energy = Utils.constrain_value_in_range(energy - FOOD_DROP_DESIRE_WOLF, 0, MAX_ENERGY);
 		mate_target = null;
@@ -122,7 +122,7 @@ public class Wolf extends Animal {
 		else {
 			dest = mate_target.get_position();
 			advance_boost(dt);
-			if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
+			if (is_in_range(mate_target.pos)) {
 				mate();
 			}
 		}
@@ -135,7 +135,7 @@ public class Wolf extends Animal {
 	@Override
 	protected void update_state(double dt) {
 		if (is_out_of_bounds()) {
-			pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1); // TODO
+			pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1);
 			set_state(State.NORMAL);
 		}
 		if (energy == 0.0 || age > MAX_AGE_WOLF)

@@ -24,7 +24,7 @@ public class Sheep extends Animal {
 	}
 
 	protected void advance_normal(double dt) {
-		if (pos.distanceTo(dest) < COLLISION_RANGE)
+		if (is_in_range(dest))
 			dest = new Vector2D(Utils.rand.nextDouble(800), Utils.rand.nextDouble(600));
 		move(speed * dt * Math.exp((energy - MAX_ENERGY) * HUNGER_DECAY_EXP_FACTOR));
 		age += dt;
@@ -120,7 +120,7 @@ public class Sheep extends Animal {
 		else {
 			dest = mate_target.get_position();
 			advance_boost(dt);
-			if (pos.distanceTo(mate_target.get_position()) < COLLISION_RANGE) {
+			if (is_in_range(mate_target.get_position())) {
 				mate();
 			}
 			if (danger_source == null)
@@ -136,7 +136,7 @@ public class Sheep extends Animal {
 	@Override
 	protected void update_state(double dt) {
 		if (is_out_of_bounds()) {
-			pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1); // TODO
+			pos.adjust(region_mngr.get_width() - 1, region_mngr.get_height() - 1);
 			set_state(State.NORMAL);
 		}
 		if (energy == 0.0 || age > MAX_AGE_SHEEP)

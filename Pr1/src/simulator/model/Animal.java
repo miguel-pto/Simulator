@@ -38,7 +38,8 @@ public abstract class Animal implements Entity, AnimalInfo {
 		genetic_code = p1.get_genetic_code();
 		diet = p1.get_diet();
 		energy = (p1.get_energy() + p2.get_energy()) / 2;
-		pos = p1.get_position().plus(Vector2D.get_random_vector(-1, 1).scale(NEARBY_FACTOR * (Utils.rand.nextGaussian() + 1)));
+		pos = p1.get_position()
+				.plus(Vector2D.get_random_vector(-1, 1).scale(NEARBY_FACTOR * (Utils.rand.nextGaussian() + 1)));
 		sight_range = Utils.get_randomized_parameter((p1.get_sight_range() + p2.get_sight_range()) / 2, 0.2);
 		speed = Utils.get_randomized_parameter((p1.get_speed() + p2.get_speed()) / 2, 0.2);
 		this.mate_strategy = p2.mate_strategy;
@@ -182,9 +183,12 @@ public abstract class Animal implements Entity, AnimalInfo {
 	protected abstract void set_hunger();
 
 	protected boolean is_in_sight_range(Animal a) {
-		return pos.distanceTo(a.get_position()) <= sight_range;
+		return pos.distanceTo(a.pos) <= sight_range;
 	}
 
+	protected boolean is_in_range(Vector2D pos) {
+		return pos.distanceTo(pos) <= COLLISION_RANGE;
+	}
 
 	protected Animal find_mate() {
 		return mate_strategy.select(this,
