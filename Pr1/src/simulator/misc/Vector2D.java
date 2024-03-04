@@ -152,7 +152,9 @@ public class Vector2D {
 		return "[" + x + "," + y + "]";
 	}
 
-	public void adjust(float width, float height) {
+	// AJUSTAR LA POSICIÓN ENTRE 0 Y EL ALTO O ANCHO ESPECIFICADO
+	public Vector2D adjust(float width, float height) {
+		double x = this.x, y = this.y;
 		while (x >= width)
 			x = (x - width);
 		while (x < 0)
@@ -161,5 +163,7 @@ public class Vector2D {
 			y = (y - height);
 		while (y < 0)
 			y = (y + height);
+
+		return new Vector2D(x, y);
 	}
 }

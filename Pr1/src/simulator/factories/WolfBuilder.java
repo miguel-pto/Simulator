@@ -18,11 +18,14 @@ public class WolfBuilder extends Builder<Animal> {
 		super(TYPE, DESC);
 		this.strategy_factory = strategy_factory;
 	}
-	
+
 	protected void fill_in_data(JSONObject o) {
-		o.put("pos", "Se trata de un factor Vector2D con una variable x & una variable y, de manera que si sale más allá del marco establecido se ajustan en su contrario.");
-		o.put("mate strategy", "Se trata de una Selection Strategy que dictamina el método que utiliza para seleccionar a su mate una vez tenga suficiente desire.");
-		o.put("hunting strategy", "Se trata de una Selection Strategy que dictamina el método por el que selecciona a la presa que cazar.");
+		o.put("pos",
+				"Se trata de un factor Vector2D con una variable x & una variable y, de manera que si sale más allá del marco establecido se ajustan en su contrario.");
+		o.put("mate strategy",
+				"Se trata de una Selection Strategy que dictamina el método que utiliza para seleccionar a su mate una vez tenga suficiente desire.");
+		o.put("hunting strategy",
+				"Se trata de una Selection Strategy que dictamina el método por el que selecciona a la presa que cazar.");
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class WolfBuilder extends Builder<Animal> {
 			pos = new Vector2D(Utils.rand.nextDouble(x.getDouble(0), x.getDouble(1)),
 					Utils.rand.nextDouble(y.getDouble(0), y.getDouble(1)));
 		}
-		
+
 		return new Wolf(mate_strategy, hunt_strategy, pos);
 	}
 

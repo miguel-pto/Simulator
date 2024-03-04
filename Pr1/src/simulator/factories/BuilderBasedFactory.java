@@ -26,7 +26,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 			add_builder(builder);
 		}
 	}
-	
+
 	// MÉTODO PRIVADO PARA EL CONSTRUCTOR
 	private void add_builder(Builder<T> b) {
 		builders.put(b.get_type_tag(), b);

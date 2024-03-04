@@ -159,7 +159,7 @@ public abstract class Animal implements Entity, AnimalInfo {
 
 	// FUNCIÓN QUE SE EJECUTA SIEMPRE AL FINAL DE UPDATE
 	protected abstract void update_state(double dt);
-	
+
 	protected abstract void mate();
 
 	// UPDATE QUE COMPARTEN TODOS LOS ANIMALES. CADA UNO LUEGO IMPLEMENTA LA FUNCIÓN

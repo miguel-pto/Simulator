@@ -46,23 +46,23 @@ public class Main {
 
 	// default values for some parameters
 	//
-	private final static Double default_time = 10.0; // in seconds
-	private final static Double default_delta_time = 0.03; // in seconds
+	private final static Double default_time = 10.0; // IN SECONDS
+	private final static Double default_delta_time = 0.03; // IN SECONDS
 
-	// some attributes to stores values corresponding to command-line parameters
-	//
+	// SOME ATTRIBUTES TO STORE VALUES CORRESPONDING TO COMAND-LINE PARAMETERS
 	private static double time;
-	private static double delta_time; // Para almacenar los valores de los atributos para usarlos desde otros
-										// metodos
+	private static double delta_time;
 	private static String in_file = null;
-	private static String out_file = null; // Tanto delta_time como out_file son añadidos porque hipotetizo que se
-											// extrapola al resto de valores, no solo a time y in_time
+	private static String out_file = null;
 	private static boolean sv = false;
 	private static ExecMode mode = ExecMode.BATCH;
+
+	// FACTORÍAS
 	private static Factory<SelectionStrategy> selection_strategy_factory;
 	private static Factory<Animal> animal_factory;
 	private static Factory<Region> region_factory;
 
+	// PARSEAR TODOS LOS PARÁMETROS
 	private static void parse_args(String[] args) {
 
 		// define the valid command line options
@@ -100,6 +100,7 @@ public class Main {
 
 	}
 
+	// POSIBLES PARÁMETROS
 	private static Options build_options() {
 		Options cmdLineOptions = new Options();
 
@@ -131,6 +132,7 @@ public class Main {
 		return cmdLineOptions;
 	}
 
+	// MOSTRAR AYUDA
 	private static void parse_help_option(CommandLine line, Options cmdLineOptions) {
 		if (line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -139,6 +141,7 @@ public class Main {
 		}
 	}
 
+	// OBTENER INPUT FILE
 	private static void parse_in_file_option(CommandLine line) throws ParseException {
 		in_file = line.getOptionValue("i");
 		if (mode == ExecMode.BATCH && in_file == null) {
@@ -146,6 +149,7 @@ public class Main {
 		}
 	}
 
+	// OBTENER TIEMPO
 	private static void parse_time_option(CommandLine line) throws ParseException {
 		String t = line.getOptionValue("t", default_time.toString());
 		try {
@@ -156,6 +160,7 @@ public class Main {
 		}
 	}
 
+	// OBTENER DELTA TIME
 	private static void parse_delta_time_option(CommandLine line) throws ParseException {
 		String dt = line.getOptionValue("dt", default_delta_time.toString());
 		try {
@@ -166,6 +171,7 @@ public class Main {
 		}
 	}
 
+	// OBTENER OUTPUT FILE
 	private static void parse_out_file_option(CommandLine line) throws ParseException {
 		out_file = line.getOptionValue("o");
 		if (mode == ExecMode.BATCH && out_file == null) {
@@ -173,11 +179,13 @@ public class Main {
 		}
 	}
 
+	// ELEGIR SIMPLE VIEWER
 	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
 		if (line.hasOption("sv"))
-			sv = true; // CREO QUE ES ASI
+			sv = true;
 	}
 
+	// INICIALIZA LAS FACTORÍAS CON LISTAS DE BUILDERS
 	private static void init_factories() {
 		// SELECTION STRATEGIES
 		List<Builder<SelectionStrategy>> selection_strategy_builders = new ArrayList<>();
@@ -197,10 +205,12 @@ public class Main {
 		region_factory = new BuilderBasedFactory<Region>(region_builders);
 	}
 
+	// OBTIENE UN JSON CON EL INPUT A PARTIR DEL FICHERO DE ENTRADA
 	private static JSONObject load_JSON_file(InputStream in) {
 		return new JSONObject(new JSONTokener(in));
 	}
 
+	// EJECUTA EL MODO BATCH. SE ESPECIFICAN LOS APARTADOS DEL ENUNCIADO
 	private static void start_batch_mode() throws Exception {
 		// 1
 		InputStream is = new FileInputStream(new File(in_file));
@@ -228,6 +238,7 @@ public class Main {
 		throw new UnsupportedOperationException("GUI mode is not ready yet ...");
 	}
 
+	// EJECUTAR EL PROGRAMA
 	private static void start(String[] args) throws Exception {
 		init_factories();
 		parse_args(args);
