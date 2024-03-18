@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.ArrayList;
 import org.json.JSONObject;
 import simulator.factories.Factory;
+import simulator.view.EcoSysObserver;
 
 public class Simulator implements JSONable {
 
 	private RegionManager region_manager;
 	private List<Animal> animal_list;
+	private List<EcoSysObserver> observer_list; 
 	private double t;
 	private Factory<Animal> animals_factory;
 	private Factory<Region> regions_factory;
+	
 
 	//INICIALIZA EL SIMULADOR CON LOS ATRIBUTOS ASIGNADOS
 	public Simulator(int cols, int rows, int width, int height, Factory<Animal> animals_factory,
@@ -39,6 +42,8 @@ public class Simulator implements JSONable {
 	private void add_animal(Animal a) {
 		animal_list.add(a);
 		region_manager.register_animal(a);
+		notify_onAnimalAdded();
+		
 	}
 
 	//CREA UN ANIMAL DESDE UN JSON Y LLAMA A LA FUNCIÓN ANTERIOR PARA QUE SEA AÑADIDO
@@ -116,5 +121,41 @@ public class Simulator implements JSONable {
 		animal_list = new ArrayList<Animal>();
 		region_manager = new RegionManager(cols, rows, width, height);
 		t = 0.0;
+		for (EcoSysObserver o:observer_list) {
+			notify_onRegister(o);
+		}
+	}
+	
+	//AÑADE EL OBSERVADOR O A LA LISTA DE OBSERVADORES TRAS CONFIRMAR QUE NO ESTE YA EN ELLA
+	public void addObserver(EcoSysObserver o) {
+		if (!observer_list.contains(o)) {
+			observer_list.add(o);
+			notify_onRegister(o);
+		}
+	}
+	
+	//ENVIA UNA NOTIFICACION ONREGISTER AL OBSERVADOR MANDADO
+	private void notify_onRegister (EcoSysObserver o) {
+		List<AnimalInfo> animal_info= new ArrayList<>(animal_list);
+		o.onRegister(t, get_map_info(), animal_info);
+	}
+	
+	//ENVIA UNA NOTIFICACION ONANIMALADDED A TODOS LOS OBSERVADORES
+	private void notify_onAnimalAdded () {
+		List<AnimalInfo> animal_info= new ArrayList<>(animal_list);
+		for (EcoSysObserver o: observer_list)
+			o.onAnimalAdded(t, get_map_info(), animal_info);
+	}
+	
+	//TODO CAMBIAR EL NULL POR UN REGIONINFO R
+	//ENVIA UNA NOTIFICACION ONREGIONSET A TODOS LOS OBSERVADORES
+	private void notify_onRegionSet (int row, int col) {
+		List<RegionInfo> region_info= new ArrayList<>(region_manager.);
+		for (EcoSysObserver o: observer_list)
+			o.onRegionSet(row, col, get_map_info(), null);
+	}
+	
+	public void removeObserver(EcoSysObserver o) {
+		observer_list.remove(o);
 	}
 }
