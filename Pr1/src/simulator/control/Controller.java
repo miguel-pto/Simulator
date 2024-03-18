@@ -35,7 +35,6 @@ public class Controller {
 				JSONObject o = region.getJSONObject("spec");
 				for (int r = rf; r <= rt; r++)
 					for (int c = cf; c <= ct; c++)
-						// sim.set_region(r, c, o);
 						sim.set_region(c, r, o);
 			}
 		}
