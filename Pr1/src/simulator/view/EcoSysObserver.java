@@ -2,6 +2,9 @@ package simulator.view;
 
 
 import simulator.model.MapInfo;
+import simulator.model.RegionInfo;
+import java.util.List;
+import simulator.model.AnimalInfo;
 
 public interface EcoSysObserver {
 	void onRegister(double time, MapInfo map, List<AnimalInfo> animals);
