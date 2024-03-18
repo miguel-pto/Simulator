@@ -24,5 +24,13 @@ public class DynamicSupplyRegionBuilder extends Builder<Region> {
 
 		return new DynamicSupplyRegion(food, factor);
 	}
+	
+	protected void fill_in_data(JSONObject o) {
+		o.put("factor", "food increase factor (optional, default 2.0)");
+		o.put("food", "initial amount of food (optional, default 100.0)");
+		
+		//TODO BUSCO QUE SEA COMO LA DESCRIPCION EN PAG 15, CONFIO EN QUE SEA ASI
+		//TODO SE PUEDE HACER ESTO PARA LOS BUILDERS DE ANIMALES, PERO NO HACE FALTA EN ESTA PRACTICA
+	}
 
 }

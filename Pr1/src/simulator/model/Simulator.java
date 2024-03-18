@@ -110,4 +110,11 @@ public class Simulator implements JSONable {
 		o.put("state", region_manager.as_JSON());
 		return o;
 	}
+	
+	//VACÍA LA LISTA DE ANIMALES CREANDO UNA NUEVA, CREA UN REGIONMANAGER DEL TAMAÑO ADECUADO Y PONE TIEMPO A 0
+	public void reset(int cols, int rows, int width, int height) {
+		animal_list = new ArrayList<Animal>();
+		region_manager = new RegionManager(cols, rows, width, height);
+		t = 0.0;
+	}
 }

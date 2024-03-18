@@ -1,5 +1,7 @@
 package simulator.model;
 
+import java.util.List;
+
 import simulator.misc.Utils;
 
 public class DynamicSupplyRegion extends Region {
@@ -31,6 +33,13 @@ public class DynamicSupplyRegion extends Region {
 			return eaten;
 		} else
 			return 0.0;
+	}
+
+	//TODO SE CREA AL CREAR LA FUNCION EN REGION(PAG 16) PERO NO CREO QUE SEA UTIL, SEGURAMENTE SE PUEDA QUITAR
+	@Override
+	public List<AnimalInfo> getAnimalsInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

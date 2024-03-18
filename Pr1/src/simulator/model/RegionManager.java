@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.HashMap;
+import java.util.Iterator;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -169,6 +171,15 @@ public class RegionManager implements AnimalMapView {
 		}
 
 		return selection;
+	}
+
+	/*RECORRE LA MATRIZ DE REGIONES (POR FILAS, DE IZQ A DER) Y PARA CADA REGIÓN 
+	 * DEVUELVE UNA INSTANCIA CORRESPONDIENTE DE RegionData*/
+	public Iterator<RegionData> iterator() {
+		//TODO HACER LO QUE TIENE QUE HACER
+		//TODO POR RAZONES QUE SE ME ESCAPAN CHALI AFIRMA QUE SE HECHO CON ELLO PERO 
+		//TODO QUE NO HAY Q HACERLO
+		return null;
 	}
 
 }

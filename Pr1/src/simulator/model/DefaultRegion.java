@@ -1,5 +1,7 @@
 package simulator.model;
 
+import java.util.List;
+
 public class DefaultRegion extends Region {
 
 	@Override
@@ -15,6 +17,13 @@ public class DefaultRegion extends Region {
 					* Math.exp(-Math.max(0, n - FOOD_MAX_PARAMETER) * FOOD_MAX_MULTIPLIER_PARAMETER) * dt;
 		} else
 			return 0.0;
+	}
+
+	//TODO SE CREA AL CREAR LA FUNCION EN REGION(PAG 16) PERO NO CREO QUE SEA UTIL, SEGURAMENTE SE PUEDA QUITAR
+	@Override
+	public List<AnimalInfo> getAnimalsInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
