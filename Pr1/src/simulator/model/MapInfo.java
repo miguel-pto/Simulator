@@ -9,7 +9,6 @@ public interface MapInfo extends JSONable,
 			 * PARA ASEGURARNOS QUE NO SE ALTERA SU ESTADO DESDE FUERA.*/
 	}
 	
-	
 	public int get_cols();
 
 	public int get_rows();

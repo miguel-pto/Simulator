@@ -1,8 +1,8 @@
 package simulator.view;
 
-import simulator.model.Animal;
 import simulator.model.AnimalInfo;
 import simulator.model.MapInfo;
+import simulator.model.State;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -21,45 +21,45 @@ public class MapViewer extends AbstractMapViewer {
 
 	// Anchura/altura/ de la simulación -- se supone que siempre van a ser iguales
 	// al tamaño del componente
-	private int _width;
-	private int _height;
+	private int width;
+	private int height;
 
 	// Número de filas/columnas de la simulación
-	private int _rows;
-	private int _cols;
+	private int rows;
+	private int cols;
 
 	// Anchura/altura de una región
-	int _rwidth;
-	int _rheight;
+	int rwidth;
+	int rheight;
 
 	// Mostramos sólo animales con este estado. Los posibles valores de _currState
 	// son null, y los valores deAnimal.State.values(). Si es null mostramos todo.
-	Animal.State _currState;
+	State currState;
 
 	// En estos atributos guardamos la lista de animales y el tiempo que hemos
 	// recibido la última vez para dibujarlos.
-	volatile private Collection<AnimalInfo> _objs;
-	volatile private Double _time;
+	volatile private Collection<AnimalInfo> objs;
+	volatile private Double time;
 
 	// Una clase auxilar para almacenar información sobre una especie
 	private static class SpeciesInfo {
-		private Integer _count;
-		private Color _color;
+		private Integer count;
+		private Color color;
 
 		SpeciesInfo(Color color) {
-			_count = 0;
-			_color = color;
+			count = 0;
+			this.color = color;
 		}
 	}
 
 	// Un mapa para la información sobre las especies
-	Map<String, SpeciesInfo> _kindsInfo = new HashMap<>();
+	Map<String, SpeciesInfo> kindsInfo = new HashMap<>();
 
 	// El font que usamos para dibujar texto
-	private Font _font = new Font("Arial", Font.BOLD, 12);
+	private Font font = new Font("Arial", Font.BOLD, 12);
 
 	// Indica si mostramos el texto la ayuda o no
-	private boolean _showHelp;
+	private boolean showHelp;
 
 	public MapViewer() {
 		initGUI();
@@ -72,7 +72,7 @@ public class MapViewer extends AbstractMapViewer {
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyChar()) {
 				case 'h':
-					_showHelp = !_showHelp;
+					showHelp = !showHelp;
 					repaint();
 					break;
 				case 's':
@@ -95,10 +95,10 @@ public class MapViewer extends AbstractMapViewer {
 		});
 
 		// Por defecto mostramos todos los animales
-		_currState = null;
+		currState = null;
 
 		// Por defecto mostramos el texto de ayuda
-		_showHelp = true;
+		showHelp = true;
 	}
 
 	@Override
@@ -110,15 +110,15 @@ public class MapViewer extends AbstractMapViewer {
 		gr.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		// Cambiar el font para dibujar texto
-		g.setFont(_font);
+		g.setFont(font);
 
 		// Dibujar fondo blanco
 		gr.setBackground(Color.WHITE);
-		gr.clearRect(0, 0, _width, _height);
+		gr.clearRect(0, 0, width, height);
 
 		// Dibujar los animales, el tiempo, etc.
-		if (_objs != null)
-			drawObjects(gr, _objs, _time);
+		if (objs != null)
+			drawObjects(gr, objs, time);
 
 		// TODO Mostrar el texto de ayuda si _showHelp es true. El texto a mostrar es el
 		// siguiente (en 2 líneas):
@@ -146,7 +146,7 @@ public class MapViewer extends AbstractMapViewer {
 				continue;
 
 			// La información sobre la especie de 'a'
-			SpeciesInfo esp_info = _kindsInfo.get(a.get_genetic_code());
+			SpeciesInfo esp_info = kindsInfo.get(a.get_genetic_code());
 
 			// TODO Si esp_info es null, añade una entrada correspondiente al mapa. Para el
 			// color usa ViewUtils.get_color(a.get_genetic_code())
@@ -167,7 +167,7 @@ public class MapViewer extends AbstractMapViewer {
 
 		// TODO Dibujar la información de todas la especies. Al final de cada iteración
 		// poner el contador de la especie correspondiente a 0 (para resetear el cuento)
-		for (Entry<String, SpeciesInfo> e : _kindsInfo.entrySet()) {
+		for (Entry<String, SpeciesInfo> e : kindsInfo.entrySet()) {
 		}
 	}
 
