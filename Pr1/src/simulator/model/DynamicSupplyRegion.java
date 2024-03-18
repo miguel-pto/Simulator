@@ -34,6 +34,10 @@ public class DynamicSupplyRegion extends Region {
 		} else
 			return 0.0;
 	}
+	
+	public String toString() {
+		return "Dynamic region";
+	}
 
 	//TODO SE CREA AL CREAR LA FUNCION EN REGION(PAG 16) PERO NO CREO QUE SEA UTIL, SEGURAMENTE SE PUEDA QUITAR
 	@Override
