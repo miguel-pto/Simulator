@@ -51,17 +51,24 @@ public class Main {
 
 	// SOME ATTRIBUTES TO STORE VALUES CORRESPONDING TO COMAND-LINE PARAMETERS
 	private static double time;
-	private static double delta_time;
+	//private static double delta_time;
+	public static double delta_time;
 	private static String in_file = null;
 	private static String out_file = null;
 	private static boolean sv = false;
 	private static ExecMode mode = ExecMode.BATCH;
 
 	// FACTORÍAS
+	/*
 	private static Factory<SelectionStrategy> selection_strategy_factory;
 	private static Factory<Animal> animal_factory;
 	private static Factory<Region> region_factory;
+	*/
 
+	public static Factory<SelectionStrategy> selection_strategy_factory;
+	public static Factory<Animal> animal_factory;
+	public static Factory<Region> region_factory;
+	
 	// PARSEAR TODOS LOS PARÁMETROS
 	private static void parse_args(String[] args) {
 

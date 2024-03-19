@@ -30,6 +30,7 @@ public class Simulator implements JSONable {
 	//LLAMA AL MANAGER DE LA REGION PARA FIJAR UNA REGION EN UNA POSICIÓN DADA
 	private void set_region(int row, int col, Region r) {
 		region_manager.set_region(row, col, r);
+		notify_onRegionSet(row, col);
 	}
 
 	//CREA UNA REGION DESDE UN JSON Y LLAMA A LA FUNCIÓN ANTERIOR PARA QUE SEA FIJADA
@@ -105,6 +106,7 @@ public class Simulator implements JSONable {
 		update_animal_regions(dt);
 		region_manager.update_all_regions(dt);
 		deliver_babies();
+		notify_onAdvance(dt);
 	}
 
 	@Override
@@ -150,10 +152,20 @@ public class Simulator implements JSONable {
 	//TODO CAMBIAR EL NULL POR UN REGIONINFO R
 	//ENVIA UNA NOTIFICACION ONREGIONSET A TODOS LOS OBSERVADORES
 	private void notify_onRegionSet (int row, int col) {
-		List<RegionInfo> region_info= new ArrayList<>(region_manager.);
+		//TODO CREAR EL REGIONINFO QUE NO ESTOY MUY CONVENCIDO
+		List<RegionInfo> region_info= new ArrayList<>();
+		RegionInfo info = new RegionInfo();
 		for (EcoSysObserver o: observer_list)
 			o.onRegionSet(row, col, get_map_info(), null);
 	}
+	
+	//ENVIA UNA NOTIFICACION ONADVANCE A TODOS LOS OBSERVADORES
+		private void notify_onAdvance (double dt) {
+			List<AnimalInfo> animal_info= new ArrayList<>(animal_list);
+			for (EcoSysObserver o: observer_list)
+				//TODO o.onAdvanced(t, region_manager, animal_info, dt); Pero personalmente prefiero get_map_info(), igual es peor
+				o.onAdvanced(t, get_map_info(), animal_info, dt);
+		}
 	
 	public void removeObserver(EcoSysObserver o) {
 		observer_list.remove(o);

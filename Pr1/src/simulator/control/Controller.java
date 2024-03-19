@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import simulator.model.AnimalInfo;
 import simulator.model.MapInfo;
 import simulator.model.Simulator;
+import simulator.view.EcoSysObserver;
 import simulator.view.SimpleObjectViewer;
 import simulator.view.SimpleObjectViewer.ObjInfo;
 
@@ -89,4 +90,31 @@ public class Controller {
 					size_age(a)));
 		return ol;
 	}
+	
+	//SE OCUPA DE RESETEAR, LLAMANDO AL RESET DE SIMULATOR
+	public void reset(int cols, int rows, int width, int height) {
+		sim.reset(cols, rows, width, height);
+	}
+	
+	public void set_regions(JSONObject rs) {
+		//TODO suponiendo que rs es una estructura JSON que incluye la clave “regions” (como en la primera
+//práctica), modifica las regiones correspondientes usando set_regions del simulador. Hay que hacer refactorización 
+//del código del load_data para que no haya duplicación de código (porque load_data ya hacía algo parecido).
+		//PAG 24
+	}
+	
+	//SE OCUPA DE LLAMAR AL ADVANCE DE SIMULATOR
+	public void advance(double dt) {
+		sim.advance(dt);
+	}
+	
+	//SE OCUPA DE LLAMAR AL ADD_OBSERVER DE SIMULATOR
+	public void addObserver(EcoSysObserver o) {
+		sim.addObserver(o);
+	}
+	
+	//SE OCUPA DE LLAMAR AL REMOVE_OBSERVER DE SIMULATOR
+		public void removeObserver(EcoSysObserver o) {
+			sim.removeObserver(o);
+		}
 }
