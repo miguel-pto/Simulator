@@ -7,7 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.PrintStream;
 import simulator.model.AnimalInfo;
+import simulator.model.JSONable;
 import simulator.model.MapInfo;
+import simulator.model.Region;
 import simulator.model.Simulator;
 import simulator.view.EcoSysObserver;
 import simulator.view.SimpleObjectViewer;
@@ -101,6 +103,15 @@ public class Controller {
 //práctica), modifica las regiones correspondientes usando set_regions del simulador. Hay que hacer refactorización 
 //del código del load_data para que no haya duplicación de código (porque load_data ya hacía algo parecido).
 		//PAG 24
+		//EN PRINCIPIO ES ESTO, PERO NO TENGO NINGUNA FE, LA VRD
+		JSONArray regions = rs.getJSONArray("regions");
+		for (int i = 0; i < regions.length(); i++) {
+			JSONObject region = regions.getJSONObject(i);
+			int row = region.getInt("row");
+			int col = region.getInt("col");
+			JSONObject data = region.getJSONObject("data");
+			sim.set_region(row, col, data);
+		}
 	}
 	
 	//SE OCUPA DE LLAMAR AL ADVANCE DE SIMULATOR
