@@ -7,11 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.PrintStream;
 import simulator.model.AnimalInfo;
+import simulator.model.EcoSysObserver;
 import simulator.model.JSONable;
 import simulator.model.MapInfo;
 import simulator.model.Region;
 import simulator.model.Simulator;
-import simulator.view.EcoSysObserver;
 import simulator.view.SimpleObjectViewer;
 import simulator.view.SimpleObjectViewer.ObjInfo;
 

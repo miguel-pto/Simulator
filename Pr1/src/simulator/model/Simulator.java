@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import org.json.JSONObject;
 import simulator.factories.Factory;
-import simulator.view.EcoSysObserver;
 
-public class Simulator implements JSONable {
+public class Simulator implements JSONable, Observable<EcoSysObserver> {
 
 	private RegionManager region_manager;
 	private List<Animal> animal_list;
@@ -22,6 +21,7 @@ public class Simulator implements JSONable {
 			Factory<Region> regions_factory) {
 		region_manager = new RegionManager(cols, rows, width, height);
 		animal_list = new ArrayList<Animal>();
+		observer_list = new ArrayList<EcoSysObserver>();
 		this.animals_factory = animals_factory;
 		this.regions_factory = regions_factory;
 		t = 0.0;
