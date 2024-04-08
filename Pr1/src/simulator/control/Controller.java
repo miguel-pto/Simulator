@@ -22,23 +22,14 @@ public class Controller {
 	public Controller(Simulator sim) {
 		this.sim = sim;
 	}
-	
-	//FUNCIÓN ENCARGADA DE CARGAR TODA LA INFORMACIÓN DESDE EL JSON
+
+	// FUNCIÓN ENCARGADA DE CARGAR TODA LA INFORMACIÓN DESDE EL JSON
 	public void load_data(JSONObject data) {
 		if (data.has("regions")) {
 			JSONArray regions = data.getJSONArray("regions");
 			for (int i = 0; i < regions.length(); i++) {
 				JSONObject region = regions.getJSONObject(i);
-				JSONArray row = region.getJSONArray("row");
-				JSONArray col = region.getJSONArray("col");
-				int rf = row.getInt(0);
-				int rt = row.getInt(1);
-				int cf = col.getInt(0);
-				int ct = col.getInt(1);
-				JSONObject o = region.getJSONObject("spec");
-				for (int r = rf; r <= rt; r++)
-					for (int c = cf; c <= ct; c++)
-						sim.set_region(c, r, o);
+				load_data_regions(region);
 			}
 		}
 
@@ -52,7 +43,20 @@ public class Controller {
 		}
 	}
 	
-	//FUNCIÓN QUE INICIA Y COMPLETA TODO EL BUCLE DEL PROGRAMA
+	private void load_data_regions(JSONObject region) {
+		JSONArray row = region.getJSONArray("row");
+		JSONArray col = region.getJSONArray("col");
+		int rf = row.getInt(0);
+		int rt = row.getInt(1);
+		int cf = col.getInt(0);
+		int ct = col.getInt(1);
+		JSONObject o = region.getJSONObject("spec");
+		for (int r = rf; r <= rt; r++)
+			for (int c = cf; c <= ct; c++)
+				sim.set_region(c, r, o);
+	}
+
+	// FUNCIÓN QUE INICIA Y COMPLETA TODO EL BUCLE DEL PROGRAMA
 	public void run(double t, double dt, boolean sv, OutputStream out) {
 		SimpleObjectViewer view = null;
 		if (sv) {
@@ -78,13 +82,14 @@ public class Controller {
 		if (sv)
 			view.close();
 	}
-	
-	//FUNCIÓN QUE DEVUELVE EL TAMAÑO LIGADO A LA EDAD DEL ANIMAL
+
+	// FUNCIÓN QUE DEVUELVE EL TAMAÑO LIGADO A LA EDAD DEL ANIMAL
 	private int size_age(AnimalInfo a) {
 		return (int) Math.round(a.get_age()) + 2;
 	}
 
-	//COMPLETA Y DEVUELVE UNA LISTA DE INFORMACIÓN CON LOS ATRIBUTOS DE LOS DIFERENTES ANIMALES
+	// COMPLETA Y DEVUELVE UNA LISTA DE INFORMACIÓN CON LOS ATRIBUTOS DE LOS
+	// DIFERENTES ANIMALES
 	private List<ObjInfo> to_animals_info(List<? extends AnimalInfo> animals) {
 		List<ObjInfo> ol = new ArrayList<>(animals.size());
 		for (AnimalInfo a : animals)
@@ -92,18 +97,14 @@ public class Controller {
 					size_age(a)));
 		return ol;
 	}
-	
-	//SE OCUPA DE RESETEAR, LLAMANDO AL RESET DE SIMULATOR
+
+	// SE OCUPA DE RESETEAR, LLAMANDO AL RESET DE SIMULATOR
 	public void reset(int cols, int rows, int width, int height) {
 		sim.reset(cols, rows, width, height);
 	}
-	
+
 	public void set_regions(JSONObject rs) {
-		//TODO suponiendo que rs es una estructura JSON que incluye la clave “regions” (como en la primera
-//práctica), modifica las regiones correspondientes usando set_regions del simulador. Hay que hacer refactorización 
-//del código del load_data para que no haya duplicación de código (porque load_data ya hacía algo parecido).
-		//PAG 24
-		//EN PRINCIPIO ES ESTO, PERO NO TENGO NINGUNA FE, LA VRD
+		// TODO HAY QUE HACER LA REFACTORIZACION PERO POR AHORA CREO QUE ESTA BIEN
 		JSONArray regions = rs.getJSONArray("regions");
 		for (int i = 0; i < regions.length(); i++) {
 			JSONObject region = regions.getJSONObject(i);
@@ -113,19 +114,19 @@ public class Controller {
 			sim.set_region(row, col, data);
 		}
 	}
-	
-	//SE OCUPA DE LLAMAR AL ADVANCE DE SIMULATOR
+
+	// SE OCUPA DE LLAMAR AL ADVANCE DE SIMULATOR
 	public void advance(double dt) {
 		sim.advance(dt);
 	}
-	
-	//SE OCUPA DE LLAMAR AL ADD_OBSERVER DE SIMULATOR
+
+	// SE OCUPA DE LLAMAR AL ADD_OBSERVER DE SIMULATOR
 	public void addObserver(EcoSysObserver o) {
 		sim.addObserver(o);
 	}
-	
-	//SE OCUPA DE LLAMAR AL REMOVE_OBSERVER DE SIMULATOR
-		public void removeObserver(EcoSysObserver o) {
-			sim.removeObserver(o);
-		}
+
+	// SE OCUPA DE LLAMAR AL REMOVE_OBSERVER DE SIMULATOR
+	public void removeObserver(EcoSysObserver o) {
+		sim.removeObserver(o);
+	}
 }

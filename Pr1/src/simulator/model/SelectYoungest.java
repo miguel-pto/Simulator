@@ -5,7 +5,8 @@ import java.util.List;
 public class SelectYoungest implements SelectionStrategy {
 
 	@Override
-	//SELECTION STRATEGY QUE SELECCIONA AL ANIMAL CUYA EDAD TIENE EL ATRIBUTO MÁS PEQUEÑO
+	// SELECTION STRATEGY QUE SELECCIONA AL ANIMAL CUYA EDAD TIENE EL ATRIBUTO MÁS
+	// PEQUEÑO
 	public Animal select(Animal a, List<Animal> as) {
 		Animal selection = null;
 

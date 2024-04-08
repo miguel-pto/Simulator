@@ -9,7 +9,8 @@ public class DefaultRegion extends Region {
 	}
 
 	@Override
-	//SI LA DIETA DEL ANIMAL ES HERVÍBORA LE DEVUELVE UNA CANTIDAD DE COMIDA EN BASE A LA SUMA DE HERVÍBOROS QUE HAYA EN LA ZONA
+	// SI LA DIETA DEL ANIMAL ES HERVÍBORA LE DEVUELVE UNA CANTIDAD DE COMIDA EN
+	// BASE A LA SUMA DE HERVÍBOROS QUE HAYA EN LA ZONA
 	public double get_food(Animal a, double dt) {
 		if (a.diet == Diet.HERVIBORE) {
 			long n = this.getAnimals().stream().filter((e) -> e.get_diet() == Diet.HERVIBORE).count();
@@ -18,12 +19,13 @@ public class DefaultRegion extends Region {
 		} else
 			return 0.0;
 	}
-	
+
 	public String toString() {
 		return "Default region";
 	}
 
-	//TODO SE CREA AL CREAR LA FUNCION EN REGION(PAG 16) PERO NO CREO QUE SEA UTIL, SEGURAMENTE SE PUEDA QUITAR
+	// TODO SE CREA AL CREAR LA FUNCION EN REGION(PAG 16) PERO NO CREO QUE SEA UTIL,
+	// SEGURAMENTE SE PUEDA QUITAR
 	@Override
 	public List<AnimalInfo> getAnimalsInfo() {
 		// TODO Auto-generated method stub

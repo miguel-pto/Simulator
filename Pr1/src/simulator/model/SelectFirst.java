@@ -5,7 +5,7 @@ import java.util.List;
 public class SelectFirst implements SelectionStrategy {
 
 	@Override
-	//SELECTION STRATEGY QUE SELECCIONA AL ANIMAL NUMERADO COMO EL PRIMERO
+	// SELECTION STRATEGY QUE SELECCIONA AL ANIMAL NUMERADO COMO EL PRIMERO
 	public Animal select(Animal a, List<Animal> as) {
 		Animal selection = null;
 
