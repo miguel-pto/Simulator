@@ -176,15 +176,26 @@ public class RegionManager implements AnimalMapView {
 		return selection;
 	}
 
-	/*
-	 * RECORRE LA MATRIZ DE REGIONES (POR FILAS, DE IZQ A DER) Y PARA CADA REGIÓN
-	 * DEVUELVE UNA INSTANCIA CORRESPONDIENTE DE RegionData
-	 */
-	public Iterator<RegionData> iterator() {
-		// TODO HACER LO QUE TIENE QUE HACER
-		// TODO POR RAZONES QUE SE ME ESCAPAN CHALI AFIRMA QUE SE HECHO CON ELLO PERO
-		// TODO QUE NO HAY Q HACERLO
-		return null;
+	public Iterator<RegionData> iterator() { // TODO REVISAR COLS Y ROWS. YA DE PASO EN EL MANAGER ENTERO
+		return new Iterator<MapInfo.RegionData>() {
+			int r = 0;
+			int c = 0;
+			
+			@Override
+			public RegionData next() {
+				assert (r < rows);
+				RegionData rd = new RegionData(r, c, regions[c][r]);
+				c = (c + 1) % cols;
+				if (c == 0)
+					r = r + 1;
+				return rd;
+			}
+
+			@Override
+			public boolean hasNext() {
+				return r < rows;
+			}
+		};
 	}
 
 }

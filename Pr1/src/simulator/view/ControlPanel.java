@@ -11,17 +11,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import simulator.control.Controller;
+import simulator.launcher.Main;
 
 public class ControlPanel extends JPanel {
-	
+
 	private Controller ctrl;
 	private ChangeRegionsDialog changeRegionsDialog; // TODO DESCUBIR QUE PASA CON ESTO
 	private JToolBar toolsBar;
@@ -30,8 +33,8 @@ public class ControlPanel extends JPanel {
 	private JButton quitButton;
 
 	// TODO AÑADE MÁS ATRIBUTOS
-	private JSpinner selector; // POR EJEMPLO
-	private JTextField dt;
+	private JSpinner stepsSpinner; // POR EJEMPLO
+	private JTextField dtField;
 	private JButton fcButton, mapButton, regionButton, runButton, stopButton;
 
 	ControlPanel(Controller ctrl) {
@@ -49,15 +52,6 @@ public class ControlPanel extends JPanel {
 		// Puedes utilizar _toolsBar.addSeparator() para añadir la línea de separación
 		// vertical entre las componentes que lo necesiten.
 
-		// QUIT BUTTON
-		toolsBar.add(Box.createGlue());
-		toolsBar.addSeparator();
-		quitButton = new JButton();
-		quitButton.setToolTipText("Quit");
-		quitButton.setIcon(loadImage("resources/icons/exit.png"));
-		quitButton.addActionListener((e) -> ViewUtils.quit(this));
-		toolsBar.add(quitButton);
-
 		// FILE CHOOSER TODO: REPASAR
 		fc = new JFileChooser();
 		fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources/examples"));
@@ -67,12 +61,14 @@ public class ControlPanel extends JPanel {
 		fcButton.addActionListener((e) -> choose_file());
 		toolsBar.add(fcButton);
 		
+		toolsBar.addSeparator();
+
 		mapButton = new JButton();
 		mapButton.setToolTipText("Map");
 		mapButton.setIcon(loadImage("resources/icons/viewer.png"));
 		mapButton.addActionListener((e) -> create_map());
 		toolsBar.add(mapButton);
-		
+
 		// TODO Inicializar _changeRegionsDialog con instancias del diálogo de cambio de
 		// regiones
 		regionButton = new JButton();
@@ -81,52 +77,99 @@ public class ControlPanel extends JPanel {
 		regionButton.addActionListener((e) -> changeRegionsDialog.open(ViewUtils.getWindow(this)));
 		toolsBar.add(regionButton);
 		
+		toolsBar.addSeparator();
+
 		runButton = new JButton();
 		runButton.setToolTipText("Run Simulation");
 		runButton.setIcon(loadImage("resources/icons/run.png"));
-		runButton.addActionListener((e) -> run());
+		runButton.addActionListener((e) -> {
+			update_buttons(false);
+			stopped = false;
+			run_sim(100000, 0.03);
+		});
 		toolsBar.add(runButton);
 
 		stopButton = new JButton();
 		stopButton.setToolTipText("Stop Simulation");
 		stopButton.setIcon(loadImage("resources/icons/stop.png"));
-		stopButton.addActionListener((e) -> stop());
+		stopButton.addActionListener((e) -> stopped = true);
 		toolsBar.add(stopButton);
-}
+		
+		stepsSpinner = new JSpinner();
+		stepsSpinner.setToolTipText("Steps Amount");
+		JLabel stepsLabel = new JLabel("Steps: ");
+		toolsBar.add(stepsLabel);
+		toolsBar.add(stepsSpinner);
+		
+		dtField = new JTextField();
+		dtField.setToolTipText("Delta-Time Value");
+		dtField.setText(Main.default_delta_time.toString());
+		JLabel dtLabel = new JLabel("Delta-Time: ");
+		toolsBar.add(dtLabel);
+		toolsBar.add(dtField);
+		
+		toolsBar.addSeparator();
+		
+		// QUIT BUTTON
+		toolsBar.add(Box.createGlue());
+		toolsBar.addSeparator();
+		quitButton = new JButton();
+		quitButton.setToolTipText("Quit");
+		quitButton.setIcon(loadImage("resources/icons/exit.png"));
+		quitButton.addActionListener((e) -> ViewUtils.quit(this));
+		toolsBar.add(quitButton);
+	}
 
 	// METODO PARA FIJAR LOS ICONOS
 	private ImageIcon loadImage(String path) {
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(path));
 	}
-	
+
 	private void choose_file() {
 		int option = fc.showOpenDialog(ViewUtils.getWindow(this));
 		if (option == JFileChooser.APPROVE_OPTION) {
 			try {
-			InputStream is = new FileInputStream(fc.getSelectedFile());
-			JSONObject in = new JSONObject(new JSONTokener(is));
-			is.close();
-			
-			int rows = in.getInt("rows");
-			int cols = in.getInt("cols");
-			int width = in.getInt("width");
-			int height = in.getInt("height");
-			ctrl.reset(cols, rows, width, height);
-			ctrl.load_data(in.getJSONObject("data"));
-			} catch(Exception e) {}
+				InputStream is = new FileInputStream(fc.getSelectedFile());
+				JSONObject in = new JSONObject(new JSONTokener(is));
+				is.close();
+
+				int rows = in.getInt("rows");
+				int cols = in.getInt("cols");
+				int width = in.getInt("width");
+				int height = in.getInt("height");
+				ctrl.reset(cols, rows, width, height);
+				ctrl.load_data(in.getJSONObject("data"));
+			} catch (Exception e) {
+			}
 		}
 	}
-	
+
 	private void create_map() {
-		
+
 	}
-	
-	private void run() {
-		
+
+	private void run_sim(int n, double dt) {
+		if (n > 0 && !stopped) {
+			try {
+				ctrl.advance(dt);
+				SwingUtilities.invokeLater(() -> run_sim(n - 1, dt));
+			} catch (Exception e) {
+				ViewUtils.showErrorMsg("error"); // TODO
+				stopped = true;
+				update_buttons(true);
+			}
+		} else {
+			stopped = true;
+			update_buttons(true);
+		}
 	}
-	
-	private void stop() {
-		
+
+	private void update_buttons(boolean enable) {
+		fcButton.setEnabled(enable);
+		mapButton.setEnabled(enable);
+		regionButton.setEnabled(enable);
+		runButton.setEnabled(enable);
+		quitButton.setEnabled(enable);
 	}
 
 	// PARA FIJAR EL TAMAÑO DEL JSPINNER SE PUEDE USAR:

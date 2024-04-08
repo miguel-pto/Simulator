@@ -51,7 +51,7 @@ public class Main {
 	// default values for some parameters
 	//
 	private final static Double default_time = 10.0; // IN SECONDS
-	private final static Double default_delta_time = 0.03; // IN SECONDS
+	public final static Double default_delta_time = 0.03; // IN SECONDS
 	private final static String default_mode = "gui";
 	
 	private final static int default_cols = 20, default_rows = 15, default_width = 800, default_height = 600;
@@ -59,7 +59,7 @@ public class Main {
 	// SOME ATTRIBUTES TO STORE VALUES CORRESPONDING TO COMAND-LINE PARAMETERS
 	private static double time;
 	// private static double delta_time;
-	public static double delta_time;
+	private static double delta_time;
 	private static String in_file = null;
 	private static String out_file = null;
 	private static boolean sv = false;
