@@ -2,6 +2,7 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.table.TableModel;
 
@@ -20,6 +21,8 @@ public class InfoTable extends JPanel {
 		// TODO cambiar el layout del panel a BorderLayout()
 		this.setLayout(new BorderLayout());
 		// TODO añadir un borde con título al JPanel, con el texto _title
+		this.setBorder(BorderFactory.createTitledBorder(getBorder(), title));
 		// TODO añadir un JTable (con barra de desplazamiento vertical) que use_tableModel
+		
 	}
 }
