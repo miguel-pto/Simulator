@@ -130,9 +130,7 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 		animal_list = new ArrayList<Animal>();
 		region_manager = new RegionManager(cols, rows, width, height);
 		t = 0.0;
-		for (EcoSysObserver o : observer_list) {
-			notify_onRegister(o);
-		}
+		notify_onReset();
 	}
 
 	// AÑADE EL OBSERVADOR O A LA LISTA DE OBSERVADORES TRAS CONFIRMAR QUE NO ESTE
@@ -147,28 +145,34 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 	// ENVIA UNA NOTIFICACION ONREGISTER AL OBSERVADOR MANDADO
 	private void notify_onRegister(EcoSysObserver o) {
 		List<AnimalInfo> animal_info = new ArrayList<>(animal_list);
-		o.onRegister(t, get_map_info(), animal_info);
+		o.onRegister(t, region_manager, animal_info);
 	}
 
 	// ENVIA UNA NOTIFICACION ONANIMALADDED A TODOS LOS OBSERVADORES
 	private void notify_onAnimalAdded() {
 		List<AnimalInfo> animal_info = new ArrayList<>(animal_list);
 		for (EcoSysObserver o : observer_list)
-			o.onAnimalAdded(t, get_map_info(), animal_info);
+			o.onAnimalAdded(t, region_manager, animal_info);
 	}
 
-	// TODO CAMBIAR EL NULL POR UN REGIONINFO R
 	// ENVIA UNA NOTIFICACION ONREGIONSET A TODOS LOS OBSERVADORES
 	private void notify_onRegionSet(int row, int col, RegionInfo info) {
 		for (EcoSysObserver o : observer_list)
-			o.onRegionSet(row, col, get_map_info(), info);
+			o.onRegionSet(row, col, region_manager, info);
 	}
 
 	// ENVIA UNA NOTIFICACION ONADVANCE A TODOS LOS OBSERVADORES
 	private void notify_onAdvance(double dt) {
 		List<AnimalInfo> animal_info = new ArrayList<>(animal_list);
 		for (EcoSysObserver o : observer_list)
-			o.onAdvanced(t, get_map_info(), animal_info, dt);
+			o.onAdvanced(t, region_manager, animal_info, dt);
+	}
+	
+	private void notify_onReset() {
+		List<AnimalInfo> animal_info = new ArrayList<>(animal_list);
+		for (EcoSysObserver o : observer_list) {
+			o.onReset(t, region_manager, animal_info);
+		}
 	}
 
 	public void removeObserver(EcoSysObserver o) {

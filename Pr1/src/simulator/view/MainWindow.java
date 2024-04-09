@@ -27,7 +27,7 @@ public class MainWindow extends JFrame {
 		mainPanel.add(ctrlPanel, BorderLayout.PAGE_START);
 
 		// TODO crear StatusBar y añadirlo en PAGE_END de mainPanel
-		StatusBar bar = new StatusBar();
+		StatusBar bar = new StatusBar(ctrl);
 		mainPanel.add(bar, BorderLayout.PAGE_END);
 
 		// Definición del panel de tablas
