@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -37,6 +38,9 @@ public class MainWindow extends JFrame {
 
 		// TODO crear la tabla de especies y añadirla a contentPanel.
 		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
+		InfoTable species = new InfoTable("Species", new SpeciesTableModel(ctrl));
+		species.setPreferredSize(new Dimension(500, 250));
+		mainPanel.add(species);
 
 		// TODO crear la tabla de regiones.
 		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño

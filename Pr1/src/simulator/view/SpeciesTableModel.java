@@ -56,6 +56,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
 		get_data(animals);
+		System.out.println(getRowCount());
 	}
 
 	@Override
@@ -106,5 +107,9 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		return data.get(rowIndex).get(columnIndex);
+	}
+	
+	public String getColumnName(int index) {
+		return column_names.get(index);
 	}
 }

@@ -1,6 +1,8 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -8,12 +10,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
+import simulator.model.State;
+
 public class InfoTable extends JPanel {
 	
-	String title;
-	TableModel tableModel;
-	JTable table;
-	JScrollPane scroller;
+	private String title;
+	private TableModel tableModel;
+	private JTable table;
+	private JScrollPane scroller;
+	private int[] column_names;
 
 	InfoTable(String title, TableModel tableModel) {
 		this.title = title;
@@ -29,5 +34,6 @@ public class InfoTable extends JPanel {
 		// TODO añadir un JTable (con barra de desplazamiento vertical) que use tableModel
 		table = new JTable(tableModel);
 		scroller = new JScrollPane(table);
+		this.add(scroller);
 	}
 }
