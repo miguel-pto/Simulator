@@ -56,7 +56,7 @@ public class StatusBar extends JPanel implements EcoSysObserver {
 	}
 	
 	private String time_text() {
-		return TIME + time;
+		return TIME + (float)time;
 	}
 	
 	private String dimensions_text() {

@@ -17,14 +17,14 @@ import simulator.model.RegionInfo;
 
 public class MapWindow extends JFrame implements EcoSysObserver {
 
-	private Controller _ctrl;
-	private AbstractMapViewer _viewer;
-	private Frame _parent;
+	private Controller ctrl;
+	private AbstractMapViewer viewer;
+	private Frame parent;
 
 	MapWindow(Frame parent, Controller ctrl) {
 	super("[MAP VIEWER]");
-	_ctrl = ctrl;
-	_parent = parent;
+	this.ctrl = ctrl;
+	this.parent = parent;
 	intiGUI();
 	// TODO registrar this como observador
 	}
@@ -36,9 +36,9 @@ public class MapWindow extends JFrame implements EcoSysObserver {
 	// TODO en el método windowClosing, eliminar ‘MapWindow.this’ de los observadores
 	addWindowListener(new WindowListener() { … });
 	pack();
-	if (_parent != null)
-	setLocation(_parent.getLocation().x + _parent.getWidth()/2 -
-	getWidth()/2,_parent.getLocation().y + _parent.getHeight()/2 -
+	if (parent != null)
+	setLocation(parent.getLocation().x + parent.getWidth()/2 -
+	getWidth()/2,parent.getLocation().y + parent.getHeight()/2 -
 	getHeight()/2);
 	setResizable(false);
 	setVisible(true);
