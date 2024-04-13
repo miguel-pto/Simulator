@@ -41,6 +41,9 @@ public class MainWindow extends JFrame {
 		InfoTable species = new InfoTable("Species", new SpeciesTableModel(ctrl));
 		species.setPreferredSize(new Dimension(500, 250));
 		mainPanel.add(species);
+		InfoTable regions = new InfoTable("Regions", new RegionsTableModel(ctrl));
+		regions.setPreferredSize(new Dimension(500, 250));
+		mainPanel.add(regions);
 
 		// TODO crear la tabla de regiones.
 		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño

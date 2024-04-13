@@ -51,7 +51,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo {
 	}
 
 	public List<AnimalInfo> getAnimalInfo() {
-		return new ArrayList<>(animal_list); // EN LAS DIAPOSITIVAS DICE ANIMALS, PERO ASUMO QUE NO TIENE SENTIDO, PONGO
+		return new ArrayList<AnimalInfo>(animal_list); // EN LAS DIAPOSITIVAS DICE ANIMALS, PERO ASUMO QUE NO TIENE SENTIDO, PONGO
 												// ANIMAL_LIST
 		// TODO LAS DIAPOSITIVAS DICEN QUE TMB SE PUEDE UTILIZAR
 		// Collections.unmodifiableList(animal_list); QUE ERA LO QUE YA TENIAMOS
