@@ -1,6 +1,8 @@
 package simulator.view;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
@@ -16,15 +18,14 @@ import simulator.model.State;
 
 class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
-	private List<String> column_names;
-	private List<List<Object>> data;
-	Set<String> codes; // AUXILIAR PARA LA TABLA
+	private List<String> column_names, codes;
+	private Map<String, List<String>> data;
 
 	// TODO PONER TODO BONITO
 	SpeciesTableModel(Controller ctrl) {
 		column_names = new ArrayList<String>();
-		data = new ArrayList<List<Object>>();
-		codes = new HashSet<String>();
+		data = new HashMap<String, List<String>>();
+		codes = new ArrayList<String>();
 		init_cols();
 		ctrl.addObserver(this);
 	}
@@ -38,19 +39,16 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	private void get_data(List<AnimalInfo> animals) {
 		for (AnimalInfo a : animals) {
-			if (!codes.contains(a.get_genetic_code())) {
-				new_row(a.get_genetic_code(), animals);
+			if (!data.containsKey(a.get_genetic_code())) {
+				String code = a.get_genetic_code();
+				data.put(code, new ArrayList<String>());
+				codes.add(code);
+				data.get(code).add(code);
+				for (State s : State.values()) {
+					data.get(code).add(String.valueOf(animals.stream()
+							.filter((e) -> code.equals(e.get_genetic_code()) && s.equals(e.get_state())).count()));
+				}
 			}
-		}
-	}
-
-	private void new_row(String code, List<AnimalInfo> animals) {
-		int i = codes.size();
-		codes.add(code);
-		data.add(new ArrayList<Object>());
-		data.get(i).add(code);
-		for (State s : State.values()) {
-			data.get(i).add(animals.stream().filter((e) -> e.get_state().equals(s) && e.get_genetic_code().equals(code)).count());
 		}
 	}
 
@@ -61,8 +59,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		data = new ArrayList<List<Object>>();
-		codes = new HashSet<String>();
+		data = new HashMap<String, List<String>>();
+		codes = new ArrayList<String>();
 		get_data(animals);
 		this.fireTableDataChanged();
 	}
@@ -75,33 +73,12 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		// TODOS LOS DATOS PERO NO SE SI ES UN POCO SUCIA
 		AnimalInfo a = animals.get(animals.size() - 1);
 		add_animal(a, animals);
-		//this.fireTableDataChanged(); TODO VER CADA CUANTO ACTUALIZAMOS LA TABLA
-	}
-	
-	private void add_animal(AnimalInfo a, List<AnimalInfo> animals) {
-		if (!codes.contains(a.get_genetic_code())) {
-			new_row(a.get_genetic_code(), animals);
-		} else {
-			int i = 0;
-			while (data.get(i).get(0) != a.get_genetic_code())
-				i++;
-			int j = column_names.indexOf(a.get_state().toString());
-			data.get(i).set(j, animals.stream().filter(
-					(e) -> e.get_state().equals(a.get_state()) && e.get_genetic_code().equals(a.get_genetic_code()))
-					.count());
-		}
+		this.fireTableDataChanged();
 	}
 
-	private void update_data(List<AnimalInfo> animals) {
-		for (int i = 0; i < data.size(); i++) {
-			int j = 1;
-			String code = (String) data.get(i).get(0);
-			for (State s : State.values()) {
-				data.get(i).set(j,
-						animals.stream().filter((e) -> e.get_state().equals(s) && e.get_genetic_code().equals(code)).count());
-				j++;
-			}
-		}
+	private void add_animal(AnimalInfo a, List<AnimalInfo> animals) {
+		int i = column_names.indexOf(a.get_state().toString());
+		data.get(a.get_genetic_code()).set(i, data.get(a.get_genetic_code()).get(i) + 1);
 	}
 
 	@Override
@@ -110,7 +87,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAdvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		update_data(animals);
+		data = new HashMap<String, List<String>>();
+		get_data(animals);
 		this.fireTableDataChanged();
 	}
 
@@ -126,7 +104,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data.get(rowIndex).get(columnIndex);
+		return data.get(codes.get(rowIndex)).get(columnIndex);
 	}
 
 	public String getColumnName(int index) {

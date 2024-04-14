@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,7 +86,7 @@ public class ControlPanel extends JPanel {
 		runButton.addActionListener((e) -> {
 			update_buttons(false);
 			stopped = false;
-			run_sim(100000, 0.03);
+			run_sim((Integer)stepsSpinner.getValue(), 0.03);
 		});
 		toolsBar.add(runButton);
 
@@ -96,7 +97,10 @@ public class ControlPanel extends JPanel {
 		toolsBar.add(stopButton);
 		
 		stepsSpinner = new JSpinner();
-		stepsSpinner.setToolTipText("Steps Amount");
+		stepsSpinner.setToolTipText("Simulation steps to run: 1-10000");
+		stepsSpinner.setMaximumSize(new Dimension(80, 40));
+		stepsSpinner.setMinimumSize(new Dimension(80, 40));
+		stepsSpinner.setPreferredSize(new Dimension(80, 40));
 		JLabel stepsLabel = new JLabel("Steps: ");
 		toolsBar.add(stepsLabel);
 		toolsBar.add(stepsSpinner);

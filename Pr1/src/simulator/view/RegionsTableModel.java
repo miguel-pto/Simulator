@@ -84,6 +84,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	}
 	
 	private void get_data(MapInfo map) {
+		data = new ArrayList<Info>();
 		for (RegionData r : map) {
 			data.add(new Info(r));
 		}
@@ -92,26 +93,31 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
 		get_data(map);
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
 		get_data(map);
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals) {
 		get_data(map);
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
 		get_data(map);
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onAdvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
 		get_data(map);
+		this.fireTableDataChanged();
 	}
 	
 	public String getColumnName(int index) {
