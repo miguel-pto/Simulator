@@ -63,7 +63,7 @@ public class Main {
 	private static String in_file = null;
 	private static String out_file = null;
 	private static boolean sv = false;
-	private static ExecMode mode = ExecMode.BATCH;
+	private static ExecMode mode = ExecMode.GUI;
 
 	// FACTORÍAS
 	/*

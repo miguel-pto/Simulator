@@ -29,7 +29,16 @@ public class Controller {
 			JSONArray regions = data.getJSONArray("regions");
 			for (int i = 0; i < regions.length(); i++) {
 				JSONObject region = regions.getJSONObject(i);
-				load_data_regions(region);
+				JSONArray row = region.getJSONArray("row");
+				JSONArray col = region.getJSONArray("col");
+				int rf = row.getInt(0);
+				int rt = row.getInt(1);
+				int cf = col.getInt(0);
+				int ct = col.getInt(1);
+				JSONObject o = region.getJSONObject("spec");
+				for (int r = rf; r <= rt; r++)
+					for (int c = cf; c <= ct; c++)
+						sim.set_region(c, r, o);
 			}
 		}
 
@@ -38,24 +47,29 @@ public class Controller {
 			JSONObject animal = animals.getJSONObject(i);
 			int n = animal.getInt("amount");
 			JSONObject o = animal.getJSONObject("spec");
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < n; j++) {
 				sim.add_animal(o);
+			}
+		}
+	}
+
+	public void set_regions(JSONObject rs) {
+		JSONArray regions = rs.getJSONArray("regions");
+		for (int i = 0; i < regions.length(); i++) {
+			JSONObject region = regions.getJSONObject(i);
+			JSONArray row = region.getJSONArray("row");
+			JSONArray col = region.getJSONArray("col");
+			int rf = row.getInt(0);
+			int rt = row.getInt(1);
+			int cf = col.getInt(0);
+			int ct = col.getInt(1);
+			JSONObject o = region.getJSONObject("spec");
+			for (int r = rf; r <= rt; r++)
+				for (int c = cf; c <= ct; c++)
+					sim.set_region(c, r, o);
 		}
 	}
 	
-	private void load_data_regions(JSONObject region) {
-		JSONArray row = region.getJSONArray("row");
-		JSONArray col = region.getJSONArray("col");
-		int rf = row.getInt(0);
-		int rt = row.getInt(1);
-		int cf = col.getInt(0);
-		int ct = col.getInt(1);
-		JSONObject o = region.getJSONObject("spec");
-		for (int r = rf; r <= rt; r++)
-			for (int c = cf; c <= ct; c++)
-				sim.set_region(c, r, o);
-	}
-
 	// FUNCIÓN QUE INICIA Y COMPLETA TODO EL BUCLE DEL PROGRAMA
 	public void run(double t, double dt, boolean sv, OutputStream out) {
 		SimpleObjectViewer view = null;
@@ -101,18 +115,6 @@ public class Controller {
 	// SE OCUPA DE RESETEAR, LLAMANDO AL RESET DE SIMULATOR
 	public void reset(int cols, int rows, int width, int height) {
 		sim.reset(cols, rows, width, height);
-	}
-
-	public void set_regions(JSONObject rs) {
-		// TODO HAY QUE HACER LA REFACTORIZACION PERO POR AHORA CREO QUE ESTA BIEN
-		JSONArray regions = rs.getJSONArray("regions");
-		for (int i = 0; i < regions.length(); i++) {
-			JSONObject region = regions.getJSONObject(i);
-			int row = region.getInt("row");
-			int col = region.getInt("col");
-			JSONObject data = region.getJSONObject("data");
-			sim.set_region(row, col, data);
-		}
 	}
 
 	// SE OCUPA DE LLAMAR AL ADVANCE DE SIMULATOR

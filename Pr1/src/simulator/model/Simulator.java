@@ -151,8 +151,9 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 	// ENVIA UNA NOTIFICACION ONANIMALADDED A TODOS LOS OBSERVADORES
 	private void notify_onAnimalAdded() {
 		List<AnimalInfo> animal_info = new ArrayList<>(animal_list);
-		for (EcoSysObserver o : observer_list)
+		for (EcoSysObserver o : observer_list) {
 			o.onAnimalAdded(t, region_manager, animal_info);
+		}
 	}
 
 	// ENVIA UNA NOTIFICACION ONREGIONSET A TODOS LOS OBSERVADORES

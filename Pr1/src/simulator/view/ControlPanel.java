@@ -101,6 +101,7 @@ public class ControlPanel extends JPanel {
 		stepsSpinner.setMaximumSize(new Dimension(80, 40));
 		stepsSpinner.setMinimumSize(new Dimension(80, 40));
 		stepsSpinner.setPreferredSize(new Dimension(80, 40));
+		stepsSpinner.setValue(10000);
 		JLabel stepsLabel = new JLabel("Steps: ");
 		toolsBar.add(stepsLabel);
 		toolsBar.add(stepsSpinner);
@@ -136,13 +137,13 @@ public class ControlPanel extends JPanel {
 				InputStream is = new FileInputStream(fc.getSelectedFile());
 				JSONObject in = new JSONObject(new JSONTokener(is));
 				is.close();
-
+				
 				int rows = in.getInt("rows");
 				int cols = in.getInt("cols");
 				int width = in.getInt("width");
 				int height = in.getInt("height");
 				ctrl.reset(cols, rows, width, height);
-				ctrl.load_data(in.getJSONObject("data"));
+				ctrl.load_data(in);
 			} catch (Exception e) {
 			}
 		}

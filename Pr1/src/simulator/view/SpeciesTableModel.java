@@ -67,18 +67,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals) {
-		// update_data(animals);
-		// OTRA MANERA MAS EFICIENTE
-		// TODO REVISALO A VER SI TE PARECE BIEN. DE ESTA MANERA NO HAY Q ACTUALIZAR
-		// TODOS LOS DATOS PERO NO SE SI ES UN POCO SUCIA
-		AnimalInfo a = animals.get(animals.size() - 1);
-		add_animal(a, animals);
+		get_data(animals);
 		this.fireTableDataChanged();
-	}
-
-	private void add_animal(AnimalInfo a, List<AnimalInfo> animals) {
-		int i = column_names.indexOf(a.get_state().toString());
-		data.get(a.get_genetic_code()).set(i, data.get(a.get_genetic_code()).get(i) + 1);
 	}
 
 	@Override
