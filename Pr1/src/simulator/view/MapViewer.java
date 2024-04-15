@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -33,7 +34,7 @@ public class MapViewer extends AbstractMapViewer {
 	int rheight;
 
 	// Mostramos sólo animales con este estado. Los posibles valores de _currState
-	// son null, y los valores deAnimal.State.values(). Si es null mostramos todo.
+	// son null y los valores de Animal.State.values(). Si es null mostramos todo.
 	State currState;
 
 	// En estos atributos guardamos la lista de animales y el tiempo que hemos
@@ -41,7 +42,7 @@ public class MapViewer extends AbstractMapViewer {
 	volatile private Collection<AnimalInfo> objs;
 	volatile private Double time;
 
-	// Una clase auxilar para almacenar información sobre una especie
+	// Una clase auxiliar para almacenar información sobre una especie
 	private static class SpeciesInfo {
 		private Integer count;
 		private Color color;
@@ -66,8 +67,24 @@ public class MapViewer extends AbstractMapViewer {
 	}
 
 	private void initGUI() {
+		//TODO REVISAR
+		
+		List<State> states = new ArrayList<State>();
+		
+		states.add(null);
+		for (State s : State.values()) states.add(s);
 
 		addKeyListener(new KeyAdapter() {
+			
+			private void next_state() {
+				int i = 0;
+				
+				while (currState != states.get(i)) i++;
+				i++;
+				if (i == states.size()) currState = null;
+				else currState = states.get(i);
+			}
+			
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyChar()) {
@@ -76,10 +93,11 @@ public class MapViewer extends AbstractMapViewer {
 					repaint();
 					break;
 				case 's':
-					// TODO Cambiar _currState al siguiente (de manera circular). Después de null
-					// viene el primero de Animal.State.values() y después del último viene null.
+					next_state();
 					repaint();
+					break;
 				default:
+					break;
 				}
 			}
 
@@ -122,9 +140,9 @@ public class MapViewer extends AbstractMapViewer {
 
 		// TODO Mostrar el texto de ayuda si _showHelp es true. El texto a mostrar es el
 		// siguiente (en 2 líneas):
-		//
-		// h: toggle help
-		// s: show animals of a specific state
+		if (showHelp) {
+			this.drawStringWithRect(gr, 0, 0, "h: toggle help\r\n" + "s: show animals of a specific state");
+		}
 
 	}
 
