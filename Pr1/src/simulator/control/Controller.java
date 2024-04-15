@@ -26,20 +26,7 @@ public class Controller {
 	// FUNCIÓN ENCARGADA DE CARGAR TODA LA INFORMACIÓN DESDE EL JSON
 	public void load_data(JSONObject data) {
 		if (data.has("regions")) {
-			JSONArray regions = data.getJSONArray("regions");
-			for (int i = 0; i < regions.length(); i++) {
-				JSONObject region = regions.getJSONObject(i);
-				JSONArray row = region.getJSONArray("row");
-				JSONArray col = region.getJSONArray("col");
-				int rf = row.getInt(0);
-				int rt = row.getInt(1);
-				int cf = col.getInt(0);
-				int ct = col.getInt(1);
-				JSONObject o = region.getJSONObject("spec");
-				for (int r = rf; r <= rt; r++)
-					for (int c = cf; c <= ct; c++)
-						sim.set_region(c, r, o);
-			}
+			set_regions(data);
 		}
 
 		JSONArray animals = data.getJSONArray("animals");
