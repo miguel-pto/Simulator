@@ -18,7 +18,6 @@ public class InfoTable extends JPanel {
 	private TableModel tableModel;
 	private JTable table;
 	private JScrollPane scroller;
-	private int[] column_names;
 
 	InfoTable(String title, TableModel tableModel) {
 		this.title = title;
@@ -34,6 +33,7 @@ public class InfoTable extends JPanel {
 		// TODO añadir un JTable (con barra de desplazamiento vertical) que use tableModel
 		table = new JTable(tableModel);
 		scroller = new JScrollPane(table);
+		table.getTableHeader().setReorderingAllowed(false);
 		this.add(scroller);
 	}
 }

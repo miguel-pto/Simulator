@@ -18,14 +18,13 @@ import simulator.model.State;
 
 class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
-	private List<String> column_names, codes;
+	private List<String> column_names;
 	private Map<String, List<String>> data;
 
 	// TODO PONER TODO BONITO
 	SpeciesTableModel(Controller ctrl) {
 		column_names = new ArrayList<String>();
 		data = new HashMap<String, List<String>>();
-		codes = new ArrayList<String>();
 		init_cols();
 		ctrl.addObserver(this);
 	}
@@ -42,7 +41,6 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 			if (!data.containsKey(a.get_genetic_code())) {
 				String code = a.get_genetic_code();
 				data.put(code, new ArrayList<String>());
-				codes.add(code);
 				data.get(code).add(code);
 				for (State s : State.values()) {
 					data.get(code).add(String.valueOf(animals.stream()
@@ -60,7 +58,6 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
 		data = new HashMap<String, List<String>>();
-		codes = new ArrayList<String>();
 		get_data(animals);
 		this.fireTableDataChanged();
 	}
@@ -94,7 +91,8 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data.get(codes.get(rowIndex)).get(columnIndex);
+		Object[] rows = data.keySet().toArray();
+		return data.get(rows[rowIndex]).get(columnIndex);
 	}
 
 	public String getColumnName(int index) {
