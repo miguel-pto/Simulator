@@ -67,7 +67,7 @@ public class ControlPanel extends JPanel {
 		mapButton = new JButton();
 		mapButton.setToolTipText("Map");
 		mapButton.setIcon(loadImage("resources/icons/viewer.png"));
-		mapButton.addActionListener((e) -> create_map());
+		mapButton.addActionListener((e) -> new MapWindow( ViewUtils.getWindow(this), ctrl));
 		toolsBar.add(mapButton);
 
 		// TODO Inicializar _changeRegionsDialog con instancias del diálogo de cambio de
@@ -149,10 +149,6 @@ public class ControlPanel extends JPanel {
 		}
 	}
 
-	private void create_map() {
-
-	}
-
 	private void run_sim(int n, double dt) {
 		if (n > 0 && !stopped) {
 			try {
@@ -171,20 +167,8 @@ public class ControlPanel extends JPanel {
 
 	private void update_buttons(boolean enable) {
 		fcButton.setEnabled(enable);
-		mapButton.setEnabled(enable);
 		regionButton.setEnabled(enable);
 		runButton.setEnabled(enable);
 		quitButton.setEnabled(enable);
 	}
-
-	// PARA FIJAR EL TAMAÑO DEL JSPINNER SE PUEDE USAR:
-	/*
-	 * stepsSpinner.setToolTipText("Simulation steps to run: 1-10000");
-	 * stepsSpinner.setMaximumSize(new Dimension(80, 40));
-	 * stepsSpinner.setMinimumSize(new Dimension(80, 40));
-	 * stepsSpinner.setPreferredSize(new Dimension(80, 40))
-	 */
-
-	// TODO el resto de métodos van aquí…
-
 }

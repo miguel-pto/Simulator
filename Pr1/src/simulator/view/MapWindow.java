@@ -2,6 +2,7 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.List;
 
@@ -31,10 +32,42 @@ public class MapWindow extends JFrame implements EcoSysObserver {
 
 	private void intiGUI() {
 	JPanel mainPanel = new JPanel(new BorderLayout());
-	// TODO poner contentPane como mainPanel
-	// TODO crear el viewer y añadirlo a mainPanel (en el centro)
-	// TODO en el método windowClosing, eliminar ‘MapWindow.this’ de los observadores
-	addWindowListener(new WindowListener() { … });
+	// poner contentPane como mainPanel
+	this.setContentPane(mainPanel);
+	// crear el viewer y añadirlo a mainPanel (en el centro)
+	viewer = new MapViewer();
+	mainPanel.add(viewer);
+	// en el método windowClosing, eliminar ‘MapWindow.this’ de los observadores
+	addWindowListener(new WindowListener() {
+
+		@Override
+		public void windowOpened(WindowEvent e) {
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			mainPanel.remove(viewer);
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+		}});
 	pack();
 	if (parent != null)
 	setLocation(parent.getLocation().x + parent.getWidth()/2 -
@@ -62,19 +95,16 @@ public class MapWindow extends JFrame implements EcoSysObserver {
 
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onAdvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		SwingUtilities.invokeLater(() -> { viewer.update(animals, time); });
+		SwingUtilities.invokeLater(() -> {
+			viewer.update(animals, time);
+		});
 	}
-	// TODO otros métodos van aquí….
 }

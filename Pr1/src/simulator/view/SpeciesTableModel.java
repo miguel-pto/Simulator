@@ -37,6 +37,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	}
 
 	private void get_data(List<AnimalInfo> animals) {
+		data = new HashMap<String, List<String>>();
 		for (AnimalInfo a : animals) {
 			if (!data.containsKey(a.get_genetic_code())) {
 				String code = a.get_genetic_code();
@@ -53,11 +54,11 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
 		get_data(animals);
+		this.fireTableDataChanged();
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		data = new HashMap<String, List<String>>();
 		get_data(animals);
 		this.fireTableDataChanged();
 	}
@@ -65,7 +66,6 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 	@Override
 	public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals) {
 		get_data(animals);
-		this.fireTableDataChanged();
 	}
 
 	@Override
@@ -74,7 +74,6 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
 	@Override
 	public void onAdvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-		data = new HashMap<String, List<String>>();
 		get_data(animals);
 		this.fireTableDataChanged();
 	}
