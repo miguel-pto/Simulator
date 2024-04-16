@@ -40,6 +40,7 @@ public class ControlPanel extends JPanel {
 
 	ControlPanel(Controller ctrl) {
 		this.ctrl = ctrl;
+		changeRegionsDialog = new ChangeRegionsDialog(ctrl);
 		initGUI();
 	}
 
@@ -48,7 +49,7 @@ public class ControlPanel extends JPanel {
 		toolsBar = new JToolBar();
 		add(toolsBar, BorderLayout.PAGE_START);
 
-		// TODO crear los diferentes botones/atributos y añadirlos a toolsBar.
+		// crear los diferentes botones/atributos y añadirlos a toolsBar.
 		// Todos ellos han de tener su correspondiente tooltip.
 		// Puedes utilizar _toolsBar.addSeparator() para añadir la línea de separación
 		// vertical entre las componentes que lo necesiten.
