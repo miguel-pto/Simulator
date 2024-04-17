@@ -3,6 +3,7 @@ package simulator.view;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 
@@ -35,7 +36,7 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	private DefaultTableModel dataTableModel;
 	private Controller ctrl;
 	private List<JSONObject> regionsInfo;
-	
+
 	private String[] headers = { "Key", "Value", "Description" };
 
 	ChangeRegionsDialog(Controller ctrl) {
@@ -65,7 +66,7 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		// TODO crear el texto de ayuda que aparece en la parte superior del diálogo y
 		// añádelo al panel correspondiente diálogo (Ver el apartado Figuras)
 		JLabel helpText = new JLabel(
-				"Select a region type, the rows / cols interval, and provide values for the parameters in the Value column (default values are used for parameters with no value).");
+				"<html><body>Select a region type, the rows / cols interval, and provide values for the parameters in the Value column<br>(default values are used for parameters with no value).</body></html>");
 		helpPanel.add(helpText);
 
 		// RegionsInfo se usará para establecer la información en la tabla
@@ -93,16 +94,30 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		for (JSONObject o : regionsInfo) {
 			regionsModel.addElement(o.getString("type"));
 		}
-		
+
 		// TODO crear un combobox que use _regionsModel y añadirlo al diálogo.
 		JComboBox<String> regionsComboBox = new JComboBox<>(regionsModel);
+		regionsComboBox.addActionListener((e) -> {
+			for (int i = dataTableModel.getRowCount() - 1; i >= 0; i--) {
+				dataTableModel.removeRow(i);
+			}
+			JSONObject info = regionsInfo.get(regionsComboBox.getSelectedIndex());
+			JSONObject data = info.getJSONObject("data");
+			int i = 0;
+			for (String s : data.keySet()) {
+				dataTableModel.addRow(new Vector<String>());
+				dataTableModel.setValueAt(s, i, 0);
+				dataTableModel.setValueAt(data.getString(s), i, 2);
+				i++;
+			}
+		});
 		comboPanel.add(new JLabel("Region type: "));
 		comboPanel.add(regionsComboBox);
-		
+
 		// TODO crear 4 modelos de combobox para _fromRowModel, _toRowModel,
 		// _fromColModel y _toColModel.
 		fromRowModel = new DefaultComboBoxModel<>();
-		
+
 		toRowModel = new DefaultComboBoxModel<>();
 		fromColModel = new DefaultComboBoxModel<>();
 		toColModel = new DefaultComboBoxModel<>();
@@ -111,7 +126,7 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		JComboBox<String> fromRowComboBox = new JComboBox<>(fromRowModel);
 		JComboBox<String> toRowComboBox = new JComboBox<>(toRowModel);
 		JComboBox<String> fromColComboBox = new JComboBox<>(fromColModel);
-		JComboBox<String> toColComboBox = new JComboBox<>(toColModel);	
+		JComboBox<String> toColComboBox = new JComboBox<>(toColModel);
 		comboPanel.add(new JLabel("Row from / to: "));
 		comboPanel.add(fromRowComboBox);
 		comboPanel.add(toRowComboBox);
@@ -123,9 +138,11 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener((e) -> setVisible(false));
 		buttonPanel.add(cancelButton);
-		
+
 		JButton okButton = new JButton("OK");
-		okButton.addActionListener((e) -> {});
+		okButton.addActionListener((e) -> {
+			
+		});
 		buttonPanel.add(okButton);
 
 		setPreferredSize(new Dimension(700, 400)); // puedes usar otro tamaño
@@ -142,16 +159,25 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		setVisible(true);
 	}
 
+	private void updateModels(MapInfo map) {
+		for (int i = 0; i < map.get_rows(); i++) {
+			fromRowModel.addElement(String.valueOf(i));
+			toRowModel.addElement(String.valueOf(i));
+		}
+		for (int i = 0; i < map.get_cols(); i++) {
+			fromColModel.addElement(String.valueOf(i));
+			toColModel.addElement(String.valueOf(i));
+		}
+	}
+
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
-
+		updateModels(map);
 	}
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-		// TODO Auto-generated method stub
-
+		updateModels(map);
 	}
 
 	@Override
