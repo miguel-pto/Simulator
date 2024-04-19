@@ -1,12 +1,13 @@
 package simulator.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JFrame;
-
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -83,6 +84,8 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		// TODO crear un JTable que use _dataTableModel, y añadirlo al diálogo
 		JTable dataTable = new JTable(dataTableModel);
+		tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+		tablePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
 		tablePanel.add(new JScrollPane(dataTable));
 
 		// regionsModel es un modelo de combobox que incluye los tipos de regiones
@@ -141,7 +144,26 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener((e) -> {
-			
+			try {
+			int fromRow = fromRowComboBox.getSelectedIndex();
+			int toRow = toRowComboBox.getSelectedIndex();
+			int fromCol = fromColComboBox.getSelectedIndex();
+			int toCol = toColComboBox.getSelectedIndex();
+			int regionIndex = regionsComboBox.getSelectedIndex();
+			String type = regionsInfo.get(regionIndex).getString("type");
+			JSONObject data = new JSONObject();
+			if (dataTable.getValueAt(0, 1) != null) data.put("factor", dataTable.getValueAt(0, 1));
+			if (dataTable.getValueAt(1, 1) != null) data.put("food", dataTable.getValueAt(1, 1));
+			String json = "{ \"regions\": [ {" + "\"row\": [" + fromRow + "," + toRow + "], " + "\"col\": [" + fromCol
+					+ "," + toCol + "], " + "\"spec\": {" + "\"type\": \"" + type + "\", " + "\"data\": " + data + "}"
+					+ "} ] }";
+			JSONObject region_data = new JSONObject(json);
+			ctrl.set_regions(region_data);
+			} catch (Exception x) {
+				ViewUtils.showErrorMsg(x.getMessage());
+			} finally {
+				setVisible(false);
+			}
 		});
 		buttonPanel.add(okButton);
 
@@ -149,7 +171,6 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		pack();
 		setResizable(false);
 		setVisible(false);
-
 	}
 
 	public void open(Frame parent) {
