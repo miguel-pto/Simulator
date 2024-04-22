@@ -51,6 +51,7 @@ public class Main {
 	// default values for some parameters
 	//
 	private final static Double default_time = 10.0; // IN SECONDS
+	//PUBLICO AL SER USADO DESDE LA GUI
 	public final static Double default_delta_time = 0.03; // IN SECONDS
 	private final static String default_mode = "gui";
 	
@@ -66,11 +67,7 @@ public class Main {
 	private static ExecMode mode = ExecMode.GUI;
 
 	// FACTORÍAS
-	/*
-	 * private static Factory<SelectionStrategy> selection_strategy_factory; private
-	 * static Factory<Animal> animal_factory; private static Factory<Region>
-	 * region_factory;
-	 */
+	//PÚBLICAS AL SER USADAS DESDE EL LA GUI
 
 	public static Factory<SelectionStrategy> selection_strategy_factory;
 	public static Factory<Animal> animal_factory;

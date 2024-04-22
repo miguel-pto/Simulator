@@ -169,6 +169,7 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 			o.onAdvanced(t, region_manager, animal_info, dt);
 	}
 	
+	//ENVIA UNA NOTIFICACION ONRESET A TODOS LOS OBSERVADORES
 	private void notify_onReset() {
 		List<AnimalInfo> animal_info = new ArrayList<>(animal_list);
 		for (EcoSysObserver o : observer_list) {
@@ -176,6 +177,7 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
 		}
 	}
 
+	//ELIMINA EL OBSERVADOR DE LA LISTA DE OBSERVADORES
 	public void removeObserver(EcoSysObserver o) {
 		observer_list.remove(o);
 	}

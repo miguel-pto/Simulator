@@ -23,27 +23,27 @@ public class MainWindow extends JFrame {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
 
-		// TODO CREAR ControlPanel Y AÑADIRLO EN PAGE_START DE mainPanel
+		// SE CREA ControlPanel Y SE AÑADE EN PAGE_START DE mainPanel
 		ControlPanel ctrlPanel = new ControlPanel(ctrl);
 		mainPanel.add(ctrlPanel, BorderLayout.PAGE_START);
 
-		// TODO crear StatusBar y añadirlo en PAGE_END de mainPanel
+		// SE CREA StatusBar Y SE AÑADE EN PAGE_END de mainPanel
 		StatusBar bar = new StatusBar(ctrl);
 		mainPanel.add(bar, BorderLayout.PAGE_END);
 
-		// Definición del panel de tablas
+		// DEFINICIÓN DEL PANEL DE TABLAS Y ES AÑADIDO A mainPanel
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-		// TODO crear la tabla de especies y añadirla a contentPanel.
-		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
+		//SE CREA LA TABLA DE ESPECIES Y ES AÑADIDA A contentPanel
+		//SE HACE USO DE setPreferredSize(new Dimension(500, 250)) PARA FIJAR SU TAMAÑO
 		InfoTable species = new InfoTable("Species", new SpeciesTableModel(ctrl));
 		species.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(species);
 
-		// TODO crear la tabla de regiones.
-		// Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
+		// SE CREA LA TABLA DE REGIONES Y ES AÑADIDA A contentPanel
+		// SE HACE USO DE setPreferredSize(new Dimension(500, 250)) PARA FIJAR SU TAMAÑO
 		InfoTable regions = new InfoTable("Regions", new RegionsTableModel(ctrl));
 		regions.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(regions);

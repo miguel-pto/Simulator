@@ -176,6 +176,8 @@ public class RegionManager implements AnimalMapView {
 		return selection;
 	}
 
+	//ITERADOR QUE RECORRE LA MATRIZ DE REIGONES (POR FILAS, DE IZQ A DER) Y PARA CADA REGION
+	//	DEVUELVE LA INSTANCIA CORRESPONDIENTE DE RegionData
 	public Iterator<RegionData> iterator() { // TODO REVISAR COLS Y ROWS. YA DE PASO EN EL MANAGER ENTERO
 		return new Iterator<MapInfo.RegionData>() {
 			int r = 0;

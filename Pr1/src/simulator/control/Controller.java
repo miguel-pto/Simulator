@@ -99,6 +99,10 @@ public class Controller {
 		return ol;
 	}
 
+	
+	
+	//SE AÑADEN FUNCIONALIDADES ADICIONALES PARA ASÍ EVITAR PASAR EL SIMULADOR A LA GUI
+	
 	// SE OCUPA DE RESETEAR, LLAMANDO AL RESET DE SIMULATOR
 	public void reset(int cols, int rows, int width, int height) {
 		sim.reset(cols, rows, width, height);
