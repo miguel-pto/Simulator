@@ -16,6 +16,9 @@ import simulator.model.RegionInfo;
 
 public class StatusBar extends JPanel implements EcoSysObserver {
 	
+	//LA BARRA DE ESTADO ES LA RESPONSABLE DE MOSTRAR LA INFORMACIÓN GENERAL SOBRE EL SIMULADOR
+		//INCLUYE INFORMACIÓN SOBRE EL TIEMPO DE SIMULACIÓN, LA CANTIDAD DE ANIMALES, LA DIMENSIÓN DE LA SIMULACIÓN...
+	
 	private Controller ctrl;
 	private double time;
 	private int animals, width, height, rows, cols;

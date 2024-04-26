@@ -55,6 +55,8 @@ public class MapViewer extends AbstractMapViewer {
 
 	// Un mapa para la información sobre las especies
 	Map<String, SpeciesInfo> kindsInfo = new HashMap<>();
+	
+	
 
 	// El font que usamos para dibujar texto
 	private Font font = new Font("Arial", Font.BOLD, 12);
@@ -169,7 +171,11 @@ public class MapViewer extends AbstractMapViewer {
 			g.drawLine(0, aux, width, aux);
 			aux += rheight;
 		}
-
+		
+		
+		//TODO Esto igual hay que quitarlo, es para probar
+		kindsInfo.clear();
+		
 		// Dibujar los animales
 		for (AnimalInfo a : animals) {
 
@@ -186,7 +192,7 @@ public class MapViewer extends AbstractMapViewer {
 				esp_info = new SpeciesInfo(ViewUtils.get_color(a.get_genetic_code()));
 				kindsInfo.put(a.get_genetic_code(), esp_info);
 			}
-
+			
 			// Incrementar el contador de la especie (es decir el contador dentro de
 			// tag_info)
 			esp_info.count++;
@@ -212,7 +218,10 @@ public class MapViewer extends AbstractMapViewer {
 		aux = 60;
 		for (Entry<String, SpeciesInfo> e : kindsInfo.entrySet()) {
 			g.setColor(e.getValue().color);
-			drawStringWithRect(g, 30, height - aux, e.getKey());
+			//drawStringWithRect(g, 30, height - aux, e.getKey()); Lo que teniamos puesto, pero hay que cambiarlo
+			//TODO tiene que poner el numero de bichos de cada especie, 
+			//en principio es esto, pero hay que resetearlo pq no para de ascender
+			drawStringWithRect(g, 30, height - aux, e.getKey() + ": " + e.getValue().count);
 			aux += 30;
 		}
 	}

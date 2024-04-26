@@ -39,7 +39,9 @@ public class Controller {
 			}
 		}
 	}
-
+	
+	// FUNCION QUE SIENDO rs UN JSON QUE INCLUYE LA CLAVE "regions" MODIFICA LAS REGIONES QUE CORRESPONDEN
+		// MEDIANTE set_regions DEL SIMULADOR
 	public void set_regions(JSONObject rs) {
 		JSONArray regions = rs.getJSONArray("regions");
 		for (int i = 0; i < regions.length(); i++) {

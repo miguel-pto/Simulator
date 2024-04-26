@@ -22,6 +22,7 @@ public class MainWindow extends JFrame {
 	private void initGUI() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
+		
 
 		// SE CREA ControlPanel Y SE AÑADE EN PAGE_START DE mainPanel
 		ControlPanel ctrlPanel = new ControlPanel(ctrl);
@@ -49,7 +50,6 @@ public class MainWindow extends JFrame {
 		contentPanel.add(regions);
 
 		// TODO llama a ViewUtils.quit(MainWindow.this) en el método windowClosing
-
 		// TODO COMPLETAR ESTO
 		addWindowListener(null);
 		setSize(500, 500);
@@ -57,5 +57,6 @@ public class MainWindow extends JFrame {
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
+		
 	}
 }
