@@ -29,6 +29,13 @@ import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
 
 public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
+	
+	// ESTA CLASE ES LA RESPONSABLE DE IMPLEMENTAR LA VENTANA DE DIALOGO QUE PERMITE MODIFICAR LAS REGIONES
+	
+	//	SI MÁS TIPOS DE REGIONES SON AÑADIDOS A LA FACTORIA DE REGIONES, ES IMPORTANTE QUE EL DIÁLOGO SIGA
+	//	FUNCIONANDO IGUAL SIN NECESIDAD DE MODIFICAR CODIGO, POR LO QUE EVITAMOS HACER REFERENCIA DIRECTA
+	//	A LOS TIPOS DE REGIONES, SACANDO SIEMPRE LA INFORMACIÓN MEDIANTE EL MÉTODO get_info() DE SU FACTORIA
+	
 	private DefaultComboBoxModel<String> regionsModel;
 	private DefaultComboBoxModel<String> fromRowModel;
 	private DefaultComboBoxModel<String> toRowModel;
@@ -39,12 +46,15 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	private List<JSONObject> regionsInfo;
 
 	private String[] headers = { "Key", "Value", "Description" };
+	
+	// EL DIALOGO SE CREA/ABRE AL PULSAR SOBRE SU BOTÓN. SE CREA UNA ÚNICA INSTANCIA
+	//	DE LA VENTADA DE DIÁLOGO EN LA CONSTRUCTORA Y SE LLAMA AL METODO open
 
 	ChangeRegionsDialog(Controller ctrl) {
 		super((Frame) null, true);
 		this.ctrl = ctrl;
 		initGUI();
-		ctrl.addObserver(this);
+		ctrl.addObserver(this); //SE REGISTRA COMO OBSERVADOR
 	}
 
 	@SuppressWarnings("serial")
@@ -53,10 +63,11 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
-		// TODO crea varios paneles para organizar los componentes visuales en el
-		// dialogo, y añádelos al mainpanel. P.ej., uno para el texto de ayuda, uno para
-		// la tabla, uno para los combobox, y uno para los botones.
+		
+		// DIFERENTES PANELES SON CREADOS PARA ORGANIZAR LOS COMPONENTES VISUALES
+		//	EN EL DIALOGO Y SON AÑADIDOS AL mainPanel
 
+		// SE CREA UN PANEL PARA EL TEXTO DE AYUDA, PARA LA TABLA, PARA LOS COMBOBOX Y PARA LOS BOTONES
 		JPanel helpPanel = new JPanel(), tablePanel = new JPanel(), comboPanel = new JPanel(),
 				buttonPanel = new JPanel();
 		mainPanel.add(helpPanel);
@@ -64,17 +75,16 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		mainPanel.add(comboPanel);
 		mainPanel.add(buttonPanel);
 
-		// TODO crear el texto de ayuda que aparece en la parte superior del diálogo y
-		// añádelo al panel correspondiente diálogo (Ver el apartado Figuras)
+		// SE CREA EL TEXTO DE AYUDA QUE APARECERA EN LA PARTE SUPERIOR DEL DIALOGO, 
+		// 	SIENDO AÑADIDO AL PANEL CORRESPONDIENTE DIALOGO
 		JLabel helpText = new JLabel(
 				"<html><body>Select a region type, the rows / cols interval, and provide values for the parameters in the Value column<br>(default values are used for parameters with no value).</body></html>");
 		helpPanel.add(helpText);
 
-		// RegionsInfo se usará para establecer la información en la tabla
+		// SE USARARÁ RegionsInfo PARA QUE LA INFORMACIÓN EN LA TABLA SEA ESTABLECIDA
 		regionsInfo = Main.region_factory.get_info();
 
-		// dataTableModel es un modelo de tabla que incluye todos los parámetros de la
-		// region
+		// dataTableModel ES UN MODELO DE TABLA EL CUAL INCLUYE TODOS LOS PARÁMETROS DE LA REGION
 		dataTableModel = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
 				return column == 1;
@@ -82,23 +92,25 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		};
 		dataTableModel.setColumnIdentifiers(headers);
 
-		// TODO crear un JTable que use _dataTableModel, y añadirlo al diálogo
+		// UN JTable QUE HAGA USO DE dataTableModel ES CREADO Y AÑADIDO AL DIALOGO
 		JTable dataTable = new JTable(dataTableModel);
 		tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
 		tablePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
 		tablePanel.add(new JScrollPane(dataTable));
 
-		// regionsModel es un modelo de combobox que incluye los tipos de regiones
+		// regionsModel ES UN MODELO DE COMBOBOX EL CUAL INCLUYE LOS DIFERENTES TIPOS DE REGIONES
 		regionsModel = new DefaultComboBoxModel<>();
 
-		// TODO añadir la descripcionde todas las regiones a regionsModel, para eso usa
-		// la clave “desc” o “type” de los JSONObject en _regionsInfo, ya que estos nos
-		// dan información sobre lo que puede crear la factoría.
+		
+		// TODAS LAS REGIONES TIENEN SU DESCRIPCIÓN AÑADIDA AL regionsModel
+		//	PARA ELLO SE USAN LA CLAVE desc O type  DE LOS JSONObject EN regionsInfo PUESTO
+		//	QUE OTORGAN INFORMACIÓN SOBRE LO QUE LA FACTORIA PUEDE CREAR
+		
 		for (JSONObject o : regionsInfo) {
 			regionsModel.addElement(o.getString("type"));
 		}
 
-		// TODO crear un combobox que use _regionsModel y añadirlo al diálogo.
+		// EL COMBOBOX QUE USE regionsModel ES CREADO Y AÑADIDO AL DIÁLOGO
 		JComboBox<String> regionsComboBox = new JComboBox<>(regionsModel);
 		regionsComboBox.addActionListener((e) -> {
 			for (int i = dataTableModel.getRowCount() - 1; i >= 0; i--) {
@@ -117,15 +129,15 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		comboPanel.add(new JLabel("Region type: "));
 		comboPanel.add(regionsComboBox);
 
-		// TODO crear 4 modelos de combobox para _fromRowModel, _toRowModel,
-		// _fromColModel y _toColModel.
+		
+		// 4 MODELOS DE COMBOBOX SON CREADOS PARA 
+		// 	fromRowModel, toRowModel, fromColModel y toColModel
 		fromRowModel = new DefaultComboBoxModel<>();
-
 		toRowModel = new DefaultComboBoxModel<>();
 		fromColModel = new DefaultComboBoxModel<>();
 		toColModel = new DefaultComboBoxModel<>();
 
-		// TODO crear 4 combobox que usen estos modelos y añadirlos al diálogo.
+		// 4 COMBOBOX QUE USEN ESTOS MODELOS SON CREADOS Y AÑADIDOS AL DIALOGO
 		JComboBox<String> fromRowComboBox = new JComboBox<>(fromRowModel);
 		JComboBox<String> toRowComboBox = new JComboBox<>(toRowModel);
 		JComboBox<String> fromColComboBox = new JComboBox<>(fromColModel);
@@ -137,7 +149,7 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		comboPanel.add(fromColComboBox);
 		comboPanel.add(toColComboBox);
 
-		// crear los botones OK y Cancel y añadirlos al diálogo.
+		// LOS BOTONES OK Y Cancel SON CREADOS Y AÑADIDOS AL DIÁLOGO
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener((e) -> setVisible(false));
 		buttonPanel.add(cancelButton);
@@ -157,8 +169,11 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			String json = "{ \"regions\": [ {" + "\"row\": [" + fromRow + "," + toRow + "], " + "\"col\": [" + fromCol
 					+ "," + toCol + "], " + "\"spec\": {" + "\"type\": \"" + type + "\", " + "\"data\": " + data + "}"
 					+ "} ] }";
+			// CONVIERTE LA INFORMACION EN UN JSON QUE INCLUYE UNA CLAVE Y EL VALOR PARA CADA FILA EN LA TABLA,
+			//	PARA LA FILA QUE INCLUYEN VALOR NO VACIO, REFIRIENDONOS AL JSON COMO region_data
 			JSONObject region_data = new JSONObject(json);
 			ctrl.set_regions(region_data);
+			// EL JSON ES PASADO A crtl PARA CAMBIAR LAS REGIONES
 			} catch (Exception x) {
 				ViewUtils.showErrorMsg(x.getMessage());
 			} finally {
@@ -167,7 +182,7 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		});
 		buttonPanel.add(okButton);
 
-		setPreferredSize(new Dimension(700, 400)); // puedes usar otro tamaño
+		setPreferredSize(new Dimension(700, 400)); // SE TOMA ESTE TAMAÑO, PERO OTRO PUEDE SER UTILIZADO
 		pack();
 		setResizable(false);
 		setVisible(false);
@@ -181,6 +196,7 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	}
 
 	private void updateModels(MapInfo map) {
+		// POR CADA FILA Y COLUMNA DE map  SE ACTUALIZAN LOS MODELOS
 		for (int i = 0; i < map.get_rows(); i++) {
 			fromRowModel.addElement(String.valueOf(i));
 			toRowModel.addElement(String.valueOf(i));

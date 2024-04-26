@@ -27,17 +27,17 @@ public class MapWindow extends JFrame implements EcoSysObserver {
 		this.ctrl = ctrl;
 		this.parent = parent;
 		intiGUI();
-		ctrl.addObserver(this);
+		ctrl.addObserver(this); // SE REGISTRA COMO OBSERVADOR
 	}
 
 	private void intiGUI() {
 	JPanel mainPanel = new JPanel(new BorderLayout());
-	// poner contentPane como mainPanel
+	// contentPane ES PUESTO COMO mainPanel
 	this.setContentPane(mainPanel);
-	// crear el viewer y añadirlo a mainPanel (en el centro)
+	// EL VIEWER ES CREADO Y AÑADIDO A mainPanel (en el centro)
 	viewer = new MapViewer();
 	mainPanel.add(viewer);
-	// en el método windowClosing, eliminar ‘MapWindow.this’ de los observadores
+	// SE ELIMINA MapWindow.this DE LOS OBSERVADORES EN EL MÉTODO windowClosing
 	addWindowListener(new WindowListener() {
 
 		@Override
@@ -77,8 +77,10 @@ public class MapWindow extends JFrame implements EcoSysObserver {
 	setVisible(true);
 	}
 
+	
 	@Override
 	public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
+		// LLAMAN AL RESET DEL viewer Y CAMBIAN EL TAMAÑO DE LA PESTAÑA USANDO pack()
 		SwingUtilities.invokeLater(() -> {
 			viewer.reset(time, map, animals);
 			pack();
@@ -87,6 +89,7 @@ public class MapWindow extends JFrame implements EcoSysObserver {
 
 	@Override
 	public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
+		// LLAMAN AL RESET DEL viewer Y CAMBIAN EL TAMAÑO DE LA PESTAÑA USANDO pack()
 		SwingUtilities.invokeLater(() -> {
 			viewer.reset(time, map, animals);
 			pack();
@@ -103,6 +106,7 @@ public class MapWindow extends JFrame implements EcoSysObserver {
 
 	@Override
 	public void onAdvanced(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
+		// LLAMA A update DE viewer
 		SwingUtilities.invokeLater(() -> {
 			viewer.update(animals, time);
 		});

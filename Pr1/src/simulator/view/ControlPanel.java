@@ -100,7 +100,9 @@ public class ControlPanel extends JPanel {
 			stopped = false;
 			run_sim((Integer)stepsSpinner.getValue(),delt_tim);
 			}
-			catch (NumberFormatException error) {}
+			catch (NumberFormatException error) {
+				ViewUtils.showErrorMsg(error.getMessage());
+			}
 		});
 		toolsBar.add(runButton);
 		//AL PULSARLO SE DESHABILITAN LOS BOTONES SALVO EL DE STOP Y, EN NUESTRO CASO, EL DE MAP EN CASO DE QUERER ABRIR OTRA IMAGEN

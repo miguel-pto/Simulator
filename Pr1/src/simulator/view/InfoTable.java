@@ -14,6 +14,10 @@ import simulator.model.State;
 
 public class InfoTable extends JPanel {
 	
+	//DEFINIMOS UNA CLASE QUE REPRESENTE UNA TABLA QUE RECIBE EL MODELO DE TABLA COMO PARAMETROS 
+	//	Y LA USAMOS PARA LAS TABLAS RESPONSABLES DE MOSTRAR LA INFORMACIÓN DE LOS ANIMALES Y DE 
+	//	LAS REGIONES
+	
 	private String title;
 	private TableModel tableModel;
 	private JTable table;
@@ -26,11 +30,11 @@ public class InfoTable extends JPanel {
 	}
 
 	private void initGUI() {
-		// TODO cambiar el layout del panel a BorderLayout()
+		// SE CAMBIA EL LAYOUT DEL PANEL A BorderLayout
 		this.setLayout(new BorderLayout());
-		// TODO añadir un borde con título al JPanel, con el texto title
+		// SE AÑADE UN BORDE CON TÍTULO MEDIANTE EL TEXTO title
 		this.setBorder(BorderFactory.createTitledBorder(getBorder(), title));
-		// TODO añadir un JTable (con barra de desplazamiento vertical) que use tableModel
+		// SE AÑADE UNA BARRA DE DESPLAZAMIENTO VERTICAL QUE USE tableModel (MEDIANTE UN JTable)
 		table = new JTable(tableModel);
 		scroller = new JScrollPane(table);
 		table.getTableHeader().setReorderingAllowed(false);

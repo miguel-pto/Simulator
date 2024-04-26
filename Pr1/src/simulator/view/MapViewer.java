@@ -19,23 +19,27 @@ import java.util.Map.Entry;
 
 @SuppressWarnings("serial")
 public class MapViewer extends AbstractMapViewer {
+	
+	// EL VISOR DEL MAPA DIBUJA EL ESTADO DE LA SIMULACION GRAFICAMENTE EN CADA PASO
+	// 	SE IMPLEMENTA CON MapWindow, QUE REPRESENTA LA VENTANA, Y CON 
+	//	MapViewer QUE REALIZA LA VISUALIZACIÓN
+	
+	// EL VISOR SE ENCARGA DE DIBUJAR CADA ANIMAL CON TAMAÑO CORRESPONDIENTE A SU EDAD
+	// 	Y DEL COLOR DE SU CÓDIGO GENÉTICO, MOSTRAR INFORMACIÓN SOBRE EL TIEMPO ACTUAL Y 
+	// 	EL NUMERO DE ANIMALES DE CADA CÓDIGO GENÉTICO, Y PERMITIR MOSTRAR SOLO ANIMALES
+	//	CON UN ESTADO ESPECÍFICO
 
-	// Anchura/altura/ de la simulación -- se supone que siempre van a ser iguales
-	// al tamaño del componente
-	private int width;
-	private int height;
+	// Anchura/altura/ de la simulación -- se supone que siempre van a ser iguales al tamaño del componente
+	private int width, height;
 
 	// Número de filas/columnas de la simulación
-	private int rows;
-	private int cols;
+	private int rows, cols;
 
 	// Anchura/altura de una región
-	int rwidth;
-	int rheight;
+	int rwidth, rheight;
 
-	// Mostramos sólo animales con este estado. Los posibles valores de _currState
-	// son null y los valores de Animal.State.values(). Si es null mostramos todo.
-	State currState;
+	// Mostramos sólo animales con este estado. Los posibles valores de _currState son null y los valores de Animal.State.values().
+	State currState; // Si es null mostramos todo.
 
 	// En estos atributos guardamos la lista de animales y el tiempo que hemos
 	// recibido la última vez para dibujarlos.
@@ -56,8 +60,6 @@ public class MapViewer extends AbstractMapViewer {
 	// Un mapa para la información sobre las especies
 	Map<String, SpeciesInfo> kindsInfo = new HashMap<>();
 	
-	
-
 	// El font que usamos para dibujar texto
 	private Font font = new Font("Arial", Font.BOLD, 12);
 
@@ -113,8 +115,7 @@ public class MapViewer extends AbstractMapViewer {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				requestFocus(); // Esto es necesario para capturar las teclas cuando el ratón está sobre este
-								// componente.
+				requestFocus(); // Necesario para capturar las teclas cuando el ratón está sobre este componente.
 			}
 		});
 
@@ -203,15 +204,14 @@ public class MapViewer extends AbstractMapViewer {
 					(int) a.get_age() / 2 + 4);
 		}
 
-		// TODO Dibujar la etiqueta del estado visible, sin no es null.
+		// Dibuja la etiqueta del estado visible, si esta no es null.
 		if (currState != null)
 			drawStringWithRect(g, 30, height - 120, "State: " + currState.toString());
 
-		// TODO Dibujar la etiqueta del tiempo. Para escribir solo 3 decimales puede
-		// usar String.format("%.3f", time)
+		// Dibuja la etiqueta del tiempo. Usa String.format("%.3f", time) ara escribir solo 3 decimales
 		drawStringWithRect(g, 30, height - 30, "Time: " + String.format("%.3f", time));
 
-		// TODO Dibujar la información de todas la especies. Al final de cada iteración
+		// Dibuja la información de todas la especies. Al final de cada iteración
 		// poner el contador de la especie correspondiente a 0 (para resetear el cuento)
 		aux = 60;
 		for (Entry<String, SpeciesInfo> e : kindsInfo.entrySet()) {
@@ -224,7 +224,7 @@ public class MapViewer extends AbstractMapViewer {
 		}
 	}
 
-	// Un método que dibujar un texto con un rectángulo
+	// Método que dibuja un texto con un rectángulo
 	void drawStringWithRect(Graphics2D g, int x, int y, String s) {
 		Rectangle2D rect = g.getFontMetrics().getStringBounds(s, g);
 		g.drawString(s, x, y);
@@ -233,7 +233,7 @@ public class MapViewer extends AbstractMapViewer {
 
 	@Override
 	public void update(List<AnimalInfo> objs, Double time) {
-		// Almacenar objs y time en los atributos correspondientes y llamar a
+		// Almacena objs y time en los atributos correspondientes y llama a
 		// repaint() para redibujar el componente.
 		this.objs = objs;
 		this.time = time;
@@ -242,7 +242,7 @@ public class MapViewer extends AbstractMapViewer {
 
 	@Override
 	public void reset(double time, MapInfo map, List<AnimalInfo> animals) {
-		// Actualizar los atributos _width, _height, _cols, _rows, etc.
+		// Actualiza los atributos _width, _height, _cols, _rows, etc.
 		width = map.get_width();
 		height = map.get_height();
 		cols = map.get_cols();
