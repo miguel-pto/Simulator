@@ -172,9 +172,7 @@ public class MapViewer extends AbstractMapViewer {
 			aux += rheight;
 		}
 		
-		
-		//TODO Esto igual hay que quitarlo, es para probar
-		kindsInfo.clear();
+		kindsInfo.clear(); //Se limpia para que se resetee el count y no diverja a infinito
 		
 		// Dibujar los animales
 		for (AnimalInfo a : animals) {

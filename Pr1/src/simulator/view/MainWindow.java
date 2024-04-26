@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import simulator.control.Controller;
+import simulator.view.ViewUtils;
 
 //TODO COMPROBAR QUE ESTA CLASE ESTÁ BIEN CREADA AQUÍ, ES LO QUE DICE EN EL MODELO, PERO PARA/POR CONFIRMALO
 public class MainWindow extends JFrame {
@@ -50,6 +51,9 @@ public class MainWindow extends JFrame {
 		contentPanel.add(regions);
 
 		// TODO llama a ViewUtils.quit(MainWindow.this) en el método windowClosing
+		//ViewUtils.quit(MainWindow.this);
+			//Supuestamente hay que ponerlo y así al querrer cerrar pide confirmarlo, pero
+			// el problema es que tmb pide confirmación al empezar
 		// TODO COMPLETAR ESTO
 		addWindowListener(null);
 		setSize(500, 500);

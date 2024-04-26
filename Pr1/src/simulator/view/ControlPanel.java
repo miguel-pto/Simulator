@@ -95,14 +95,12 @@ public class ControlPanel extends JPanel {
 		runButton.setIcon(loadImage("resources/icons/run.png"));
 		runButton.addActionListener((e) -> { //ACCIONES QUE REALIZA EL BOTON
 			try {
+			double delt_tim = Double.parseDouble(dtField.getText()); //Primero llamamos al delta_time para que no se active si el contenido no es correcto
 			update_buttons(false);
 			stopped = false;
-			//run_sim((Integer)stepsSpinner.getValue(), 0.03);
-			run_sim((Integer)stepsSpinner.getValue(),Double.parseDouble(dtField.getText()));
+			run_sim((Integer)stepsSpinner.getValue(),delt_tim);
 			}
-			catch () {
-				//TODO encontrar el error de parse Double para ponerlo
-			}
+			catch (NumberFormatException error) {}
 		});
 		toolsBar.add(runButton);
 		//AL PULSARLO SE DESHABILITAN LOS BOTONES SALVO EL DE STOP Y, EN NUESTRO CASO, EL DE MAP EN CASO DE QUERER ABRIR OTRA IMAGEN
