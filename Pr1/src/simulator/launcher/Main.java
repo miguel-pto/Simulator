@@ -39,10 +39,12 @@ public class Main {
 			desc = modeDesc;
 		}
 
+		@SuppressWarnings("unused")
 		public String get_tag() {
 			return tag;
 		}
 
+		@SuppressWarnings("unused")
 		public String get_desc() {
 			return desc;
 		}
@@ -51,10 +53,10 @@ public class Main {
 	// default values for some parameters
 	//
 	private final static Double default_time = 10.0; // IN SECONDS
-	//PUBLICO AL SER USADO DESDE LA GUI
+	// PUBLICO AL SER USADO DESDE LA GUI
 	public final static Double default_delta_time = 0.03; // IN SECONDS
 	private final static String default_mode = "gui";
-	
+
 	private final static int default_cols = 20, default_rows = 15, default_width = 800, default_height = 600;
 
 	// SOME ATTRIBUTES TO STORE VALUES CORRESPONDING TO COMAND-LINE PARAMETERS
@@ -67,7 +69,7 @@ public class Main {
 	private static ExecMode mode = ExecMode.GUI;
 
 	// FACTORÍAS
-	//PÚBLICAS AL SER USADAS DESDE EL LA GUI
+	// PÚBLICAS AL SER USADAS DESDE EL LA GUI
 
 	public static Factory<SelectionStrategy> selection_strategy_factory;
 	public static Factory<Animal> animal_factory;
@@ -193,9 +195,12 @@ public class Main {
 	// ELEGIR SIMPLE VIEWER
 	private static void parse_mode_option(CommandLine line) throws ParseException {
 		String m = line.getOptionValue("m", default_mode);
-		if (m == "gui") mode = ExecMode.GUI;
-		else if (m == "batch") mode = ExecMode.BATCH;
-		else throw new ParseException("Invalid mode: " + m);
+		if (m == "gui")
+			mode = ExecMode.GUI;
+		else if (m == "batch")
+			mode = ExecMode.BATCH;
+		else
+			throw new ParseException("Invalid mode: " + m);
 	}
 
 	// INICIALIZA LAS FACTORÍAS CON LISTAS DE BUILDERS
@@ -253,24 +258,25 @@ public class Main {
 		int cols = default_cols;
 		int width = default_width;
 		int height = default_height;
-		
+
 		if (in_file != null) {
 			InputStream is = new FileInputStream(new File(in_file));
 			data = load_JSON_file(is);
 			is.close();
-			
+
 			rows = data.getInt("rows");
 			cols = data.getInt("cols");
 			width = data.getInt("width");
 			height = data.getInt("height");
 		}
-		
+
 		Simulator sim = new Simulator(cols, rows, width, height, animal_factory, region_factory);
-		
+
 		Controller controller = new Controller(sim);
-		
-		if (in_file != null) controller.load_data(data);
-		
+
+		if (in_file != null)
+			controller.load_data(data);
+
 		SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
 	}
 

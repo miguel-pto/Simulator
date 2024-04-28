@@ -2,15 +2,16 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import simulator.control.Controller;
-import simulator.view.ViewUtils;
 
-//TODO COMPROBAR QUE ESTA CLASE ESTÁ BIEN CREADA AQUÍ, ES LO QUE DICE EN EL MODELO, PERO PARA/POR CONFIRMALO
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	private Controller ctrl;
 
@@ -23,7 +24,6 @@ public class MainWindow extends JFrame {
 	private void initGUI() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
-		
 
 		// SE CREA ControlPanel Y SE AÑADE EN PAGE_START DE mainPanel
 		ControlPanel ctrlPanel = new ControlPanel(ctrl);
@@ -38,8 +38,8 @@ public class MainWindow extends JFrame {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-		//SE CREA LA TABLA DE ESPECIES Y ES AÑADIDA A contentPanel
-		//SE HACE USO DE setPreferredSize(new Dimension(500, 250)) PARA FIJAR SU TAMAÑO
+		// SE CREA LA TABLA DE ESPECIES Y ES AÑADIDA A contentPanel
+		// SE HACE USO DE setPreferredSize(new Dimension(500, 250)) PARA FIJAR SU TAMAÑO
 		InfoTable species = new InfoTable("Species", new SpeciesTableModel(ctrl));
 		species.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(species);
@@ -50,17 +50,40 @@ public class MainWindow extends JFrame {
 		regions.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(regions);
 
-		// TODO llama a ViewUtils.quit(MainWindow.this) en el método windowClosing
-		//ViewUtils.quit(MainWindow.this);
-			//Supuestamente hay que ponerlo y así al querrer cerrar pide confirmarlo, pero
-			// el problema es que tmb pide confirmación al empezar
-		// TODO COMPLETAR ESTO
-		addWindowListener(null);
+		addWindowListener(new WindowListener() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				ViewUtils.quit(MainWindow.this);
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+			}
+		});
 		setSize(500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-		
 	}
 }

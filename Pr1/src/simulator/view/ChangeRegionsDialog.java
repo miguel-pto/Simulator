@@ -29,13 +29,17 @@ import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
 
 public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
-	
-	// ESTA CLASE ES LA RESPONSABLE DE IMPLEMENTAR LA VENTANA DE DIALOGO QUE PERMITE MODIFICAR LAS REGIONES
-	
-	//	SI MÁS TIPOS DE REGIONES SON AÑADIDOS A LA FACTORIA DE REGIONES, ES IMPORTANTE QUE EL DIÁLOGO SIGA
-	//	FUNCIONANDO IGUAL SIN NECESIDAD DE MODIFICAR CODIGO, POR LO QUE EVITAMOS HACER REFERENCIA DIRECTA
-	//	A LOS TIPOS DE REGIONES, SACANDO SIEMPRE LA INFORMACIÓN MEDIANTE EL MÉTODO get_info() DE SU FACTORIA
-	
+
+	// ESTA CLASE ES LA RESPONSABLE DE IMPLEMENTAR LA VENTANA DE DIALOGO QUE PERMITE
+	// MODIFICAR LAS REGIONES
+
+	// SI MÁS TIPOS DE REGIONES SON AÑADIDOS A LA FACTORIA DE REGIONES, ES
+	// IMPORTANTE QUE EL DIÁLOGO SIGA
+	// FUNCIONANDO IGUAL SIN NECESIDAD DE MODIFICAR CODIGO, POR LO QUE EVITAMOS
+	// HACER REFERENCIA DIRECTA
+	// A LOS TIPOS DE REGIONES, SACANDO SIEMPRE LA INFORMACIÓN MEDIANTE EL MÉTODO
+	// get_info() DE SU FACTORIA
+
 	private DefaultComboBoxModel<String> regionsModel;
 	private DefaultComboBoxModel<String> fromRowModel;
 	private DefaultComboBoxModel<String> toRowModel;
@@ -46,15 +50,15 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	private List<JSONObject> regionsInfo;
 
 	private String[] headers = { "Key", "Value", "Description" };
-	
+
 	// EL DIALOGO SE CREA/ABRE AL PULSAR SOBRE SU BOTÓN. SE CREA UNA ÚNICA INSTANCIA
-	//	DE LA VENTADA DE DIÁLOGO EN LA CONSTRUCTORA Y SE LLAMA AL METODO open
+	// DE LA VENTADA DE DIÁLOGO EN LA CONSTRUCTORA Y SE LLAMA AL METODO open
 
 	ChangeRegionsDialog(Controller ctrl) {
 		super((Frame) null, true);
 		this.ctrl = ctrl;
 		initGUI();
-		ctrl.addObserver(this); //SE REGISTRA COMO OBSERVADOR
+		ctrl.addObserver(this); // SE REGISTRA COMO OBSERVADOR
 	}
 
 	@SuppressWarnings("serial")
@@ -63,11 +67,12 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
-		
-		// DIFERENTES PANELES SON CREADOS PARA ORGANIZAR LOS COMPONENTES VISUALES
-		//	EN EL DIALOGO Y SON AÑADIDOS AL mainPanel
 
-		// SE CREA UN PANEL PARA EL TEXTO DE AYUDA, PARA LA TABLA, PARA LOS COMBOBOX Y PARA LOS BOTONES
+		// DIFERENTES PANELES SON CREADOS PARA ORGANIZAR LOS COMPONENTES VISUALES
+		// EN EL DIALOGO Y SON AÑADIDOS AL mainPanel
+
+		// SE CREA UN PANEL PARA EL TEXTO DE AYUDA, PARA LA TABLA, PARA LOS COMBOBOX Y
+		// PARA LOS BOTONES
 		JPanel helpPanel = new JPanel(), tablePanel = new JPanel(), comboPanel = new JPanel(),
 				buttonPanel = new JPanel();
 		mainPanel.add(helpPanel);
@@ -75,8 +80,8 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		mainPanel.add(comboPanel);
 		mainPanel.add(buttonPanel);
 
-		// SE CREA EL TEXTO DE AYUDA QUE APARECERA EN LA PARTE SUPERIOR DEL DIALOGO, 
-		// 	SIENDO AÑADIDO AL PANEL CORRESPONDIENTE DIALOGO
+		// SE CREA EL TEXTO DE AYUDA QUE APARECERA EN LA PARTE SUPERIOR DEL DIALOGO,
+		// SIENDO AÑADIDO AL PANEL CORRESPONDIENTE DIALOGO
 		JLabel helpText = new JLabel(
 				"<html><body>Select a region type, the rows / cols interval, and provide values for the parameters in the Value column<br>(default values are used for parameters with no value).</body></html>");
 		helpPanel.add(helpText);
@@ -84,7 +89,8 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		// SE USARARÁ RegionsInfo PARA QUE LA INFORMACIÓN EN LA TABLA SEA ESTABLECIDA
 		regionsInfo = Main.region_factory.get_info();
 
-		// dataTableModel ES UN MODELO DE TABLA EL CUAL INCLUYE TODOS LOS PARÁMETROS DE LA REGION
+		// dataTableModel ES UN MODELO DE TABLA EL CUAL INCLUYE TODOS LOS PARÁMETROS DE
+		// LA REGION
 		dataTableModel = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
 				return column == 1;
@@ -98,14 +104,15 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		tablePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
 		tablePanel.add(new JScrollPane(dataTable));
 
-		// regionsModel ES UN MODELO DE COMBOBOX EL CUAL INCLUYE LOS DIFERENTES TIPOS DE REGIONES
+		// regionsModel ES UN MODELO DE COMBOBOX EL CUAL INCLUYE LOS DIFERENTES TIPOS DE
+		// REGIONES
 		regionsModel = new DefaultComboBoxModel<>();
 
-		
 		// TODAS LAS REGIONES TIENEN SU DESCRIPCIÓN AÑADIDA AL regionsModel
-		//	PARA ELLO SE USAN LA CLAVE desc O type  DE LOS JSONObject EN regionsInfo PUESTO
-		//	QUE OTORGAN INFORMACIÓN SOBRE LO QUE LA FACTORIA PUEDE CREAR
-		
+		// PARA ELLO SE USAN LA CLAVE desc O type DE LOS JSONObject EN regionsInfo
+		// PUESTO
+		// QUE OTORGAN INFORMACIÓN SOBRE LO QUE LA FACTORIA PUEDE CREAR
+
 		for (JSONObject o : regionsInfo) {
 			regionsModel.addElement(o.getString("type"));
 		}
@@ -129,9 +136,8 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		comboPanel.add(new JLabel("Region type: "));
 		comboPanel.add(regionsComboBox);
 
-		
-		// 4 MODELOS DE COMBOBOX SON CREADOS PARA 
-		// 	fromRowModel, toRowModel, fromColModel y toColModel
+		// 4 MODELOS DE COMBOBOX SON CREADOS PARA
+		// fromRowModel, toRowModel, fromColModel y toColModel
 		fromRowModel = new DefaultComboBoxModel<>();
 		toRowModel = new DefaultComboBoxModel<>();
 		fromColModel = new DefaultComboBoxModel<>();
@@ -157,23 +163,27 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener((e) -> {
 			try {
-			int fromRow = fromRowComboBox.getSelectedIndex();
-			int toRow = toRowComboBox.getSelectedIndex();
-			int fromCol = fromColComboBox.getSelectedIndex();
-			int toCol = toColComboBox.getSelectedIndex();
-			int regionIndex = regionsComboBox.getSelectedIndex();
-			String type = regionsInfo.get(regionIndex).getString("type");
-			JSONObject data = new JSONObject();
-			if (dataTable.getValueAt(0, 1) != null) data.put("factor", dataTable.getValueAt(0, 1));
-			if (dataTable.getValueAt(1, 1) != null) data.put("food", dataTable.getValueAt(1, 1));
-			String json = "{ \"regions\": [ {" + "\"row\": [" + fromRow + "," + toRow + "], " + "\"col\": [" + fromCol
-					+ "," + toCol + "], " + "\"spec\": {" + "\"type\": \"" + type + "\", " + "\"data\": " + data + "}"
-					+ "} ] }";
-			// CONVIERTE LA INFORMACION EN UN JSON QUE INCLUYE UNA CLAVE Y EL VALOR PARA CADA FILA EN LA TABLA,
-			//	PARA LA FILA QUE INCLUYEN VALOR NO VACIO, REFIRIENDONOS AL JSON COMO region_data
-			JSONObject region_data = new JSONObject(json);
-			ctrl.set_regions(region_data);
-			// EL JSON ES PASADO A crtl PARA CAMBIAR LAS REGIONES
+				int fromRow = fromRowComboBox.getSelectedIndex();
+				int toRow = toRowComboBox.getSelectedIndex();
+				int fromCol = fromColComboBox.getSelectedIndex();
+				int toCol = toColComboBox.getSelectedIndex();
+				int regionIndex = regionsComboBox.getSelectedIndex();
+				String type = regionsInfo.get(regionIndex).getString("type");
+				JSONObject data = new JSONObject();
+				if (dataTable.getValueAt(0, 1) != null)
+					data.put("factor", dataTable.getValueAt(0, 1));
+				if (dataTable.getValueAt(1, 1) != null)
+					data.put("food", dataTable.getValueAt(1, 1));
+				String json = "{ \"regions\": [ {" + "\"row\": [" + fromRow + "," + toRow + "], " + "\"col\": ["
+						+ fromCol + "," + toCol + "], " + "\"spec\": {" + "\"type\": \"" + type + "\", " + "\"data\": "
+						+ data + "}" + "} ] }";
+				// CONVIERTE LA INFORMACION EN UN JSON QUE INCLUYE UNA CLAVE Y EL VALOR PARA
+				// CADA FILA EN LA TABLA,
+				// PARA LA FILA QUE INCLUYEN VALOR NO VACIO, REFIRIENDONOS AL JSON COMO
+				// region_data
+				JSONObject region_data = new JSONObject(json);
+				ctrl.set_regions(region_data);
+				// EL JSON ES PASADO A crtl PARA CAMBIAR LAS REGIONES
 			} catch (Exception x) {
 				ViewUtils.showErrorMsg(x.getMessage());
 			} finally {
@@ -196,7 +206,7 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 	}
 
 	private void updateModels(MapInfo map) {
-		// POR CADA FILA Y COLUMNA DE map  SE ACTUALIZAN LOS MODELOS
+		// POR CADA FILA Y COLUMNA DE map SE ACTUALIZAN LOS MODELOS
 		for (int i = 0; i < map.get_rows(); i++) {
 			fromRowModel.addElement(String.valueOf(i));
 			toRowModel.addElement(String.valueOf(i));

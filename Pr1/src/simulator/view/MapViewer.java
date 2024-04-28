@@ -19,17 +19,21 @@ import java.util.Map.Entry;
 
 @SuppressWarnings("serial")
 public class MapViewer extends AbstractMapViewer {
-	
-	// EL VISOR DEL MAPA DIBUJA EL ESTADO DE LA SIMULACION GRAFICAMENTE EN CADA PASO
-	// 	SE IMPLEMENTA CON MapWindow, QUE REPRESENTA LA VENTANA, Y CON 
-	//	MapViewer QUE REALIZA LA VISUALIZACIÓN
-	
-	// EL VISOR SE ENCARGA DE DIBUJAR CADA ANIMAL CON TAMAÑO CORRESPONDIENTE A SU EDAD
-	// 	Y DEL COLOR DE SU CÓDIGO GENÉTICO, MOSTRAR INFORMACIÓN SOBRE EL TIEMPO ACTUAL Y 
-	// 	EL NUMERO DE ANIMALES DE CADA CÓDIGO GENÉTICO, Y PERMITIR MOSTRAR SOLO ANIMALES
-	//	CON UN ESTADO ESPECÍFICO
 
-	// Anchura/altura/ de la simulación -- se supone que siempre van a ser iguales al tamaño del componente
+	// EL VISOR DEL MAPA DIBUJA EL ESTADO DE LA SIMULACION GRAFICAMENTE EN CADA PASO
+	// SE IMPLEMENTA CON MapWindow, QUE REPRESENTA LA VENTANA, Y CON
+	// MapViewer QUE REALIZA LA VISUALIZACIÓN
+
+	// EL VISOR SE ENCARGA DE DIBUJAR CADA ANIMAL CON TAMAÑO CORRESPONDIENTE A SU
+	// EDAD
+	// Y DEL COLOR DE SU CÓDIGO GENÉTICO, MOSTRAR INFORMACIÓN SOBRE EL TIEMPO ACTUAL
+	// Y
+	// EL NUMERO DE ANIMALES DE CADA CÓDIGO GENÉTICO, Y PERMITIR MOSTRAR SOLO
+	// ANIMALES
+	// CON UN ESTADO ESPECÍFICO
+
+	// Anchura/altura/ de la simulación -- se supone que siempre van a ser iguales
+	// al tamaño del componente
 	private int width, height;
 
 	// Número de filas/columnas de la simulación
@@ -38,7 +42,8 @@ public class MapViewer extends AbstractMapViewer {
 	// Anchura/altura de una región
 	int rwidth, rheight;
 
-	// Mostramos sólo animales con este estado. Los posibles valores de _currState son null y los valores de Animal.State.values().
+	// Mostramos sólo animales con este estado. Los posibles valores de _currState
+	// son null y los valores de Animal.State.values().
 	State currState; // Si es null mostramos todo.
 
 	// En estos atributos guardamos la lista de animales y el tiempo que hemos
@@ -59,7 +64,7 @@ public class MapViewer extends AbstractMapViewer {
 
 	// Un mapa para la información sobre las especies
 	Map<String, SpeciesInfo> kindsInfo = new HashMap<>();
-	
+
 	// El font que usamos para dibujar texto
 	private Font font = new Font("Arial", Font.BOLD, 12);
 
@@ -115,7 +120,8 @@ public class MapViewer extends AbstractMapViewer {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				requestFocus(); // Necesario para capturar las teclas cuando el ratón está sobre este componente.
+				requestFocus(); // Necesario para capturar las teclas cuando el ratón está sobre este
+								// componente.
 			}
 		});
 
@@ -172,9 +178,9 @@ public class MapViewer extends AbstractMapViewer {
 			g.drawLine(0, aux, width, aux);
 			aux += rheight;
 		}
-		
-		kindsInfo.clear(); //Se limpia para que se resetee el count y no diverja a infinito
-		
+
+		kindsInfo.clear(); // Se limpia para que se resetee el count y no diverja a infinito
+
 		// Dibujar los animales
 		for (AnimalInfo a : animals) {
 
@@ -191,7 +197,7 @@ public class MapViewer extends AbstractMapViewer {
 				esp_info = new SpeciesInfo(ViewUtils.get_color(a.get_genetic_code()));
 				kindsInfo.put(a.get_genetic_code(), esp_info);
 			}
-			
+
 			// Incrementar el contador de la especie (es decir el contador dentro de
 			// tag_info)
 			esp_info.count++;
@@ -208,7 +214,8 @@ public class MapViewer extends AbstractMapViewer {
 		if (currState != null)
 			drawStringWithRect(g, 30, height - 120, "State: " + currState.toString());
 
-		// Dibuja la etiqueta del tiempo. Usa String.format("%.3f", time) ara escribir solo 3 decimales
+		// Dibuja la etiqueta del tiempo. Usa String.format("%.3f", time) ara escribir
+		// solo 3 decimales
 		drawStringWithRect(g, 30, height - 30, "Time: " + String.format("%.3f", time));
 
 		// Dibuja la información de todas la especies. Al final de cada iteración
@@ -216,9 +223,10 @@ public class MapViewer extends AbstractMapViewer {
 		aux = 60;
 		for (Entry<String, SpeciesInfo> e : kindsInfo.entrySet()) {
 			g.setColor(e.getValue().color);
-			//drawStringWithRect(g, 30, height - aux, e.getKey()); Lo que teniamos puesto, pero hay que cambiarlo
-			//TODO tiene que poner el numero de bichos de cada especie, 
-			//en principio es esto, pero hay que resetearlo pq no para de ascender
+			// drawStringWithRect(g, 30, height - aux, e.getKey()); Lo que teniamos puesto,
+			// pero hay que cambiarlo
+			// TODO tiene que poner el numero de bichos de cada especie,
+			// en principio es esto, pero hay que resetearlo pq no para de ascender
 			drawStringWithRect(g, 30, height - aux, e.getKey() + ": " + e.getValue().count);
 			aux += 30;
 		}

@@ -8,9 +8,7 @@ import org.json.JSONObject;
 import java.io.PrintStream;
 import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
-import simulator.model.JSONable;
 import simulator.model.MapInfo;
-import simulator.model.Region;
 import simulator.model.Simulator;
 import simulator.view.SimpleObjectViewer;
 import simulator.view.SimpleObjectViewer.ObjInfo;
@@ -39,9 +37,10 @@ public class Controller {
 			}
 		}
 	}
-	
-	// FUNCION QUE SIENDO rs UN JSON QUE INCLUYE LA CLAVE "regions" MODIFICA LAS REGIONES QUE CORRESPONDEN
-		// MEDIANTE set_regions DEL SIMULADOR
+
+	// FUNCION QUE SIENDO rs UN JSON QUE INCLUYE LA CLAVE "regions" MODIFICA LAS
+	// REGIONES QUE CORRESPONDEN
+	// MEDIANTE set_regions DEL SIMULADOR
 	public void set_regions(JSONObject rs) {
 		JSONArray regions = rs.getJSONArray("regions");
 		for (int i = 0; i < regions.length(); i++) {
@@ -58,7 +57,7 @@ public class Controller {
 					sim.set_region(c, r, o);
 		}
 	}
-	
+
 	// FUNCIÓN QUE INICIA Y COMPLETA TODO EL BUCLE DEL PROGRAMA
 	public void run(double t, double dt, boolean sv, OutputStream out) {
 		SimpleObjectViewer view = null;
@@ -101,10 +100,9 @@ public class Controller {
 		return ol;
 	}
 
-	
-	
-	//SE AÑADEN FUNCIONALIDADES ADICIONALES PARA ASÍ EVITAR PASAR EL SIMULADOR A LA GUI
-	
+	// SE AÑADEN FUNCIONALIDADES ADICIONALES PARA ASÍ EVITAR PASAR EL SIMULADOR A LA
+	// GUI
+
 	// SE OCUPA DE RESETEAR, LLAMANDO AL RESET DE SIMULATOR
 	public void reset(int cols, int rows, int width, int height) {
 		sim.reset(cols, rows, width, height);
