@@ -6,7 +6,6 @@ import java.awt.Frame;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JFrame;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -28,6 +27,7 @@ import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
 
+@SuppressWarnings("serial")
 public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
 	// ESTA CLASE ES LA RESPONSABLE DE IMPLEMENTAR LA VENTANA DE DIALOGO QUE PERMITE
@@ -61,7 +61,6 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		ctrl.addObserver(this); // SE REGISTRA COMO OBSERVADOR
 	}
 
-	@SuppressWarnings("serial")
 	private void initGUI() {
 		setTitle("Change Regions");
 		JPanel mainPanel = new JPanel();
