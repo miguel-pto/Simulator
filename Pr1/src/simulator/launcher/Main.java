@@ -88,12 +88,13 @@ public class Main {
 		try {
 
 			CommandLine line = parser.parse(cmdLineOptions, args);
+			parse_mode_option(line);
 			parse_help_option(line, cmdLineOptions);
 			parse_in_file_option(line);
 			parse_time_option(line);
 			parse_delta_time_option(line);
 			parse_out_file_option(line);
-			parse_mode_option(line);
+			parse_simple_viewer_option(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -141,6 +142,9 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg().desc(
 				"A real number representing the total simulation time in seconds. Default value: " + default_time + ".")
 				.build());
+
+		// mode
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc(".").build());
 
 		return cmdLineOptions;
 	}
@@ -193,11 +197,15 @@ public class Main {
 	}
 
 	// ELEGIR SIMPLE VIEWER
+	private static void parse_simple_viewer_option(CommandLine line) throws ParseException {
+		if (line.hasOption("sv")) sv = true;
+	}
+
 	private static void parse_mode_option(CommandLine line) throws ParseException {
 		String m = line.getOptionValue("m", default_mode);
-		if (m == "gui")
+		if (m.equals("gui"))
 			mode = ExecMode.GUI;
-		else if (m == "batch")
+		else if (m.equals("batch"))
 			mode = ExecMode.BATCH;
 		else
 			throw new ParseException("Invalid mode: " + m);
@@ -235,7 +243,7 @@ public class Main {
 		JSONObject data = load_JSON_file(is);
 		is.close();
 		// 2
-		FileOutputStream os = new FileOutputStream(new File(out_file));
+		FileOutputStream os = new FileOutputStream(out_file);
 		// 3
 		int rows = data.getInt("rows");
 		int cols = data.getInt("cols");
